@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+                name="newsBean"
+                type="com.pcl.mvvm.network.entity.NewsBean" />
+
+        <variable
+                name="newsListenner"
+                type="com.pcl.mvvm.ui.project.ProjectViewModel.OnItemClickListener" />
+
+    </data>
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:onClick="@{()->newsListenner.onItemClick(newsBean)}"
+            android:padding="10dp">
+
+        <ImageView
+                android:id="@+id/iv_project_list_atticle_ic"
+                android:layout_width="@dimen/dp_80"
+                android:layout_height="@dimen/dp_80"
+                android:scaleType="centerCrop"
+                android:layout_marginRight="10dp"
+                app:url="@{newsBean.picUrl}" />
+
+        <TextView
+                android:id="@+id/tv_project_list_atticle_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/iv_project_list_atticle_ic"
+                android:ellipsize="end"
+                android:lineSpacingExtra="@dimen/dp_4"
+                android:maxLines="2"
+                android:text="@{newsBean.title}"
+                android:textSize="@dimen/sp_14"
+                tools:text="玩安卓" />
+
+        <TextView
+                android:id="@+id/tv_project_list_atticle_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginTop="@dimen/dp_13"
+                android:layout_toRightOf="@id/iv_project_list_atticle_ic"
+                android:text="@{newsBean.ctime}"
+                android:textSize="@dimen/sp_12"
+                tools:text="2010-10-10" />
+
+        <TextView
+                android:id="@+id/tv_project_list_atticle_auther"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{newsBean.description}"
+                android:textSize="@dimen/sp_12"
+                android:visibility="gone"
+                app:layout_constraintStart_toEndOf="@+id/tv_project_list_atticle_time"
+                app:layout_constraintTop_toTopOf="@+id/tv_project_list_atticle_time"
+                tools:text="auther" />
+
+        <TextView
+                android:id="@+id/tv_project_list_atticle_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:background="?selectableItemBackgroundBorderless"
+                android:text="@{newsBean.description}"
+                android:textSize="@dimen/sp_13"
+                tools:text="技术博客" />
+    </RelativeLayout>
+</layout>

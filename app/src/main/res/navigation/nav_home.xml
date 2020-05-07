@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/nav_home"
+        app:startDestination="@id/homeFragment">
+
+    <fragment
+            android:id="@+id/homeFragment"
+            android:name="com.pcl.mvvm.ui.homes.HomesFragment"
+            android:label="HomeFragment"
+            tools:layout="@layout/home_fragment">
+
+    </fragment>
+    <fragment
+            android:id="@+id/projectFragment"
+            android:name="com.pcl.mvvm.ui.project.HomeFragment"
+            android:label="ProjectFragment"
+            tools:layout="@layout/project_fragment">
+
+    </fragment>
+    <fragment
+            android:id="@+id/meFragment"
+            android:name="com.pcl.mvvm.ui.me.MeFragment"
+            android:label="MeFragment"
+            tools:layout="@layout/me_fragment"/>
+</navigation>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <com.stx.xhb.androidx.XBanner
+            android:id="@+id/xbanner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:isAutoPlay="false"
+            app:isHandLoop="false"
+            app:pointNormal="@drawable/rect_indicator_normal"
+            app:pointSelect="@drawable/rect_indicator_seltect"
+            app:pointsPosition="CENTER"
+            app:pointsVisibility="true"
+            app:tipTextSize="12sp"
+            app:isShowNumberIndicator="false"
+            app:isShowIndicatorOnlyOne="true"
+            app:pointTopBottomPadding="20dp"/>
+</LinearLayout>

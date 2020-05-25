@@ -21,7 +21,7 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
     override fun layoutId() = R.layout.fragment_home
 
     override fun initView(savedInstanceState: Bundle?) {
-        mBinding?.homeViewModel = viewModel
+        mBinding?.projectViewModel = viewModel
     }
 
     @FlowPreview

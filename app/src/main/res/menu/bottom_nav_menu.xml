@@ -6,10 +6,10 @@
         android:icon="@drawable/tab_shop_selected"
         android:title="@string/title_home" />
 
-    <item
-        android:id="@+id/projectFragment"
-        android:icon="@drawable/tab_car_selected"
-        android:title="@string/title_car" />
+<!--    <item-->
+<!--        android:id="@+id/projectFragment"-->
+<!--        android:icon="@drawable/tab_car_selected"-->
+<!--        android:title="@string/title_car" />-->
 
     <item
         android:id="@+id/meFragment"

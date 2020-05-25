@@ -4,7 +4,7 @@ ext {
             compileSdkVersion: 28,
             buildToolsVersion: "28.0.3",
             applicationId    : "com.pcl.mvvm",
-            minSdkVersion    : 19,
+            minSdkVersion    : 21,
             targetSdkVersion : 28,
             versionCode      : 4,
             versionName      : "1.0.3",
@@ -75,7 +75,7 @@ ext {
             "material-dialogs-core"     : "com.afollestad.material-dialogs:core:3.1.1",
             //Utils
             utilcodex                   : 'com.blankj:utilcodex:1.26.0',
-            banner                      : 'com.github.xiaohaibin:XBanner:androidx_v1.0.2',
+            banner                      : 'com.github.xiaohaibin:XBanner:androidx_v1.0.8',
             'bottom-tab'                : 'me.majiajie:pager-bottom-tab-strip:2.3.0X',
             BRVAH                       : 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.46',
             bdclta                      : 'me.tatarka.bindingcollectionadapter2:bindingcollectionadapter:3.1.1',

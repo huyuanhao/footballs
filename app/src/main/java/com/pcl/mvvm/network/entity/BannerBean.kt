@@ -28,6 +28,7 @@ import com.stx.xhb.androidx.entity.SimpleBannerInfo
 data class BannerBean(
     @PrimaryKey
     val id: Int,
+    val img:Int,
     val desc: String,
     val imagePath: String,
     val isVisible: Int,

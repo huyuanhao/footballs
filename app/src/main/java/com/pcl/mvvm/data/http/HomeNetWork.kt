@@ -23,6 +23,9 @@ class HomeNetWork {
 
     suspend fun getNewsList(page: Int,word:String?) = mService.getNewsList(page,word,"bcdbd7c08ca1c1e30364282c95ec2b07")
 
+    //获取验证码
+    suspend fun getCode(phone: String) = mService.getCode(phone)
+
     companion object {
         @Volatile
         private var netWork: HomeNetWork? = null

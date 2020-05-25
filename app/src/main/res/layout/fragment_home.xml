@@ -5,7 +5,7 @@
     <data>
 
         <variable
-                name="homeViewModel"
+                name="projectViewModel"
                 type="com.pcl.mvvm.ui.home.HomeViewModel" />
 
         <variable
@@ -29,23 +29,23 @@
                 android:id="@+id/tb_project"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_42"
-                app:items="@{homeViewModel.navTitle}"
+                app:items="@{projectViewModel.navTitle}"
                 app:tabBackground="@color/blue"
-                app:tabItemClick="@{homeViewModel.tabOnClickListener}"
+                app:tabItemClick="@{projectViewModel.tabOnClickListener}"
                 app:tabMode="scrollable"
                 app:tabTextColor="@color/white" />
 
         <com.scwang.smartrefresh.layout.SmartRefreshLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:setFresh="@{homeViewModel.homeListenner}">
+                android:setFresh="@{projectViewModel.homeListenner}">
 
             <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_project"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    app:itemBinding="@{homeViewModel.itemBinding}"
-                    app:items="@{homeViewModel.items}"
+                    app:itemBinding="@{projectViewModel.itemBinding}"
+                    app:items="@{projectViewModel.items}"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
         </com.scwang.smartrefresh.layout.SmartRefreshLayout>
     </LinearLayout>

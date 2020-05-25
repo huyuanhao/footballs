@@ -3,14 +3,14 @@ package com.pcl.mvvm.app
 import android.content.Context
 import com.aleyn.mvvm.base.BaseApplication
 import com.blankj.utilcode.util.LogUtils
+import com.pcl.mvvm.Bean.User
 import com.pcl.mvvm.BuildConfig
 import com.pcl.mvvm.R
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
-import com.scwang.smartrefresh.layout.api.DefaultRefreshHeaderCreator
 import com.scwang.smartrefresh.layout.api.RefreshHeader
-import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
+import kotlin.properties.Delegates
 
 /**
  *   @auther : Aleyn
@@ -27,9 +27,12 @@ class MyApplication : BaseApplication() {
                 ClassicsFooter(context).setDrawableSize(20f);
             }
         }
+        var CONTEXT: Context by Delegates.notNull()
+        lateinit var USER: User
     }
     override fun onCreate() {
         super.onCreate()
+        CONTEXT = applicationContext
         LogUtils.getConfig().run {
             isLogSwitch = BuildConfig.DEBUG
             setSingleTagSwitch(true)

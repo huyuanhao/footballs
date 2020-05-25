@@ -62,6 +62,11 @@ class HomeRepository private constructor(
         return netWork.getNewsList(page, s)
     }
 
+    //获取验证码
+    suspend fun getCode(phone: String): MyResult<String> {
+        return netWork.getCode(phone)
+    }
+
     companion object {
 
         @Volatile

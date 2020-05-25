@@ -4,6 +4,7 @@ import com.pcl.mvvm.app.base.BaseResult
 import com.pcl.mvvm.app.base.MyResult
 import com.pcl.mvvm.network.entity.*
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -54,4 +55,11 @@ interface HomeService {
      */
     @GET("football/index")
     suspend fun getNewsList(@Query("page") page: Int,@Query("word") word: String?,@Query("key") key: String): News
+
+
+    /**
+     * 获取验证码
+     */
+    @POST("user/code")
+    suspend fun getCode(@Query("phone") phone: String): MyResult<String>
 }

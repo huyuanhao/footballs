@@ -5,6 +5,8 @@ package com.pcl.mvvm.common
  *   time   : 2019/08/16
  */
 object Constant {
-//    const val BASE_URL = "https://www.wanandroid.com/"
-    const val BASE_URL = "http://api.tianapi.com/"
+    //    const val BASE_URL = "https://www.wanandroid.com/"
+//    const val BASE_URL = "http://api.tianapi.com/"
+    const val BASE_URL = " https://photoapi.jimetec.com/"
+
 }

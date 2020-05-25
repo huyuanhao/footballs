@@ -21,7 +21,7 @@ import com.pcl.mvvm.utils.InjectorUtil
  */
 class LoginViewModel : BaseViewModel() {
 
-    var phone = ObservableField<String>("")
+    val phone = ObservableField<String>("")
     var code = ObservableField("获取验证码")
     var code_enabled = ObservableField<Boolean>(true)
     private val homeRepository by lazy { InjectorUtil.getHomeRepository() }
@@ -64,25 +64,25 @@ class LoginViewModel : BaseViewModel() {
     fun GetVerificationCode() {
         timer.start()
         //只返回结果，其他全抛自定义异常
-        launchOnlyresult( { homeRepository.getCode(phone.get()!!) },{
+        launchOnlyresult( { homeRepository.getCode(phone.get().toString()) },{
 
         })
     }
 
     fun Login() {
-        if(TextUtils.isEmpty(phone.get())){
+        if(TextUtils.isEmpty(phone.get().toString())){
             ToastUtils.showShort("手机号不能为空")
             return
         }
-        if(!RegexUtils.isMobileExact(phone.get())){
+        if(!RegexUtils.isMobileExact(phone.get().toString())){
             ToastUtils.showShort("请输入正确的手机号")
             return
         }
-        if(TextUtils.isEmpty(phone.get())){
+        if(TextUtils.isEmpty(phone.get().toString())){
             ToastUtils.showShort("验证码不能为空")
             return
         }
-        if(11> phone.get()?.length ?: 0){
+        if(11> phone.get().toString()?.length ?: 0){
             ToastUtils.showShort("请输入正确的验证码")
             return
         }

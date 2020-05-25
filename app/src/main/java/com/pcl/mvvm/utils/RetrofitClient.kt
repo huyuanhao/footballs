@@ -46,9 +46,9 @@ class RetrofitClient {
         var u_userId by Preference(Preference.USER_ID, "0")
         val sb = StringBuilder()
         sb.append("udid=").append(u_udid)
-            .append("timestamp").append(u_timestamp)
+            .append("timestamp&").append(u_timestamp)
             .append("&").append(SIGN_KEY)
-        val u_sign: String = EncryptUtils.encryptMD5ToString(sb.toString())
+        val u_sign: String = MD5.encodeByMD5(sb.toString())
 
         map.put("u_udid", u_udid)
         map.put("u_timestamp", u_timestamp.toString())

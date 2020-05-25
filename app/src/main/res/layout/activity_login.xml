@@ -46,7 +46,7 @@
                     android:inputType="number"
                     android:maxLength="11"
                     android:paddingEnd="20dp"
-                    android:text="@{loginViewModel.phone}" />
+                    android:text="@={loginViewModel.phone}" />
 
             <TextView
                     android:layout_width="wrap_content"

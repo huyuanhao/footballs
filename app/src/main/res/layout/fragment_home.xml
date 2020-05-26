@@ -6,7 +6,7 @@
 
         <variable
                 name="projectViewModel"
-                type="com.pcl.mvvm.ui.home.HomeViewModel" />
+                type="com.jime.stu.ui.home.HomeViewModel" />
 
         <variable
                 name="homeListenner"

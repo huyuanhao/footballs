@@ -6,7 +6,7 @@
 
         <variable
                 name="photoViewModel"
-                type="com.pcl.mvvm.ui.photo.PhotoViewModel" />
+                type="com.jime.stu.ui.photo.PhotoViewModel" />
     </data>
 
     <LinearLayout

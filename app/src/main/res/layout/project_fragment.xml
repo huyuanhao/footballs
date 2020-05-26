@@ -6,7 +6,7 @@
 
         <variable
                 name="projectViewModel"
-                type="com.pcl.mvvm.ui.project.ProjectViewModel" />
+                type="com.jime.stu.ui.project.ProjectViewModel" />
 
         <variable
                 name="projectListenner"

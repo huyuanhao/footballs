@@ -6,11 +6,13 @@
     <color name="icActive">#FFFFFFFF</color>
     <color name="icFocused">#DDFFFFFF</color>
     <color name="icPressed">#AAFFFFFF</color>
+    <color name="black">#000000</color>
 
     <color name="bg">#F8F9FB</color>
     <color name="white">#FFFFFF</color>
     <color name="blue">#00ABFF</color>
 
+    <color name="tv_color">#333333</color>
     <color name="tv_gray">#C6C6C6</color>
 
     <color name="gary">#808080</color>

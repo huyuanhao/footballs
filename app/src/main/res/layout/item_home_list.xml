@@ -7,11 +7,11 @@
 
         <variable
                 name="homeBean"
-                type="com.pcl.mvvm.network.entity.NewsBean" />
+                type="com.jime.stu.network.entity.NewsBean" />
 
         <variable
                 name="item_homeListenner"
-                type="com.pcl.mvvm.ui.home.HomeViewModel.OnItemClickListener" />
+                type="com.jime.stu.ui.home.HomeViewModel.OnItemClickListener" />
 
     </data>
 

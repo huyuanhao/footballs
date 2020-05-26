@@ -4,7 +4,7 @@
     <data>
         <variable
                 name="loginViewModel"
-                type="com.pcl.mvvm.ui.login.LoginViewModel" />
+                type="com.jime.stu.ui.login.LoginViewModel" />
     </data>
 
     <LinearLayout
@@ -73,7 +73,7 @@
                         android:inputType="number"
                         android:maxLength="6"
                         android:hint="@string/please_enter_code_6"
-                        android:text="" />
+                        android:text="@={loginViewModel.code}" />
 
                 <TextView
                         android:id="@+id/tv_code"
@@ -82,7 +82,7 @@
                         android:gravity="center"
                         android:enabled="@{loginViewModel.code_enabled}"
                         android:onClick="@{() -> loginViewModel.GetVerificationCode()}"
-                        android:text="@={loginViewModel.code}"
+                        android:text="@={loginViewModel.getCode}"
                         android:textColor="@{loginViewModel.code_enabled?@color/colorPrimary:@color/tv_gray}}"/>
             </LinearLayout>
 

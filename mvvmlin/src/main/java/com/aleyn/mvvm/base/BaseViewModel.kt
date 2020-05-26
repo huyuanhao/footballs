@@ -85,7 +85,12 @@ open class BaseViewModel : AndroidViewModel(Utils.getApp()), LifecycleObserver {
             handleException(
                 { withContext(Dispatchers.IO) { block() } },
                 { res ->
-                    executeResponse(res) { success(it) }
+                    if(res.isSuccess()){
+                        success(res.data())
+                    }else{
+                        error(ResponseThrowable(res.code(),res.msg()))
+                    }
+//                    executeResponse(res) { success(it) }
                 },
                 {
                     error(it)
@@ -99,7 +104,7 @@ open class BaseViewModel : AndroidViewModel(Utils.getApp()), LifecycleObserver {
     }
 
     /**
-     * 请求结果过滤
+     * 请求结果过滤,不好用，暂时去掉
      */
     private suspend fun <T> executeResponse(
         response: IBaseResponse<T>,
@@ -107,7 +112,8 @@ open class BaseViewModel : AndroidViewModel(Utils.getApp()), LifecycleObserver {
     ) {
         coroutineScope {
             if (response.isSuccess()) success(response.data())
-            else throw ResponseThrowable(response.code(), response.msg())
+            else
+                throw ResponseThrowable(response.code(), response.msg())
         }
     }
 

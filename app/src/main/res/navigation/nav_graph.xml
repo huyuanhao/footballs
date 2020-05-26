@@ -20,7 +20,7 @@
 
     <fragment
             android:id="@+id/permissions_fragment"
-            android:name="com.pcl.mvvm.ui.photo.PermissionsFragment"
+            android:name="com.jime.stu.ui.photo.PermissionsFragment"
             android:label="PermissionsFragment">
 
         <action
@@ -33,7 +33,7 @@
 
     <fragment
             android:id="@+id/camera_fragment"
-            android:name="com.pcl.mvvm.ui.photo.CameraFragment"
+            android:name="com.jime.stu.ui.photo.CameraFragment"
             android:label="CameraFragment">
 
         <action
@@ -55,7 +55,7 @@
 
     <fragment
             android:id="@+id/gallery_fragment"
-            android:name="com.pcl.mvvm.ui.photo.GalleryFragment"
+            android:name="com.jime.stu.ui.photo.GalleryFragment"
             android:label="GalleryFragment">
         <argument
                 android:name="root_directory"
@@ -64,7 +64,7 @@
 
     <fragment
             android:id="@+id/me_framgent"
-            android:name="com.pcl.mvvm.ui.me.MeFragment"
+            android:name="com.jime.stu.ui.me.MeFragment"
             android:label="PermissionsFragment">
 
         <action

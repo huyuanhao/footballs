@@ -64,6 +64,7 @@ import com.jime.stu.R
 import com.jime.stu.ui.MainActivity
 import com.jime.stu.ui.MainActivity.Companion.KEY_EVENT_ACTION
 import com.jime.stu.ui.MainActivity.Companion.KEY_EVENT_EXTRA
+import com.jime.stu.ui.me.MeFragment
 import com.jime.stu.utils.ANIMATION_FAST_MILLIS
 import com.jime.stu.utils.ANIMATION_SLOW_MILLIS
 import com.jime.stu.utils.simulateClick
@@ -147,11 +148,11 @@ class CameraFragment : Fragment() {
         super.onResume()
         // Make sure that all permissions are still present, since the
         // user could have removed them while the app was in paused state.
-        if (!PermissionsFragment.hasPermissions(requireContext())) {
-            Navigation.findNavController(requireActivity(), R.id.fragment_container).navigate(
-                    CameraFragmentDirections.actionCameraToPermissions()
-            )
-        }
+//        if (!PermissionsFragment.hasPermissions(requireContext())) {
+//            Navigation.findNavController(requireActivity(), R.id.fragment_container).navigate(
+//                    CameraFragmentDirections.actionCameraToPermissions()
+//            )
+//        }
     }
 
     override fun onDestroyView() {
@@ -591,7 +592,7 @@ class CameraFragment : Fragment() {
     }
 
     companion object {
-
+        fun newInstance() = CameraFragment()
         private const val TAG = "CameraXBasic"
         private const val FILENAME = "yyyy-MM-dd-HH-mm-ss-SSS"
         private const val PHOTO_EXTENSION = ".jpg"

@@ -135,7 +135,6 @@ class HomeViewModel : BaseViewModel() {
             getNewsList(page, name, false)
             refreshLayout.finishLoadMore()
         }
-
         override fun onRefresh(refreshLayout: RefreshLayout) {
             page = 1
             getNewsList(page, name, true)

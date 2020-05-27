@@ -6,25 +6,31 @@
         android:fitsSystemWindows="true"
         android:orientation="vertical">
 
-    <androidx.fragment.app.FragmentContainerView
+    <fragment
             xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/fragment_container"
-            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:id="@+id/container"
+            android:name="com.jime.stu.utils.TabNavHostFragment"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:keepScreenOn="true"
-            app:defaultNavHost="true"
-            app:navGraph="@navigation/nav_graph"
             tools:context=".MainActivity"/>
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/nav_view"
+   <!-- app:defaultNavHost="true"
+    app:navGraph="@navigation/nav_graph"-->
+    <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
-            app:itemTextColor="@drawable/bottom_navigation_selector"
-            app:labelVisibilityMode="labeled"
-            app:menu="@menu/bottom_nav_menu" />
+            app:tabIndicatorHeight="0dp"
+            app:tabSelectedTextColor="@drawable/bottom_navigation_selector"/>
+<!--    <com.google.android.material.bottomnavigation.BottomNavigationView-->
+<!--            android:id="@+id/nav_view"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:background="@color/white"-->
+<!--            app:itemTextColor="@drawable/bottom_navigation_selector"-->
+<!--            app:labelVisibilityMode="labeled"-->
+<!--            app:menu="@menu/bottom_nav_menu" />-->
 
 </LinearLayout>

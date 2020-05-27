@@ -4,7 +4,8 @@
     <item
         android:id="@+id/homeFragment"
         android:icon="@drawable/tab_shop_selected"
-        android:title="@string/title_home" />
+        android:title="@string/title_home" >
+    </item>
 
 <!--    <item-->
 <!--        android:id="@+id/projectFragment"-->

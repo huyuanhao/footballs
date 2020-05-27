@@ -4,40 +4,46 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.KeyEvent
-import android.view.MenuItem
+import android.view.LayoutInflater
+import android.view.View
 import android.widget.FrameLayout
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.Navigation
 import com.blankj.utilcode.util.BarUtils
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.tabs.TabLayout
 import com.jime.stu.R
-import com.jime.stu.ui.me.MeFragmentDirections
-import com.jime.stu.ui.photo.CameraFragmentDirections
+import com.jime.stu.ui.me.MeFragment
+import com.jime.stu.ui.photo.CameraFragment
+import com.jime.stu.ui.project.ProjectFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
 
+
 class MainActivity : AppCompatActivity() {
-    private lateinit var container: FrameLayout
+    private val titles = arrayOf("首页",  "我的")
+    val tabIcons = arrayOf(R.drawable.tab_home,R.drawable.tab_me)
     private val fragments = ArrayList<Fragment>()
     var old = 0;
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         BarUtils.setStatusBarColor(this, resources.getColor(R.color.colorPrimary))
-        container = findViewById(R.id.fragment_container)
         initView()
     }
 
     private fun initView() {
-//        fragments.add(PhotoFragments.newInstance())
-////        fragments.add(ProjectFragment.newInstance())
-//        fragments.add(MeFragment.newInstance())
-//        supportFragmentManager
-//            .beginTransaction()
-//            .replace(R.id.container, fragments[0])
-//            .commitNow()
+        fragments.add(CameraFragment.newInstance())
+//        fragments.add(ProjectFragment.newInstance())
+        fragments.add(MeFragment.newInstance())
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.container, fragments[0])
+            .commitNow()
 //
 ////        val navController = findNavController(R.id.nav_host_fragment)
 ////        nav_view.setupWithNavController(navController)
@@ -72,21 +78,65 @@ class MainActivity : AppCompatActivity() {
 //            }
 //        })
 
-        nav_view.setOnNavigationItemSelectedListener(object :BottomNavigationView.OnNavigationItemSelectedListener{
-            override fun onNavigationItemSelected(p0: MenuItem): Boolean {
-                when (p0.itemId) {
-                    R.id.homeFragment->{
-                        Navigation.findNavController(this@MainActivity, R.id.fragment_container).navigate(
-                            MeFragmentDirections.actionMeToCamera())
+
+//        nav_view.setOnNavigationItemSelectedListener(object :BottomNavigationView.OnNavigationItemSelectedListener{
+//            override fun onNavigationItemSelected(p0: MenuItem): Boolean {
+//                when (p0.itemId) {
+//                    R.id.homeFragment->{
+//                        Navigation.findNavController(this@MainActivity, R.id.fragment_container).navigate(
+//                            MeFragmentDirections.actionMeToCamera())
+//                        return true
+//                    }
+//                    R.id.meFragment->{
+//                        Navigation.findNavController(this@MainActivity, R.id.fragment_container).navigate(
+//                            CameraFragmentDirections.actionCameraToMe())
+//                        return true
+//                    }
+//                }
+//                return false
+//            }
+//        })
+        for (i in 0..1) { //为TabLayout添加10个tab并设置上文本
+            tabLayout.addTab(tabLayout.newTab().setCustomView(getCustomView(i)))
+        }
+        tabLayout.addOnTabSelectedListener(object :TabLayout.OnTabSelectedListener{
+            override fun onTabReselected(p0: TabLayout.Tab?) {
+            }
+
+            override fun onTabUnselected(p0: TabLayout.Tab?) {
+            }
+
+            override fun onTabSelected(p0: TabLayout.Tab?) {
+                when (p0?.position) {
+                    0->{
+                        if (old != 0) {
+                            switchPage(0, old);
+                            old = 0;
+                        }
+//                        Navigation.findNavController(this@MainActivity, R.id.fragment_container).navigate(
+//                            MeFragmentDirections.actionMeToCamera())
                     }
-                    R.id.meFragment->{
-                        Navigation.findNavController(this@MainActivity, R.id.fragment_container).navigate(
-                            CameraFragmentDirections.actionCameraToMe())
+                    1->{
+                        if (old != 1) {
+                            switchPage(1, old);
+                            old = 1;
+                        }
+//                        Navigation.findNavController(this@MainActivity, R.id.fragment_container).navigate(
+//                            CameraFragmentDirections.actionCameraToMe())
                     }
                 }
-                return false
             }
+
         })
+    }
+
+    fun getCustomView(i:Int): View {
+        val rootView: View = LayoutInflater.from(this).inflate(R.layout.item_tab_view, null)
+        var img = rootView.findViewById<AppCompatImageView>(R.id.img_title)
+        var tv = rootView.findViewById<TextView>(R.id.txt_title)
+        img.setImageDrawable(ContextCompat.getDrawable(this,tabIcons[i]));
+        tv.setText(titles[i])
+        return rootView
     }
 
     private fun switchPage(index: Int, old: Int) {

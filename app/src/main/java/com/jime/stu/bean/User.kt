@@ -1,4 +1,4 @@
-package com.jime.stu.Bean
+package com.jime.stu.bean
 
 /**
  * @author PC

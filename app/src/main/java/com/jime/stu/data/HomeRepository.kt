@@ -2,7 +2,8 @@ package com.jime.stu.data
 
 import com.aleyn.mvvm.base.BaseModel
 import com.blankj.utilcode.util.DeviceUtils
-import com.jime.stu.Bean.User
+import com.jime.stu.bean.MyListBean
+import com.jime.stu.bean.User
 import com.jime.stu.app.base.BaseResult
 import com.jime.stu.app.base.MyResult
 import com.jime.stu.data.db.dao.HomeDao
@@ -70,10 +71,16 @@ class HomeRepository private constructor(
         return netWork.getCode(phone)
     }
 
-    //获取验证码
+    //登录
     suspend fun login(phone: String,code:String): MyResult<User> {
         val udid = DeviceUtils.getAndroidID()
         return netWork.login(udid,phone,code)
+    }
+
+    //登录
+    suspend fun myInfo(): MyResult<MyListBean> {
+        var u_userId by Preference(Preference.USER_ID, "0")
+        return netWork.myInfo("android",u_userId)
     }
 
     companion object {

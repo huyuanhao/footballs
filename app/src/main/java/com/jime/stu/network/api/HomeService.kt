@@ -1,6 +1,7 @@
 package com.jime.stu.network.api
 
-import com.jime.stu.Bean.User
+import com.jime.stu.bean.MyListBean
+import com.jime.stu.bean.User
 import com.jime.stu.app.base.BaseResult
 import com.jime.stu.app.base.MyResult
 import com.jime.stu.network.entity.*
@@ -69,4 +70,10 @@ interface HomeService {
      */
     @POST("user/login")
     suspend fun login(@Query("udid") udid: String,@Query("phone") phone: String,@Query("code") code: String): MyResult<User>
+
+    /**
+     * 我的列表信息
+     */
+    @POST("user/myInfo")
+    suspend fun myInfo(@Query("os") os: String,@Query("userId") userId: String): MyResult<MyListBean>
 }

@@ -6,10 +6,9 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import com.jime.stu.Bean.BannerInfo
+import com.jime.stu.bean.BannerInfo
 import com.jime.stu.R
 import com.jime.stu.ui.MainActivity
-import com.jime.stu.ui.login.LoginActivity
 import com.jime.stu.utils.InjectorUtil
 import com.jime.stu.utils.Preference
 import com.stx.xhb.androidx.XBanner.XBannerAdapter

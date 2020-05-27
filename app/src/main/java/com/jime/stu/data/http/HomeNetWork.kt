@@ -29,6 +29,10 @@ class HomeNetWork {
     //登录
     suspend fun login(udid:String,phone: String,code:String) = mService.login(udid,phone,code)
 
+
+    //我的列表信息
+    suspend fun myInfo(os:String,userId: String) = mService.myInfo(os,userId)
+
     companion object {
         @Volatile
         private var netWork: HomeNetWork? = null

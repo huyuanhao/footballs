@@ -101,7 +101,7 @@ class GalleryFragment  : Fragment() {
 
         // Handle back button press
         view.findViewById<ImageButton>(R.id.back_button).setOnClickListener {
-            Navigation.findNavController(requireActivity(), R.id.fragment_container).navigateUp()
+            Navigation.findNavController(requireActivity(), R.id.container).navigateUp()
         }
 
         // Handle share button press
@@ -153,7 +153,7 @@ class GalleryFragment  : Fragment() {
 
                             // If all photos have been deleted, return to camera
                             if (mediaList.isEmpty()) {
-                                Navigation.findNavController(requireActivity(), R.id.fragment_container).navigateUp()
+                                Navigation.findNavController(requireActivity(), R.id.container).navigateUp()
                             }
 
                         }

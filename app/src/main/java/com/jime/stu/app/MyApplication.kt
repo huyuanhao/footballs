@@ -3,7 +3,7 @@ package com.jime.stu.app
 import android.content.Context
 import com.aleyn.mvvm.base.BaseApplication
 import com.blankj.utilcode.util.LogUtils
-import com.jime.stu.Bean.User
+import com.jime.stu.bean.User
 import com.jime.stu.BuildConfig
 import com.jime.stu.R
 import com.scwang.smartrefresh.layout.SmartRefreshLayout

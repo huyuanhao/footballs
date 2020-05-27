@@ -7,6 +7,8 @@
         <variable
                 name="meViewModel"
                 type="com.jime.stu.ui.me.MeViewModel" />
+        <import type="android.view.View"/>
+        <variable name="fragment" type="com.jime.stu.ui.me.MeFragment"/>
     </data>
 
     <LinearLayout
@@ -37,7 +39,8 @@
                     android:layout_height="84dp"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="27.5dp"
-                    android:setImageUrl="@={meViewModel.imageUrl}"
+                    circleUrl="@={meViewModel.imageUrl"
+                    circlePlaceholder="@mipmap/head_default"
                     android:src="@mipmap/head_default" />
 
             <LinearLayout
@@ -78,7 +81,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginStart="20dp"
                     android:src="@mipmap/icon_member"
-                    android:visibility="gone" />
+                    android:visibility="@{meViewModel.is_member?View.VISIBLE:View.GONE}" />
 
             <LinearLayout
                     android:layout_width="match_parent"
@@ -99,7 +102,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:text="@string/unlock_more_features"
+                        android:text="@={meViewModel.vipDate}"
                         android:textColor="@color/white" />
             </LinearLayout>
 
@@ -113,7 +116,7 @@
                     android:gravity="center"
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp"
-                    android:text="@string/renew"
+                    android:text="@{meViewModel.is_member()?@string/renew:@string/unlocking_function}"
                     android:textColor="@color/colorPrimary" />
         </RelativeLayout>
 
@@ -121,6 +124,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
                 android:paddingStart="20dp"
+                android:onClick="@{()->fragment.onFeelBackClick()}"
                 android:paddingEnd="20dp">
 
             <ImageView
@@ -147,7 +151,7 @@
 
         <View
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_0.5"
+                android:layout_height="0.5dp"
                 android:layout_marginStart="50dp"
                 android:background="@color/tv_gray" />
 
@@ -155,6 +159,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
                 android:paddingStart="20dp"
+                android:onClick="@{()->fragment.onSharedClick()}"
                 android:paddingEnd="20dp">
 
             <ImageView
@@ -181,7 +186,7 @@
 
         <View
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_0.5"
+                android:layout_height="0.5dp"
                 android:layout_marginStart="50dp"
                 android:background="@color/tv_gray" />
 
@@ -189,6 +194,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
                 android:paddingStart="20dp"
+                android:onClick="@{()->fragment.onAgreementClick()}"
                 android:paddingEnd="20dp">
 
             <ImageView
@@ -215,7 +221,7 @@
 
         <View
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_0.5"
+                android:layout_height="0.5dp"
                 android:layout_marginStart="50dp"
                 android:background="@color/tv_gray" />
 
@@ -223,7 +229,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
                 android:paddingStart="20dp"
-                android:visibility="gone"
+                android:onClick="@{(view) -> fragment.onMessageClick()}"
+                android:visibility="@{meViewModel.is_member?View.VISIBLE:View.GONE}"
                 android:paddingEnd="20dp">
 
             <ImageView
@@ -251,9 +258,17 @@
         <View
                 android:id="@+id/view_my_news"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_0.5"
+                android:layout_height="0.5dp"
                 android:layout_marginStart="50dp"
-                android:visibility="gone"
+                android:visibility="@{meViewModel.is_member?View.VISIBLE:View.GONE}"
                 android:background="@color/tv_gray" />
+
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:itemBinding="@{meViewModel.itemBinding}"
+                app:items="@{meViewModel.items}"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
     </LinearLayout>
 </layout>

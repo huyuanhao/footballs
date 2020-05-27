@@ -32,7 +32,7 @@ import java.util.*
  */
 class GalleryFragment internal constructor() : Fragment() {
     /** AndroidX navigation arguments */
-    private val args: GalleryFragmentArgs by navArgs()
+//    private val args: GalleryFragmentArgs by navArgs()
 
     private lateinit var mediaList: MutableList<File>
 
@@ -53,13 +53,13 @@ class GalleryFragment internal constructor() : Fragment() {
         retainInstance = true
 
         // Get root directory of media from navigation arguments
-        val rootDirectory = File(args.rootDirectory)
-
-        // Walk through all files in the root directory
-        // We reverse the order of the list to present the last photos first
-        mediaList = rootDirectory.listFiles { file ->
-            EXTENSION_WHITELIST.contains(file.extension.toUpperCase(Locale.ROOT))
-        }?.sortedDescending()?.toMutableList() ?: mutableListOf()
+//        val rootDirectory = File(args.rootDirectory)
+//
+//        // Walk through all files in the root directory
+//        // We reverse the order of the list to present the last photos first
+//        mediaList = rootDirectory.listFiles { file ->
+//            EXTENSION_WHITELIST.contains(file.extension.toUpperCase(Locale.ROOT))
+//        }?.sortedDescending()?.toMutableList() ?: mutableListOf()
     }
 
     override fun onCreateView(
@@ -91,7 +91,7 @@ class GalleryFragment internal constructor() : Fragment() {
 
         // Handle back button press
         view.findViewById<ImageButton>(R.id.back_button).setOnClickListener {
-            Navigation.findNavController(requireActivity(), R.id.fragment_container).navigateUp()
+            Navigation.findNavController(requireActivity(), R.id.container).navigateUp()
         }
 
         // Handle share button press
@@ -145,7 +145,7 @@ class GalleryFragment internal constructor() : Fragment() {
 
                         // If all photos have been deleted, return to camera
                         if (mediaList.isEmpty()) {
-                            Navigation.findNavController(requireActivity(), R.id.fragment_container)
+                            Navigation.findNavController(requireActivity(), R.id.container)
                                 .navigateUp()
                         }
 

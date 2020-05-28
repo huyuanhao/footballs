@@ -7,8 +7,11 @@
         <variable
                 name="meViewModel"
                 type="com.jime.stu.ui.me.MeViewModel" />
-        <import type="android.view.View"/>
-        <variable name="fragment" type="com.jime.stu.ui.me.MeFragment"/>
+
+        <import type="android.view.View" />
+        <variable
+                name="fragment"
+                type="com.jime.stu.ui.me.MeFragment" />
     </data>
 
     <LinearLayout
@@ -24,24 +27,39 @@
                 android:layout_height="?attr/actionBarSize"
                 android:background="@color/white"
                 app:title="我的"
-                app:titleTextColor="@color/black" />
+                app:titleTextColor="@color/black">
+
+            <TextView
+                    android:id="@+id/tv_exit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/login_exit"
+                    android:paddingEnd="10dp"
+                    android:paddingStart="10dp"
+                    android:layout_gravity="end"
+                    android:textColor="@color/tv_color"
+                    android:visibility="@{meViewModel.isLogin?View.VISIBLE:View.GONE}"
+                    android:onClick="@{()->fragment.onExitClick()}"
+                    android:textSize="15sp" />
+        </androidx.appcompat.widget.Toolbar>
 
 
         <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:paddingStart="20dp"
+                android:onClick="@{()->fragment.onToLoginClick()}"
                 android:paddingEnd="20dp">
 
             <ImageView
                     android:id="@+id/img"
+                    circlePlaceholder="@{meViewModel.imageDefault}"
+                    circleUrl="@{meViewModel.imageUrl}"
                     android:layout_width="84dp"
                     android:layout_height="84dp"
                     android:layout_centerVertical="true"
-                    android:layout_marginEnd="27.5dp"
-                    circleUrl="@={meViewModel.imageUrl"
-                    circlePlaceholder="@mipmap/head_default"
-                    android:src="@mipmap/head_default" />
+                    android:layout_marginEnd="27.5dp" />
 
             <LinearLayout
                     android:layout_width="match_parent"
@@ -54,13 +72,19 @@
                         android:id="@+id/name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@={meViewModel.name}" />
+                        android:text="@={meViewModel.name}"
+                        android:textColor="@color/tv_color"
+                        android:textSize="18sp" />
 
                 <TextView
                         android:id="@+id/qianming"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@={meViewModel.qianming}" />
+                        android:layout_marginTop="5dp"
+                        android:text="@={meViewModel.qianming}"
+                        android:textColor="@color/tv_color2"
+                        android:visibility="gone"
+                        android:textSize="14sp" />
             </LinearLayout>
         </RelativeLayout>
 
@@ -123,8 +147,8 @@
         <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
-                android:paddingStart="20dp"
                 android:onClick="@{()->fragment.onFeelBackClick()}"
+                android:paddingStart="20dp"
                 android:paddingEnd="20dp">
 
             <ImageView
@@ -158,8 +182,8 @@
         <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
-                android:paddingStart="20dp"
                 android:onClick="@{()->fragment.onSharedClick()}"
+                android:paddingStart="20dp"
                 android:paddingEnd="20dp">
 
             <ImageView
@@ -193,8 +217,8 @@
         <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
-                android:paddingStart="20dp"
                 android:onClick="@{()->fragment.onAgreementClick()}"
+                android:paddingStart="20dp"
                 android:paddingEnd="20dp">
 
             <ImageView
@@ -228,10 +252,10 @@
         <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
-                android:paddingStart="20dp"
                 android:onClick="@{(view) -> fragment.onMessageClick()}"
-                android:visibility="@{meViewModel.is_member?View.VISIBLE:View.GONE}"
-                android:paddingEnd="20dp">
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:visibility="@{meViewModel.is_member?View.VISIBLE:View.GONE}">
 
             <ImageView
                     android:layout_width="19.5dp"
@@ -260,8 +284,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:layout_marginStart="50dp"
-                android:visibility="@{meViewModel.is_member?View.VISIBLE:View.GONE}"
-                android:background="@color/tv_gray" />
+                android:background="@color/tv_gray"
+                android:visibility="@{meViewModel.is_member?View.VISIBLE:View.GONE}" />
 
         <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"

@@ -58,6 +58,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.Navigation
+import com.blankj.utilcode.util.ToastUtils
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.jime.stu.R
@@ -110,17 +111,17 @@ class CameraFragment : Fragment() {
         requireContext().getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
     }
 
-    /** Blocking camera operations are performed using this executor */
+    /** 使用此执行器执行阻塞摄像机操作 */
     private lateinit var cameraExecutor: ExecutorService
 
-    /** Volume down button receiver used to trigger shutter */
+    /** 用于触发快门的音量降低按钮接收器 */
     private val volumeDownReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             when (intent.getIntExtra(KEY_EVENT_EXTRA, KeyEvent.KEYCODE_UNKNOWN)) {
                 // When the volume down button is pressed, simulate a shutter button click
                 KeyEvent.KEYCODE_VOLUME_DOWN -> {
                     val shutter = container
-                            .findViewById<ImageButton>(R.id.camera_capture_button)
+                        .findViewById<ImageButton>(R.id.camera_capture_button)
                     shutter.simulateClick()
                 }
             }
@@ -128,9 +129,7 @@ class CameraFragment : Fragment() {
     }
 
     /**
-     * We need a display listener for orientation changes that do not trigger a configuration
-     * change, for example if we choose to override config change in manifest or for 180-degree
-     * orientation changes.
+    对于不触发配置更改的方向更改，我们需要一个显示侦听器，例如，如果我们选择覆盖清单中的配置更改或180度方向更改。
      */
     private val displayListener = object : DisplayManager.DisplayListener {
         override fun onDisplayAdded(displayId: Int) = Unit
@@ -158,35 +157,36 @@ class CameraFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
 
-        // Shut down our background executor
+        // 关闭我们的后台执行器
         cameraExecutor.shutdown()
 
-        // Unregister the broadcast receivers and listeners
+        // 注销广播接收器和侦听器
         broadcastManager.unregisterReceiver(volumeDownReceiver)
         displayManager.unregisterDisplayListener(displayListener)
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?): View? =
-            inflater.inflate(R.layout.fragment_camera, container, false)
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? =
+        inflater.inflate(R.layout.fragment_camera, container, false)
 
     private fun setGalleryThumbnail(uri: Uri) {
-        // Reference of the view that holds the gallery thumbnail
+        // 包含库缩略图的视图的引用
         val thumbnail = container.findViewById<ImageButton>(R.id.photo_view_button)
 
-        // Run the operations in the view's thread
+        // 在视图的线程中运行操作
         thumbnail.post {
 
-            // Remove thumbnail padding
+            // 删除缩略图填充
             thumbnail.setPadding(resources.getDimension(R.dimen.stroke_small).toInt())
 
             // Load thumbnail into circular button using Glide
             Glide.with(thumbnail)
-                    .load(uri)
-                    .apply(RequestOptions.circleCropTransform())
-                    .into(thumbnail)
+                .load(uri)
+                .apply(RequestOptions.circleCropTransform())
+                .into(thumbnail)
         }
     }
 
@@ -196,31 +196,31 @@ class CameraFragment : Fragment() {
         container = view as ConstraintLayout
         viewFinder = container.findViewById(R.id.view_finder)
 
-        // Initialize our background executor
+        // 初始化我们的后台执行器
         cameraExecutor = Executors.newSingleThreadExecutor()
 
         broadcastManager = LocalBroadcastManager.getInstance(view.context)
 
-        // Set up the intent filter that will receive events from our main activity
+        // 设置将从主活动接收事件的意图筛选器
         val filter = IntentFilter().apply { addAction(KEY_EVENT_ACTION) }
         broadcastManager.registerReceiver(volumeDownReceiver, filter)
 
-        // Every time the orientation of device changes, update rotation for use cases
+        // 每次设备的方向改变时，更新用例的旋转
         displayManager.registerDisplayListener(displayListener, null)
 
-        // Determine the output directory
+        // 确定输出目录
         outputDirectory = MainActivity.getOutputDirectory(requireContext())
 
-        // Wait for the views to be properly laid out
+        // 等待视图正确布局
         viewFinder.post {
 
-            // Keep track of the display in which this view is attached
+            // 跟踪附加此视图的显示
             displayId = viewFinder.display.displayId
 
-            // Build UI controls
+            // 生成UI控件
             updateCameraUi()
 
-            // Set up the camera and its use cases
+            // 设置相机及其用例
             setUpCamera()
         }
     }
@@ -229,21 +229,23 @@ class CameraFragment : Fragment() {
      * Inflate camera controls and update the UI manually upon config changes to avoid removing
      * and re-adding the view finder from the view hierarchy; this provides a seamless rotation
      * transition on devices that support it.
-     *
      * NOTE: The flag is supported starting in Android 8 but there still is a small flash on the
      * screen for devices that run Android 9 or below.
+     * 在配置更改时手动对相机控件充气并更新用户界面，以避免从视图层次结构中删除和重新添加取景器；这在支持it.
+     * 注意：从Android 8开始支持该标志，但对于运行Android 9或更低版本的设备，屏幕上仍有一个小的闪光灯
      */
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
 
         // Redraw the camera UI controls
+        //重新绘制相机用户界面控件
         updateCameraUi()
 
-        // Enable or disable switching between cameras
+        // 启用或禁用摄像机之间的切换
         updateCameraSwitchButton()
     }
 
-    /** Initialize CameraX, and prepare to bind the camera use cases  */
+    /** 初始化CameraX，并准备绑定camera用例  */
     private fun setUpCamera() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
         cameraProviderFuture.addListener(Runnable {
@@ -251,25 +253,25 @@ class CameraFragment : Fragment() {
             // CameraProvider
             cameraProvider = cameraProviderFuture.get()
 
-            // Select lensFacing depending on the available cameras
+            // 根据可用的相机选择镜头对齐
             lensFacing = when {
                 hasBackCamera() -> CameraSelector.LENS_FACING_BACK
                 hasFrontCamera() -> CameraSelector.LENS_FACING_FRONT
                 else -> throw IllegalStateException("Back and front camera are unavailable")
             }
 
-            // Enable or disable switching between cameras
+            // 启用或禁用摄像机之间的切换
             updateCameraSwitchButton()
 
-            // Build and bind the camera use cases
+            // 构建并绑定相机用例
             bindCameraUseCases()
         }, ContextCompat.getMainExecutor(requireContext()))
     }
 
-    /** Declare and bind preview, capture and analysis use cases */
+    /** 声明和绑定预览、捕获和分析用例*/
     private fun bindCameraUseCases() {
 
-        // Get screen metrics used to setup camera for full screen resolution
+        // 获取用于设置摄像机全屏分辨率的屏幕度量
         val metrics = DisplayMetrics().also { viewFinder.display.getRealMetrics(it) }
         Log.d(TAG, "Screen metrics: ${metrics.widthPixels} x ${metrics.heightPixels}")
 
@@ -280,58 +282,56 @@ class CameraFragment : Fragment() {
 
         // CameraProvider
         val cameraProvider = cameraProvider
-                ?: throw IllegalStateException("Camera initialization failed.")
+            ?: throw IllegalStateException("Camera initialization failed.")
 
         // CameraSelector
         val cameraSelector = CameraSelector.Builder().requireLensFacing(lensFacing).build()
 
         // Preview
         preview = Preview.Builder()
-                // We request aspect ratio but no resolution
-                .setTargetAspectRatio(screenAspectRatio)
-                // Set initial target rotation
-                .setTargetRotation(rotation)
-                .build()
+            // 我们要求纵横比但没有分辨率
+            .setTargetAspectRatio(screenAspectRatio)
+            // 设置初始目标旋转
+            .setTargetRotation(rotation)
+            .build()
 
         // ImageCapture
         imageCapture = ImageCapture.Builder()
-                .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
-                // We request aspect ratio but no resolution to match preview config, but letting
-                // CameraX optimize for whatever specific resolution best fits our use cases
-                .setTargetAspectRatio(screenAspectRatio)
-                // Set initial target rotation, we will have to call this again if rotation changes
-                // during the lifecycle of this use case
-                .setTargetRotation(rotation)
-                .build()
+            .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
+//        我们请求纵横比，但没有与预览配置匹配的分辨率，但是允许CameraX优化任何最适合我们用例的特定分辨率
+            .setTargetAspectRatio(screenAspectRatio)
+//        设置初始目标旋转，如果在这个用例的生命周期中旋转发生变化，我们将不得不再次调用它
+            .setTargetRotation(rotation)
+            .build()
 
-        // ImageAnalysis
+        // 图像分析
         imageAnalyzer = ImageAnalysis.Builder()
-                // We request aspect ratio but no resolution
-                .setTargetAspectRatio(screenAspectRatio)
-                // Set initial target rotation, we will have to call this again if rotation changes
-                // during the lifecycle of this use case
-                .setTargetRotation(rotation)
-                .build()
-                // The analyzer can then be assigned to the instance
-                .also {
-                    it.setAnalyzer(cameraExecutor, LuminosityAnalyzer { luma ->
-                        // Values returned from our analyzer are passed to the attached listener
-                        // We log image analysis results here - you should do something useful
-                        // instead!
-                        Log.d(TAG, "Average luminosity: $luma")
-                    })
-                }
+            // 我们要求纵横比但没有分辨率
+            .setTargetAspectRatio(screenAspectRatio)
+            // Set initial target rotation, we will have to call this again if rotation changes
+            // during the lifecycle of this use case
+            .setTargetRotation(rotation)
+            .build()
+            // 然后可以将分析器分配给实例
+            .also {
+                it.setAnalyzer(cameraExecutor, LuminosityAnalyzer { luma ->
+                    //                        从我们的分析器返回的值被传递到附加的侦听器我们在这里记录图像分析结果-你应该做一些有用的事情来代替！
 
-        // Must unbind the use-cases before rebinding them
+                    Log.d(TAG, "Average luminosity: $luma")
+                })
+            }
+
+        // 在重新绑定用例之前必须解除绑定
         cameraProvider.unbindAll()
 
         try {
-            // A variable number of use-cases can be passed here -
-            // camera provides access to CameraControl & CameraInfo
+//            这里可以传递不同数量的用例-camera提供对CameraControl和CameraInfo的访问
             camera = cameraProvider.bindToLifecycle(
-                    this, cameraSelector, preview, imageCapture, imageAnalyzer)
+                this, cameraSelector, preview, imageCapture, imageAnalyzer
+            )
 
             // Attach the viewfinder's surface provider to preview use case
+//            将取景器的表面提供程序附加到预览用例
             preview?.setSurfaceProvider(viewFinder.createSurfaceProvider(camera?.cameraInfo))
         } catch (exc: Exception) {
             Log.e(TAG, "Use case binding failed", exc)
@@ -339,15 +339,15 @@ class CameraFragment : Fragment() {
     }
 
     /**
-     *  [androidx.camera.core.ImageAnalysisConfig] requires enum value of
+     *  [androidx.camera.core.ImageAnalysisConfig] 需要枚举值
      *  [androidx.camera.core.AspectRatio]. Currently it has values of 4:3 & 16:9.
      *
      *  Detecting the most suitable ratio for dimensions provided in @params by counting absolute
      *  of preview ratio to one of the provided values.
-     *
+     *  通过计算预览比率的绝对值与提供的值之一，检测@params中提供的维度的最合适比率。
      *  @param width - preview width
      *  @param height - preview height
-     *  @return suitable aspect ratio
+     *  @return 合适的长宽比
      */
     private fun aspectRatio(width: Int, height: Int): Int {
         val previewRatio = max(width, height).toDouble() / min(width, height)
@@ -357,18 +357,18 @@ class CameraFragment : Fragment() {
         return AspectRatio.RATIO_16_9
     }
 
-    /** Method used to re-draw the camera UI controls, called every time configuration changes. */
+    /** 用于重新绘制camera UI控件的方法，每次配置更改时调用该方法. */
     private fun updateCameraUi() {
 
-        // Remove previous UI if any
+        // 删除上一个用户界面（如果有）
         container.findViewById<ConstraintLayout>(R.id.camera_ui_container)?.let {
             container.removeView(it)
         }
 
-        // Inflate a new view containing all UI for controlling the camera
+        // 为包含用于控制相机的所有用户界面的新视图充气
         val controls = View.inflate(requireContext(), R.layout.camera_ui_container, container)
 
-        // In the background, load latest photo taken (if any) for gallery thumbnail
+        //在后台，加载库缩略图的最新照片（如果有的话）
         lifecycleScope.launch(Dispatchers.IO) {
             outputDirectory.listFiles { file ->
                 EXTENSION_WHITELIST.contains(file.extension.toUpperCase(Locale.ROOT))
@@ -377,75 +377,77 @@ class CameraFragment : Fragment() {
             }
         }
 
-        // Listener for button used to capture photo
+        // 用于捕获照片的按钮的侦听器
         controls.findViewById<ImageButton>(R.id.camera_capture_button).setOnClickListener {
 
-            // Get a stable reference of the modifiable image capture use case
+            //获取可修改图像捕获用例的稳定参考
             imageCapture?.let { imageCapture ->
 
-                // Create output file to hold the image
+                // 创建用于保存图像的输出文件
                 val photoFile = createFile(outputDirectory, FILENAME, PHOTO_EXTENSION)
 
-                // Setup image capture metadata
+                // 设置图像捕获元数据
                 val metadata = Metadata().apply {
 
-                    // Mirror image when using the front camera
+                    //使用前摄像头时镜像
                     isReversedHorizontal = lensFacing == CameraSelector.LENS_FACING_FRONT
                 }
 
-                // Create output options object which contains file + metadata
+                // 创建包含文件+元数据的输出选项对象
                 val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile)
-                        .setMetadata(metadata)
-                        .build()
+                    .setMetadata(metadata)
+                    .build()
 
-                // Setup image capture listener which is triggered after photo has been taken
+                // 设置拍照后触发的图像捕获侦听器
                 imageCapture.takePicture(
-                        outputOptions, cameraExecutor, object : ImageCapture.OnImageSavedCallback {
-                    override fun onError(exc: ImageCaptureException) {
-                        Log.e(TAG, "Photo capture failed: ${exc.message}", exc)
-                    }
-
-                    override fun onImageSaved(output: ImageCapture.OutputFileResults) {
-                        val savedUri = output.savedUri ?: Uri.fromFile(photoFile)
-                        Log.d(TAG, "Photo capture succeeded: $savedUri")
-
-                        // We can only change the foreground Drawable using API level 23+ API
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            // Update the gallery thumbnail with latest picture taken
-                            setGalleryThumbnail(savedUri)
+                    outputOptions, cameraExecutor, object : ImageCapture.OnImageSavedCallback {
+                        override fun onError(exc: ImageCaptureException) {
+                            Log.e(TAG, "Photo capture failed: ${exc.message}", exc)
                         }
 
-                        // Implicit broadcasts will be ignored for devices running API level >= 24
-                        // so if you only target API level 24+ you can remove this statement
-                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-                            requireActivity().sendBroadcast(
+                        override fun onImageSaved(output: ImageCapture.OutputFileResults) {
+                            val savedUri = output.savedUri ?: Uri.fromFile(photoFile)
+                            Log.d(TAG, "Photo capture succeeded: $savedUri")
+
+                            // We can only change the foreground Drawable using API level 23+ API
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//                            用最新拍摄的图片更新库缩略图
+                                setGalleryThumbnail(savedUri)
+                            }
+
+                            // Implicit broadcasts will be ignored for devices running API level >= 24
+                            // so if you only target API level 24+ you can remove this statement
+//                        对于运行API级别>=24的设备，将忽略隐式广播
+//                                因此，如果只针对API级别24+，则可以删除此语句
+                            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+                                requireActivity().sendBroadcast(
                                     Intent(android.hardware.Camera.ACTION_NEW_PICTURE, savedUri)
-                            )
-                        }
+                                )
+                            }
 
-                        // If the folder selected is an external media directory, this is
-                        // unnecessary but otherwise other apps will not be able to access our
-                        // images unless we scan them using [MediaScannerConnection]
-                        val mimeType = MimeTypeMap.getSingleton()
+//                            如果选定的文件夹是外部媒体目录，则这是不必要的，但如果不使用[MediaScannerConnection]扫描图像，则其他应用程序将无法访问我们的图像
+                            val mimeType = MimeTypeMap.getSingleton()
                                 .getMimeTypeFromExtension(savedUri.toFile().extension)
-                        MediaScannerConnection.scanFile(
+                            MediaScannerConnection.scanFile(
                                 context,
                                 arrayOf(savedUri.toFile().absolutePath),
                                 arrayOf(mimeType)
-                        ) { _, uri ->
-                            Log.d(TAG, "Image capture scanned into media store: $uri")
+                            ) { _, uri ->
+                                ToastUtils.showShort("Image capture")
+                                Log.d(TAG, "Image capture scanned into media store: $uri")
+                            }
                         }
-                    }
-                })
+                    })
 
                 // We can only change the foreground Drawable using API level 23+ API
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
-                    // Display flash animation to indicate that photo was captured
+                    // 显示flash动画以指示照片已被捕获
                     container.postDelayed({
                         container.foreground = ColorDrawable(Color.WHITE)
                         container.postDelayed(
-                                { container.foreground = null }, ANIMATION_FAST_MILLIS)
+                            { container.foreground = null }, ANIMATION_FAST_MILLIS
+                        )
                     }, ANIMATION_SLOW_MILLIS)
                 }
             }
@@ -464,12 +466,12 @@ class CameraFragment : Fragment() {
                 } else {
                     CameraSelector.LENS_FACING_FRONT
                 }
-                // Re-bind use cases to update selected camera
+                // 重新绑定用例以更新选定的相机
                 bindCameraUseCases()
             }
         }
 
-        // Listener for button used to view the most recent photo
+        // 用于查看最新照片的按钮的侦听器
         controls.findViewById<ImageButton>(R.id.photo_view_button).setOnClickListener {
             // Only navigate when the gallery has photos
             if (true == outputDirectory.listFiles()?.isNotEmpty()) {
@@ -477,14 +479,14 @@ class CameraFragment : Fragment() {
 //                        requireActivity(), R.id.fragment_container
 //                ).navigate(CameraFragmentDirections
 //                        .actionCameraToGallery(outputDirectory.absolutePath))
-                var intent = Intent(activity,GalleryActivity::class.java)
-                intent.putExtra("path",outputDirectory.absolutePath)
+                var intent = Intent(activity, GalleryActivity::class.java)
+                intent.putExtra("path", outputDirectory.absolutePath)
                 startActivity(intent)
             }
         }
     }
 
-    /** Enabled or disabled a button to switch cameras depending on the available cameras */
+    /** 启用或禁用根据可用摄像机切换摄像机的按钮 */
     private fun updateCameraSwitchButton() {
         val switchCamerasButton = container.findViewById<ImageButton>(R.id.camera_switch_button)
         try {
@@ -494,21 +496,20 @@ class CameraFragment : Fragment() {
         }
     }
 
-    /** Returns true if the device has an available back camera. False otherwise */
+    /** 如果设备有可用的后摄像头，则返回true。否则为假 */
     private fun hasBackCamera(): Boolean {
         return cameraProvider?.hasCamera(CameraSelector.DEFAULT_BACK_CAMERA) ?: false
     }
 
-    /** Returns true if the device has an available front camera. False otherwise */
+    /** 如果设备有可用的前置摄像头，则返回true。否则为假*/
     private fun hasFrontCamera(): Boolean {
         return cameraProvider?.hasCamera(CameraSelector.DEFAULT_FRONT_CAMERA) ?: false
     }
 
     /**
-     * Our custom image analysis class.
+     * 我们的自定义图像分析类。
      *
-     * <p>All we need to do is override the function `analyze` with our desired operations. Here,
-     * we compute the average luminosity of the image by looking at the Y plane of the YUV frame.
+    <p>我们需要做的就是用我们想要的操作覆盖函数“analyze”。在这里，我们通过观察YUV帧的Y平面来计算图像的平均亮度。
      */
     private class LuminosityAnalyzer(listener: LumaListener? = null) : ImageAnalysis.Analyzer {
         private val frameRateWindow = 8
@@ -519,17 +520,17 @@ class CameraFragment : Fragment() {
             private set
 
         /**
-         * Used to add listeners that will be called with each luma computed
+         * 用于添加将在计算每个luma时调用的侦听器
          */
         fun onFrameAnalyzed(listener: LumaListener) = listeners.add(listener)
 
         /**
-         * Helper extension function used to extract a byte array from an image plane buffer
+         * 用于从图像平面缓冲区提取字节数组的助手扩展函数
          */
         private fun ByteBuffer.toByteArray(): ByteArray {
-            rewind()    // Rewind the buffer to zero
+            rewind()    // 将缓冲区倒回零
             val data = ByteArray(remaining())
-            get(data)   // Copy the buffer into a byte array
+            get(data)   // 将缓冲区复制到字节数组中
             return data // Return the byte array
         }
 
@@ -547,44 +548,48 @@ class CameraFragment : Fragment() {
          * @param image image being analyzed VERY IMPORTANT: Analyzer method implementation must
          * call image.close() on received images when finished using them. Otherwise, new images
          * may not be received or the camera may stall, depending on back pressure setting.
+         * 分析图像以产生结果。
+        <p>调用方负责确保此分析方法能够足够快地执行，以防止图像采集管道中出现暂停。否则，将不会获取和分析新可用的图像。
+        <p>传递给此方法的图像在此方法返回后无效。调用方不应存储对此映像的外部引用，因为这些引用将变得无效。
+        @正在分析的参数图像非常重要：分析器方法实现必须调用图像.关闭（在使用完接收的图像后）。否则，根据背压设置，可能无法接收新图像或相机可能失速。
          *
          */
         override fun analyze(image: ImageProxy) {
-            // If there are no listeners attached, we don't need to perform analysis
+            // 如果没有附加侦听器，则不需要执行分析
             if (listeners.isEmpty()) {
                 image.close()
                 return
             }
 
-            // Keep track of frames analyzed
+            // 跟踪分析的帧
             val currentTime = System.currentTimeMillis()
             frameTimestamps.push(currentTime)
 
-            // Compute the FPS using a moving average
+            // 使用移动平均值计算FPS
             while (frameTimestamps.size >= frameRateWindow) frameTimestamps.removeLast()
             val timestampFirst = frameTimestamps.peekFirst() ?: currentTime
             val timestampLast = frameTimestamps.peekLast() ?: currentTime
             framesPerSecond = 1.0 / ((timestampFirst - timestampLast) /
                     frameTimestamps.size.coerceAtLeast(1).toDouble()) * 1000.0
 
-            // Analysis could take an arbitrarily long amount of time
-            // Since we are running in a different thread, it won't stall other use cases
+            // 分析可能需要任意长的时间
+            // 因为我们运行在不同的线程中，所以它不会延迟其他用例
 
             lastAnalyzedTimestamp = frameTimestamps.first
 
-            // Since format in ImageAnalysis is YUV, image.planes[0] contains the luminance plane
+            // 因为ImageAnalysis的格式是YUV，图像.平面[0]包含亮度平面
             val buffer = image.planes[0].buffer
 
-            // Extract image data from callback object
+            // 从回调对象中提取图像数据
             val data = buffer.toByteArray()
 
-            // Convert the data into an array of pixel values ranging 0-255
+            // 将数据转换为0-255范围内的像素值数组
             val pixels = data.map { it.toInt() and 0xFF }
 
-            // Compute average luminance for the image
+            // 计算图像的平均亮度
             val luma = pixels.average()
 
-            // Call all listeners with new value
+            // 用新值调用所有侦听器
             listeners.forEach { it(luma) }
 
             image.close()
@@ -599,9 +604,11 @@ class CameraFragment : Fragment() {
         private const val RATIO_4_3_VALUE = 4.0 / 3.0
         private const val RATIO_16_9_VALUE = 16.0 / 9.0
 
-        /** Helper function used to create a timestamped file */
+        /** 用于创建时间戳文件的Helper函数 */
         private fun createFile(baseFolder: File, format: String, extension: String) =
-                File(baseFolder, SimpleDateFormat(format, Locale.US)
-                        .format(System.currentTimeMillis()) + extension)
+            File(
+                baseFolder, SimpleDateFormat(format, Locale.US)
+                    .format(System.currentTimeMillis()) + extension
+            )
     }
 }

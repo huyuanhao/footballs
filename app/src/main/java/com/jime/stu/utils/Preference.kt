@@ -14,9 +14,10 @@ class Preference<T>(val name: String, private val default: T) : ReadWritePropert
         const val IS_FIRST = "is_first"
         const val IS_LOGIN = "is_login"
         const val USER_ID = "user_id"
+        const val USER_NAME = "user_name"
+        const val HEADIMAGE = "headImage"
         const val UDID = "udid"
         const val MEMBERSTATUS = "memberStatus"
-        const val USER_NAME = "user_name"
         const val TOKEN = "token"
         const val PUSH_TOGGLE = "push_toggle"
     }

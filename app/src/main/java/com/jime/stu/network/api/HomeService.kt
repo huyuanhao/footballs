@@ -4,11 +4,10 @@ import com.jime.stu.bean.MyListBean
 import com.jime.stu.bean.User
 import com.jime.stu.app.base.BaseResult
 import com.jime.stu.app.base.MyResult
+import com.jime.stu.bean.ImageDetail
 import com.jime.stu.network.entity.*
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
-import retrofit2.http.Query
+import okhttp3.MultipartBody
+import retrofit2.http.*
 
 /**
  *   @auther : Aleyn
@@ -76,4 +75,11 @@ interface HomeService {
      */
     @POST("user/myInfo")
     suspend fun myInfo(@Query("os") os: String,@Query("userId") userId: String): MyResult<MyListBean>
+
+    /**
+     * 本地文件上传
+     */
+    @POST("img/file")
+    @Multipart
+    suspend fun uploadFile(@Part imgFile: MultipartBody.Part): MyResult<ImageDetail>
 }

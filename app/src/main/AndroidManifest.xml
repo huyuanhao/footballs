@@ -29,7 +29,8 @@
         </activity>
 
         <activity android:name="com.jime.stu.ui.photo.GalleryActivity" />
-        <activity android:name="com.jime.stu.ui.MainActivity" />
+        <activity android:name="com.jime.stu.ui.MainActivity"
+                android:screenOrientation="nosensor"/>
         <activity android:name="com.jime.stu.ui.login.LoginActivity" />
         <activity android:name="com.jime.stu.ui.guide.GuideActivity" />
 

@@ -2,6 +2,10 @@ package com.jime.stu.data.http
 
 import com.jime.stu.network.api.HomeService
 import com.jime.stu.utils.RetrofitClient
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import java.io.File
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 
 /**
  *   @auther : Aleyn
@@ -32,6 +36,14 @@ class HomeNetWork {
 
     //我的列表信息
     suspend fun myInfo(os:String,userId: String) = mService.myInfo(os,userId)
+
+    //我的列表信息
+    suspend fun uploadFile(file:File) = mService.uploadFile(
+        MultipartBody.Part.createFormData(
+            "file", file.name, RequestBody.create(
+                "image/png".toMediaTypeOrNull(), file
+            )
+        ))
 
     companion object {
         @Volatile

@@ -33,4 +33,12 @@ object DataBingUtils {
             .into(imageView)
 
     }
+
+    @BindingAdapter("mYurl")
+    @JvmStatic
+    fun loadImage( view:ImageView, url: String) {
+        if (url != null) {
+            Glide.with(view.getContext()).load(url).into(view);
+        }
+    }
 }

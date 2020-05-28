@@ -20,6 +20,7 @@ class LoginActivity : BaseActivity<LoginViewModel, ActivityLoginBinding>() {
 
     override fun initView(savedInstanceState: Bundle?) {
         mBinding?.loginViewModel = viewModel
+        resources
     }
 
     override fun initData() {
@@ -28,7 +29,8 @@ class LoginActivity : BaseActivity<LoginViewModel, ActivityLoginBinding>() {
     override fun handleEvent(msg: Message) {
         when (msg.code) {
             0 -> {
-                startActivity(Intent(this, MainActivity::class.java))
+//                startActivity(Intent(this, MainActivity::class.java))
+                setResult(101)
                 finish()
 //                tv_code.isEnabled = true
 //                tv_code.setTextColor(ContextCompat.getColor(this,R.color.tv_gray))

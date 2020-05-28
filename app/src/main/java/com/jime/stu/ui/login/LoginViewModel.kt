@@ -22,7 +22,8 @@ import com.jime.stu.utils.Preference
  */
 class LoginViewModel : BaseViewModel() {
     var userId by Preference(Preference.USER_ID, "")
-    var memberStatus by Preference(Preference.MEMBERSTATUS, false)
+    var userName by Preference(Preference.USER_NAME, "")
+    var headImg by Preference(Preference.HEADIMAGE, "")
     var token by Preference(Preference.TOKEN, "")
     var is_login by Preference(Preference.IS_LOGIN, false)
 
@@ -102,7 +103,8 @@ class LoginViewModel : BaseViewModel() {
         }
         launchOnlyresult({homeRepository.login(phone.get().toString(), code.get().toString())},{
             userId = it.userId.toString()
-            memberStatus = it.memberStatus
+            userName = it.userName
+            headImg = it.headImage
             token = it.token
 
             defUI.msgEvent.postValue(Message(0))

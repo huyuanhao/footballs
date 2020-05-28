@@ -15,12 +15,17 @@ import androidx.fragment.app.Fragment
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.Navigation
 import com.blankj.utilcode.util.BarUtils
+import com.blankj.utilcode.util.ToastUtils
 import com.google.android.material.tabs.TabLayout
 import com.jime.stu.R
 import com.jime.stu.ui.me.MeFragment
 import com.jime.stu.ui.photo.CameraFragment
 import com.jime.stu.ui.project.ProjectFragment
+import com.yanzhenjie.permission.Action
+import com.yanzhenjie.permission.AndPermission
+import com.yanzhenjie.permission.runtime.Permission
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_photo.*
 import java.io.File
 
 
@@ -33,7 +38,18 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         BarUtils.setStatusBarColor(this, resources.getColor(R.color.colorPrimary))
-        initView()
+        //自定义函数检查权限是否拥有
+        AndPermission.with(this)
+            .runtime()
+            .permission(Permission.Group.CAMERA)
+            .onGranted(Action<List<String?>> { permissions: List<String?>? ->
+                initView()
+            })
+            .onDenied(Action<List<String?>> { permissions: List<String?>? ->
+                ToastUtils.showShort("权限申请失败")
+                finish()
+            })
+            .start()
     }
 
     private fun initView() {

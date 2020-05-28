@@ -9,8 +9,8 @@
     <fragment
             xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/container"
-            android:name="com.jime.stu.utils.TabNavHostFragment"
             android:layout_width="match_parent"
+            android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:keepScreenOn="true"

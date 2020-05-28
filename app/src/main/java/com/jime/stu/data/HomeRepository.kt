@@ -6,10 +6,12 @@ import com.jime.stu.bean.MyListBean
 import com.jime.stu.bean.User
 import com.jime.stu.app.base.BaseResult
 import com.jime.stu.app.base.MyResult
+import com.jime.stu.bean.ImageDetail
 import com.jime.stu.data.db.dao.HomeDao
 import com.jime.stu.data.http.HomeNetWork
 import com.jime.stu.network.entity.*
 import com.jime.stu.utils.Preference
+import java.io.File
 
 /**
  *   @auther : Aleyn
@@ -75,6 +77,11 @@ class HomeRepository private constructor(
     suspend fun login(phone: String,code:String): MyResult<User> {
         val udid = DeviceUtils.getAndroidID()
         return netWork.login(udid,phone,code)
+    }
+
+    //上传本地图片
+    suspend fun uploadFile(file: File): MyResult<ImageDetail> {
+        return netWork.uploadFile(file)
     }
 
     //登录

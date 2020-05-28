@@ -1,5 +1,6 @@
 package com.jime.stu.ui.me
 
+import android.text.TextUtils
 import androidx.databinding.ObservableArrayList
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
@@ -10,6 +11,7 @@ import com.jime.stu.bean.MeInfo
 import com.jime.stu.R
 import com.jime.stu.network.entity.UsedWeb
 import com.jime.stu.utils.InjectorUtil
+import com.jime.stu.utils.Preference
 import me.tatarka.bindingcollectionadapter2.ItemBinding
 
 /**
@@ -17,11 +19,15 @@ import me.tatarka.bindingcollectionadapter2.ItemBinding
  *   time   : 2019/11/14
  */
 class MeViewModel : BaseViewModel() {
-    var name = ObservableField<String>("昵称")
-    var qianming = ObservableField<String>("个性签名")
+    var name = ObservableField<String>("未登录")
+    var qianming = ObservableField<String>("登录获取更多服务")
+    var imageDefault = ObservableField<Int>(R.mipmap.head_default)
     var imageUrl = ObservableField<String>("")
-    var is_member = ObservableField<Boolean>(false)
+    var isLogin = ObservableField<Boolean>(false)//是否登录
+    var is_member = ObservableField<Boolean>(false)//是否会员
     var vipDate = ObservableField<String>("解锁使用更多功能")
+    var userName by Preference(Preference.USER_NAME, "")
+    var headImg by Preference(Preference.HEADIMAGE, "")
 
     private var meItemOnClickListener = object : OnItemClickListener {
         override fun onItemClick(item: MeInfo) {
@@ -36,10 +42,23 @@ class MeViewModel : BaseViewModel() {
     private val homeRepository by lazy { InjectorUtil.getHomeRepository() }
 
     fun getItemList(){
-        launchOnlyresult({ homeRepository.myInfo()},{
+        var token by Preference(Preference.TOKEN, "")
+        if(TextUtils.isEmpty(token)) {
             items.clear()
-            items.addAll(it.dynamicList)
-        })
+            isLogin.set(false)
+            name.set("未登录")
+            qianming.set("登录获取更多服务")
+            imageUrl.set("")
+        }else{
+            isLogin.set(true)
+            launchOnlyresult({ homeRepository.myInfo()},{
+                items.clear()
+                items.addAll(it.dynamicList)
+                name.set(userName)
+                imageUrl.set(headImg)
+                qianming.set("签名")
+            })
+        }
     }
 
     var popularWeb = MutableLiveData<List<UsedWeb>>()

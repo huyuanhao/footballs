@@ -25,6 +25,7 @@ import android.content.IntentFilter
 import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.hardware.SensorManager
 import android.hardware.display.DisplayManager
 import android.media.MediaScannerConnection
 import android.net.Uri
@@ -32,10 +33,7 @@ import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
-import android.view.KeyEvent
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.webkit.MimeTypeMap
 import android.widget.ImageButton
 import androidx.camera.core.AspectRatio
@@ -139,6 +137,7 @@ class CameraFragment : Fragment() {
                 Log.d(TAG, "Rotation changed: ${view.display.rotation}")
                 imageCapture?.targetRotation = view.display.rotation
                 imageAnalyzer?.targetRotation = view.display.rotation
+                ToastUtils.showShort("Rotation changed: ${view.display.rotation}")
             }
         } ?: Unit
     }
@@ -156,7 +155,7 @@ class CameraFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-
+        viewFinder.removeAllViews()
         // 关闭我们的后台执行器
         cameraExecutor.shutdown()
 
@@ -336,6 +335,9 @@ class CameraFragment : Fragment() {
         } catch (exc: Exception) {
             Log.e(TAG, "Use case binding failed", exc)
         }
+
+        var mAlbumOrientationEventListener = AlbumOrientationEventListener(activity);
+
     }
 
     /**
@@ -408,7 +410,6 @@ class CameraFragment : Fragment() {
                         override fun onImageSaved(output: ImageCapture.OutputFileResults) {
                             val savedUri = output.savedUri ?: Uri.fromFile(photoFile)
                             Log.d(TAG, "Photo capture succeeded: $savedUri")
-
                             // We can only change the foreground Drawable using API level 23+ API
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 //                            用最新拍摄的图片更新库缩略图
@@ -433,9 +434,14 @@ class CameraFragment : Fragment() {
                                 arrayOf(savedUri.toFile().absolutePath),
                                 arrayOf(mimeType)
                             ) { _, uri ->
-                                ToastUtils.showShort("Image capture")
+//                                ToastUtils.showShort("Image capture")
                                 Log.d(TAG, "Image capture scanned into media store: $uri")
                             }
+
+                            ToastUtils.showShort(imageCapture.targetRotation)
+                            var intent = Intent(activity, PhotoActivity::class.java)
+                            intent.putExtra("uri", savedUri.toString())
+                            startActivity(intent)
                         }
                     })
 
@@ -611,4 +617,24 @@ class CameraFragment : Fragment() {
                     .format(System.currentTimeMillis()) + extension
             )
     }
+
+
+    class AlbumOrientationEventListener(context: Context?) : OrientationEventListener(context) {
+        var mOrientation = 0
+
+        override fun onOrientationChanged(orientation: Int) {
+            if (orientation == OrientationEventListener.ORIENTATION_UNKNOWN) {
+                return;
+            }
+
+            //保证仅仅返回四个方向
+            var newOrientation = ((orientation + 45) / 90 * 90) % 360
+            if (newOrientation != mOrientation) {
+                mOrientation = newOrientation;
+
+                //返回的mOrientation就是手机方向，为0°、90°、180°和270°中的一个
+            }
+        }
+    }
+
 }

@@ -3,7 +3,7 @@ package com.aleyn.mvvm.network.interceptor
 import com.blankj.utilcode.util.JsonUtils
 import okhttp3.*
 import okhttp3.internal.platform.Platform
-import okhttp3.internal.platform.Platform.INFO
+import okhttp3.internal.platform.Platform.Companion.INFO
 import java.io.IOException
 import java.util.concurrent.TimeUnit
 
@@ -38,8 +38,8 @@ class LoggingInterceptor : Interceptor {
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
         var request = chain.request()
-        if (getHeaders().size() > 0) {
-            val headers = request.headers()
+        if (getHeaders().size > 0) {
+            val headers = request.headers
             val names = headers.names()
             val iterator = names.iterator()
             val requestBuilder = request.newBuilder()
@@ -54,16 +54,16 @@ class LoggingInterceptor : Interceptor {
         if (!isDebug || level == Level.NONE) {
             return chain.proceed(request)
         }
-        val requestBody = request.body()
+        val requestBody = request.body
 
         var rContentType: MediaType? = null
         if (requestBody != null) {
-            rContentType = request.body()!!.contentType()
+            rContentType = request.body!!.contentType()
         }
 
         var rSubtype: String? = null
         if (rContentType != null) {
-            rSubtype = rContentType.subtype()
+            rSubtype = rContentType.subtype
         }
 
         if (rSubtype != null && (rSubtype.contains("json")
@@ -79,19 +79,19 @@ class LoggingInterceptor : Interceptor {
         val st = System.nanoTime()
         val response = chain.proceed(request)
 
-        val segmentList = request.url().encodedPathSegments()
+        val segmentList = request.url.encodedPathSegments
         val chainMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - st)
-        val header = response.headers().toString()
-        val code = response.code()
+        val header = response.headers.toString()
+        val code = response.code
         val isSuccessful = response.isSuccessful
-        val responseBody = response.body()
+        val responseBody = response.body
         val contentType = responseBody!!.contentType()
 
         var subtype: String? = null
         val body: ResponseBody
 
         if (contentType != null) {
-            subtype = contentType.subtype()
+            subtype = contentType.subtype
         }
 
         if (subtype != null && (subtype.contains("json")

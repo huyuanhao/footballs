@@ -1,10 +1,12 @@
 package com.aleyn.mvvm.binding
 
+import android.graphics.Bitmap
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.blankj.utilcode.util.LogUtils
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import java.io.File
 
 /**
  *   @auther : Aleyn
@@ -27,4 +29,23 @@ object ImageAdapter {
 
     }
 
+    @BindingAdapter(value = ["imageFile"], requireAll = false)
+    @JvmStatic
+    fun setImageFile(imageView: ImageView, imageFile: File) {
+        Glide.with(imageView.context)
+            .load(imageFile)
+            .apply(RequestOptions())
+            .into(imageView)
+
+    }
+
+    @BindingAdapter(value = ["imageBitmap"], requireAll = false)
+    @JvmStatic
+    fun setImageBitmap(imageView: ImageView, bitmap: Bitmap) {
+        Glide.with(imageView.context)
+            .load(bitmap)
+            .apply(RequestOptions())
+            .into(imageView)
+
+    }
 }

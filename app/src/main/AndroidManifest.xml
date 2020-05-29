@@ -18,7 +18,7 @@
             android:icon="@mipmap/logo"
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
-            tools:ignore="GoogleAppIndexingWarning">
+            tools:ignore="GoogleAppIndexingWarning,LockedOrientationActivity">
         <activity android:name="com.jime.stu.ui.detail.DetailActivity" />
         <activity android:name="com.jime.stu.ui.WelcomeActivity">
             <intent-filter>
@@ -30,9 +30,14 @@
 
         <activity android:name="com.jime.stu.ui.photo.GalleryActivity" />
         <activity android:name="com.jime.stu.ui.MainActivity"
-                android:screenOrientation="nosensor"/>
+                android:configChanges="orientation|keyboardHidden|screenSize"
+                android:screenOrientation="portrait"/>
         <activity android:name="com.jime.stu.ui.login.LoginActivity" />
         <activity android:name="com.jime.stu.ui.guide.GuideActivity" />
+
+        <activity android:name="com.jime.stu.ui.photo.PhotoActivity"
+                android:configChanges="orientation|keyboardHidden|screenSize"
+                android:screenOrientation="portrait"/>
 
     </application>
 

@@ -40,7 +40,7 @@ class HomeNetWork {
     //我的列表信息
     suspend fun uploadFile(file:File) = mService.uploadFile(
         MultipartBody.Part.createFormData(
-            "file", file.name, RequestBody.create(
+            "imgFile", file.name, RequestBody.create(
                 "image/png".toMediaTypeOrNull(), file
             )
         ))

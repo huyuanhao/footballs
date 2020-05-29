@@ -25,7 +25,7 @@ import com.yanzhenjie.permission.Action
 import com.yanzhenjie.permission.AndPermission
 import com.yanzhenjie.permission.runtime.Permission
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_photo.*
+import kotlinx.android.synthetic.main.activity_photo.*
 import java.io.File
 
 
@@ -201,4 +201,5 @@ class MainActivity : AppCompatActivity() {
                 mediaDir else appContext.filesDir
         }
     }
+
 }

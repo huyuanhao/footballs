@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item >
+        <shape android:shape="oval">
+            <solid android:color="#EAEAEC" />
+            <size android:width="112dp"
+                android:height="112dp"/>
+        </shape>
+    </item>
+
+    <item  android:drawable="@mipmap/icon_take_camera" android:gravity="center">
+        <shape android:shape="oval">
+            <solid android:color="@color/colorPrimary" />
+            <size android:width="104dp"
+                android:height="104dp"/>
+        </shape>
+
+    </item>
+</layer-list>

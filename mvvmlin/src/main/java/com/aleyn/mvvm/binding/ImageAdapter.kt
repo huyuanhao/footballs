@@ -5,6 +5,7 @@ import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.blankj.utilcode.util.LogUtils
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.request.RequestOptions
 import java.io.File
 
@@ -24,6 +25,7 @@ object ImageAdapter {
         }
         Glide.with(imageView.context)
             .load(urls)
+            .centerCrop()
             .apply(RequestOptions().placeholder(placeholder))
             .into(imageView)
 
@@ -35,6 +37,7 @@ object ImageAdapter {
         Glide.with(imageView.context)
             .load(imageFile)
             .apply(RequestOptions())
+            .centerCrop()
             .into(imageView)
 
     }
@@ -45,6 +48,7 @@ object ImageAdapter {
         Glide.with(imageView.context)
             .load(bitmap)
             .apply(RequestOptions())
+            .centerCrop()
             .into(imageView)
 
     }

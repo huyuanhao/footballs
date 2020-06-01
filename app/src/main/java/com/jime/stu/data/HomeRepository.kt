@@ -84,6 +84,11 @@ class HomeRepository private constructor(
         return netWork.uploadFile(file)
     }
 
+    //上传本地图片
+    suspend fun uploadUrl(imgUrl: String): MyResult<ImageDetail> {
+        return netWork.uploadUrl(imgUrl)
+    }
+
     //登录
     suspend fun myInfo(): MyResult<MyListBean> {
         var u_userId by Preference(Preference.USER_ID, "0")

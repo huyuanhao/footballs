@@ -7,6 +7,7 @@ import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.net.Uri;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -48,9 +49,32 @@ public class ImageLoaderManager {
                 .into(imageView);
     }
 
+    public static void loadUri(Context context, Uri url, ImageView imageView) {
+        Glide.with(context)
+                .load(url)
+                .placeholder(R.color.white)
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .priority(Priority.HIGH)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .dontAnimate()
+                .into(imageView);
+    }
+
     public static void loadImageWithCenterCrop(Context context, String url, ImageView imageView) {
         Glide.with(context)
                 .load(url)
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .priority(Priority.HIGH)
+                .centerCrop()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .dontAnimate()
+                .into(imageView);
+    }
+
+    public static void loadUriWithCenterCrop(Context context, Uri url, ImageView imageView) {
+        Glide.with(context)
+                .load(url)
+                .placeholder(R.color.white)
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .priority(Priority.HIGH)
                 .centerCrop()

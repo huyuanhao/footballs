@@ -80,7 +80,7 @@
                     android:paddingStart="0dp"
                     android:paddingEnd="20dp"
                     android:text="@string/search"
-                    android:onClick="@{()->photoViewModel.search()}"
+                    android:onClick="@{(view)->photoViewModel.search(view)}"
                     android:textColor="@color/colorPrimary"
                     android:textSize="15sp" />
         </LinearLayout>

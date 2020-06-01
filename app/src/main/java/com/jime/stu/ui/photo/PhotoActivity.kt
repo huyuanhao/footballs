@@ -16,6 +16,7 @@
 
 package com.jime.stu.ui.photo
 
+import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.text.TextUtils
@@ -30,9 +31,11 @@ import com.blankj.utilcode.util.ToastUtils
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.jime.stu.R
+import com.jime.stu.bean.ImageDetail
 import com.jime.stu.databinding.ActivityPhotoBinding
 import kotlinx.android.synthetic.main.activity_photo.*
 import java.io.File
+import java.io.Serializable
 
 
 /** Fragment used for each individual page showing a photo inside of [GalleryFragment] */
@@ -59,6 +62,13 @@ class PhotoActivity :BaseActivity<PhotoViewModel,ActivityPhotoBinding>() {
     override fun handleEvent(msg: Message) {
         when(msg.code){
             0->{
+                finish()
+            }
+            1->{
+                var detail = msg.obj as ImageDetail
+                var intent = Intent(this, PhotoResultActivity::class.java)
+                intent.putExtra("detail", detail)
+                startActivity(intent)
                 finish()
             }
         }

@@ -82,4 +82,10 @@ interface HomeService {
     @POST("img/file")
     @Multipart
     suspend fun uploadFile(@Part imgFile: MultipartBody.Part): MyResult<ImageDetail>
+
+    /**
+     * 网络图片上传
+     */
+    @POST("/img/url")
+    suspend fun uploadUrl(@Query("imgUrl") imgUrl: String): MyResult<ImageDetail>
 }

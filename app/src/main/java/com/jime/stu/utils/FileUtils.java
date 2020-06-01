@@ -22,7 +22,7 @@ public class FileUtils {
         if(!dirFile.exists()){
             dirFile.mkdir();
         }
-        File myCaptureFile = new File(  fileName);
+        File myCaptureFile = new File(fileName);
         BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(myCaptureFile));
         bm.compress(Bitmap.CompressFormat.JPEG, 80, bos);
         bos.flush();

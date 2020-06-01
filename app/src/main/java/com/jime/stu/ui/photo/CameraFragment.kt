@@ -25,17 +25,20 @@ import android.content.IntentFilter
 import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.hardware.SensorManager
 import android.hardware.display.DisplayManager
 import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.*
 import android.webkit.MimeTypeMap
+import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.camera.core.AspectRatio
 import androidx.camera.core.Camera
 import androidx.camera.core.CameraInfoUnavailableException
@@ -51,22 +54,21 @@ import androidx.camera.view.PreviewView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.net.toFile
-import androidx.core.view.setPadding
+import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import androidx.navigation.Navigation
+import com.aleyn.mvvm.base.BaseFragment
+import com.aleyn.mvvm.event.Message
 import com.blankj.utilcode.util.ToastUtils
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
+import com.example.zhouwei.library.CustomPopWindow
 import com.jime.stu.R
+import com.jime.stu.bean.ImageDetail
+import com.jime.stu.network.api.HomeService
 import com.jime.stu.ui.MainActivity
 import com.jime.stu.ui.MainActivity.Companion.KEY_EVENT_ACTION
 import com.jime.stu.ui.MainActivity.Companion.KEY_EVENT_EXTRA
-import com.jime.stu.ui.me.MeFragment
-import com.jime.stu.utils.ANIMATION_FAST_MILLIS
-import com.jime.stu.utils.ANIMATION_SLOW_MILLIS
-import com.jime.stu.utils.simulateClick
+import com.jime.stu.utils.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
@@ -90,7 +92,7 @@ typealias LumaListener = (luma: Double) -> Unit
  * - Photo taking
  * - Image analysis
  */
-class CameraFragment : Fragment() {
+class CameraFragment : BaseFragment<CameraViewModel,ViewDataBinding>() {
 
     private lateinit var container: ConstraintLayout
     private lateinit var viewFinder: PreviewView
@@ -164,31 +166,31 @@ class CameraFragment : Fragment() {
         displayManager.unregisterDisplayListener(displayListener)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? =
-        inflater.inflate(R.layout.fragment_camera, container, false)
-
     private fun setGalleryThumbnail(uri: Uri) {
         // 包含库缩略图的视图的引用
-        val thumbnail = container.findViewById<ImageButton>(R.id.photo_view_button)
+        val thumbnail = container.findViewById<ImageView>(R.id.photo_view_button)
 
         // 在视图的线程中运行操作
         thumbnail.post {
 
             // 删除缩略图填充
-            thumbnail.setPadding(resources.getDimension(R.dimen.stroke_small).toInt())
+//            thumbnail.setPadding(resources.getDimension(R.dimen.stroke_small).toInt())
 
             // Load thumbnail into circular button using Glide
-            Glide.with(thumbnail)
-                .load(uri)
-                .apply(RequestOptions.circleCropTransform())
-                .into(thumbnail)
+            ImageLoaderManager.loadUriWithCenterCrop(activity, uri, thumbnail)
+//            Glide.with(thumbnail)
+//                .load(uri)
+////                .apply(RequestOptions.circleCropTransform())
+//                .into(thumbnail)
         }
     }
 
+    override fun layoutId(): Int {
+        return R.layout.fragment_camera
+    }
+
+
+    private val mService by lazy { RetrofitClient.getInstance().create(HomeService::class.java) }
     @SuppressLint("MissingPermission")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -222,6 +224,38 @@ class CameraFragment : Fragment() {
             // 设置相机及其用例
             setUpCamera()
         }
+
+        val ac = activity as MainActivity;
+        ac.setOnToInputClick(object : MainActivity.OnToInputClick {
+            override fun toInput() {
+                val v = layoutInflater.inflate(R.layout.dialog_input, null)
+                val tvSearch = v.findViewById<TextView>(R.id.tv_search)
+                val edit = v.findViewById<EditText>(R.id.edit)
+                edit.setOnLongClickListener (object :View.OnLongClickListener{
+                    override fun onLongClick(v: View?): Boolean {
+                        edit.setText(ClipeBoardUtil.getClipeBoardContent(activity))
+                        return true
+                    }
+
+                })
+                tvSearch.setOnClickListener {
+                    if (TextUtils.isEmpty(edit.text.toString())) {
+                        ToastUtils.showShort("网址不能为空")
+                        return@setOnClickListener
+                    }
+
+                    viewModel.uploadUrl(edit.text.toString())
+                }
+                CustomPopWindow.PopupWindowBuilder(activity)
+                    .setView(v)//显示的布局，还可以通过设置一个View
+                    //     .size(600,400) //设置显示的大小，不设置就默认包裹内容
+                    .setFocusable(true)//是否获取焦点，默认为ture
+                    .setOutsideTouchable(true)//是否PopupWindow 以外触摸dissmiss
+                    .create()//创建PopupWindow
+                    .showAtLocation(container, Gravity.CENTER, 0, 0);//显示PopupWindow
+            }
+
+        })
     }
 
     /**
@@ -434,11 +468,11 @@ class CameraFragment : Fragment() {
                                 arrayOf(savedUri.toFile().absolutePath),
                                 arrayOf(mimeType)
                             ) { _, uri ->
-//                                ToastUtils.showShort("Image capture")
+                                //                                ToastUtils.showShort("Image capture")
                                 Log.d(TAG, "Image capture scanned into media store: $uri")
                             }
 
-                            ToastUtils.showShort(imageCapture.targetRotation)
+//                            ToastUtils.showShort(imageCapture.targetRotation)
                             var intent = Intent(activity, PhotoActivity::class.java)
                             intent.putExtra("uri", savedUri.toString())
                             startActivity(intent)
@@ -478,7 +512,7 @@ class CameraFragment : Fragment() {
         }
 
         // 用于查看最新照片的按钮的侦听器
-        controls.findViewById<ImageButton>(R.id.photo_view_button).setOnClickListener {
+        controls.findViewById<ImageView>(R.id.photo_view_button).setOnClickListener {
             // Only navigate when the gallery has photos
             if (true == outputDirectory.listFiles()?.isNotEmpty()) {
 //                Navigation.findNavController(
@@ -637,4 +671,14 @@ class CameraFragment : Fragment() {
         }
     }
 
+    override fun handleEvent(msg: Message) {
+        when(msg.code){
+            1->{
+                var detail = msg.obj as ImageDetail
+                var intent = Intent(activity, PhotoResultActivity::class.java)
+                intent.putExtra("detail", detail)
+                startActivity(intent)
+            }
+        }
+    }
 }

@@ -6,31 +6,27 @@ import android.os.Bundle
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import androidx.navigation.Navigation
 import com.blankj.utilcode.util.BarUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.google.android.material.tabs.TabLayout
 import com.jime.stu.R
 import com.jime.stu.ui.me.MeFragment
 import com.jime.stu.ui.photo.CameraFragment
-import com.jime.stu.ui.project.ProjectFragment
 import com.yanzhenjie.permission.Action
 import com.yanzhenjie.permission.AndPermission
 import com.yanzhenjie.permission.runtime.Permission
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_photo.*
 import java.io.File
 
 
 class MainActivity : AppCompatActivity() {
-    private val titles = arrayOf("首页",  "我的")
+    private val titles = arrayOf("网络图片",  "我的")
     val tabIcons = arrayOf(R.drawable.tab_home,R.drawable.tab_me)
     private val fragments = ArrayList<Fragment>()
     var old = 0;
@@ -117,6 +113,9 @@ class MainActivity : AppCompatActivity() {
         }
         tabLayout.addOnTabSelectedListener(object :TabLayout.OnTabSelectedListener{
             override fun onTabReselected(p0: TabLayout.Tab?) {
+                if(p0?.position == 0){
+                    toInput.toInput()
+                }
             }
 
             override fun onTabUnselected(p0: TabLayout.Tab?) {
@@ -200,6 +199,14 @@ class MainActivity : AppCompatActivity() {
             return if (mediaDir != null && mediaDir.exists())
                 mediaDir else appContext.filesDir
         }
+
+    }
+    lateinit var toInput :OnToInputClick ;
+    fun setOnToInputClick(toInput:OnToInputClick){
+        this.toInput = toInput
     }
 
+    interface OnToInputClick{
+        fun toInput();
+    }
 }

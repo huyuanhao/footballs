@@ -2,18 +2,22 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item >
         <shape android:shape="oval">
-            <solid android:color="#EAEAEC" />
-            <size android:width="112dp"
-                android:height="112dp"/>
+            <solid android:color="@color/icPressed" />
+            <size android:width="@dimen/round_button_large"
+                    android:height="@dimen/round_button_large"/>
         </shape>
     </item>
 
-    <item  android:drawable="@mipmap/icon_take_camera" android:gravity="center">
+    <item  android:gravity="center">
         <shape android:shape="oval">
             <solid android:color="@color/colorPrimary" />
-            <size android:width="104dp"
-                android:height="104dp"/>
+            <size android:width="@dimen/rect_button_width"
+                    android:height="@dimen/rect_button_width"/>
         </shape>
-
     </item>
+
+    <item  android:gravity="center"
+            android:drawable="@mipmap/ic_photo_camera"
+            android:width="@dimen/round_button_small"
+            android:height="@dimen/round_button_small"/>
 </layer-list>

@@ -37,13 +37,16 @@ class HomeNetWork {
     //我的列表信息
     suspend fun myInfo(os:String,userId: String) = mService.myInfo(os,userId)
 
-    //我的列表信息
+    //本地文件上传
     suspend fun uploadFile(file:File) = mService.uploadFile(
         MultipartBody.Part.createFormData(
             "imgFile", file.name, RequestBody.create(
                 "image/png".toMediaTypeOrNull(), file
             )
         ))
+
+    //网络图片上传
+    suspend fun uploadUrl(imgUrl: String) = mService.uploadUrl(imgUrl)
 
     companion object {
         @Volatile

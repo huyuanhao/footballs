@@ -59,15 +59,15 @@ class PhotoResultModel : BaseViewModel() {
     }
 
     fun baikeDetail(){
-        ToastUtils.showShort("baike")
+        defUI.msgEvent.postValue(Message(1))
     }
 
     fun xiangguanDetail(){
-        ToastUtils.showShort("xiangguanDetail")
+        defUI.msgEvent.postValue(Message(2))
     }
 
     fun sourceDetail(){
-        ToastUtils.showShort("sourceDetail")
+        defUI.msgEvent.postValue(Message(3))
     }
 
     fun back() {

@@ -7,6 +7,7 @@ import com.jime.stu.R
 import com.jime.stu.ui.guide.GuideActivity
 import com.jime.stu.ui.login.LoginActivity
 import com.jime.stu.utils.Preference
+import com.umeng.message.PushAgent
 
 /**
  * @author PC
@@ -17,6 +18,7 @@ class WelcomeActivity :Activity(){
     val isLogin by Preference(Preference.IS_LOGIN, false)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        PushAgent.getInstance(this).onAppStart();
         setContentView(R.layout.activity_welcome)
 
         if(isFirst){

@@ -48,10 +48,10 @@
 
         <ImageButton
                 android:id="@+id/camera_capture_button"
-                android:layout_width="@dimen/round_button_large"
-                android:layout_height="@dimen/round_button_large"
+                android:layout_width="@dimen/round_button_medium"
+                android:layout_height="@dimen/round_button_medium"
                 android:layout_centerInParent="true"
-                android:background="@drawable/ic_take_photo"
+                android:background="@drawable/bt_take_camera"
                 android:scaleType="fitCenter" />
 
         <ImageButton

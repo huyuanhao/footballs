@@ -32,6 +32,7 @@
                 android:layout_height="wrap_content"
                 android:text="@{mSameInfo.titleDesc}"
                 android:layout_marginTop="5dp"
+                android:textStyle="bold"
                 android:textColor="@color/tv_color"
                 android:textSize="12sp" />
 

@@ -43,6 +43,18 @@
                 android:configChanges="orientation|keyboardHidden|screenSize"
                 android:screenOrientation="portrait"/>
 
+        <activity android:name="com.jime.stu.ui.photo.ProductActivity"
+                android:configChanges="orientation|keyboardHidden|screenSize"
+                android:screenOrientation="portrait"/>
+
+        <activity android:name="com.jime.stu.ui.photo.ImageResourceActivity"
+                android:configChanges="orientation|keyboardHidden|screenSize"
+                android:screenOrientation="portrait"/>
+
+        <activity android:name="com.jime.stu.ui.photo.BaikeActivity"
+                android:configChanges="orientation|keyboardHidden|screenSize"
+                android:screenOrientation="portrait"/>
+
     </application>
 
 

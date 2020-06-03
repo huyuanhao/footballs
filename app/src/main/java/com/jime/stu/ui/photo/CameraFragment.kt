@@ -444,6 +444,11 @@ class CameraFragment : BaseFragment<CameraViewModel,ViewDataBinding>() {
                         override fun onImageSaved(output: ImageCapture.OutputFileResults) {
                             val savedUri = output.savedUri ?: Uri.fromFile(photoFile)
                             Log.d(TAG, "Photo capture succeeded: $savedUri")
+
+                            var intent = Intent(activity, PhotoActivity::class.java)
+                            intent.putExtra("uri", savedUri.toString())
+                            startActivity(intent)
+
                             // We can only change the foreground Drawable using API level 23+ API
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 //                            用最新拍摄的图片更新库缩略图
@@ -473,9 +478,6 @@ class CameraFragment : BaseFragment<CameraViewModel,ViewDataBinding>() {
                             }
 
 //                            ToastUtils.showShort(imageCapture.targetRotation)
-                            var intent = Intent(activity, PhotoActivity::class.java)
-                            intent.putExtra("uri", savedUri.toString())
-                            startActivity(intent)
                         }
                     })
 

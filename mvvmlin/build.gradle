@@ -41,6 +41,13 @@ dependencies {
     kapt rootProject.ext.dependencies["glide-compiler"]
     // utils 集合了大量常用的工具类
     api rootProject.ext.dependencies.utilcodex
+
+    //PushSDK必须依赖基础组件库，所以需要加入对应依赖
+    api 'com.umeng.umsdk:common:2.1.0'
+//PushSDK必须依赖utdid库，所以需要加入对应依赖
+    api 'com.umeng.umsdk:utdid:1.1.5.3'
+//PushSDK
+    api 'com.umeng.umsdk:push:6.0.1'
 }
 
 publish {

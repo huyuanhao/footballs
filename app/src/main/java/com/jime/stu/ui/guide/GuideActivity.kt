@@ -12,6 +12,7 @@ import com.jime.stu.ui.MainActivity
 import com.jime.stu.utils.InjectorUtil
 import com.jime.stu.utils.Preference
 import com.stx.xhb.androidx.XBanner.XBannerAdapter
+import com.umeng.message.PushAgent
 import kotlinx.android.synthetic.main.activity_guide.*
 
 
@@ -26,6 +27,7 @@ class GuideActivity : Activity() {
     var imgesUrl = mutableListOf<BannerInfo>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        PushAgent.getInstance(this).onAppStart();
         setContentView(R.layout.activity_guide)
 
         useBanner()

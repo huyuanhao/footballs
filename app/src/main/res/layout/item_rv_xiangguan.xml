@@ -33,6 +33,7 @@
                 android:layout_marginTop="5dp"
                 android:maxLines="2"
                 android:ellipsize="end"
+                android:textStyle="bold"
                 android:textColor="@color/tv_color"
                 android:textSize="12sp" />
 

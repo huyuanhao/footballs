@@ -12,6 +12,7 @@ import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
 import com.aleyn.mvvm.R
 import com.aleyn.mvvm.event.Message
 import com.blankj.utilcode.util.ToastUtils
+import com.umeng.message.PushAgent
 import java.lang.reflect.ParameterizedType
 
 /**
@@ -28,6 +29,10 @@ abstract class BaseActivity<VM : BaseViewModel, DB : ViewDataBinding> : AppCompa
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        //友盟推送
+        PushAgent.getInstance(this).onAppStart();
+
         initViewDataBinding()
         lifecycle.addObserver(viewModel)
         //注册 UI事件

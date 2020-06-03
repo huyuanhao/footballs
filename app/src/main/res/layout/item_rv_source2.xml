@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+                name="mSameInfo"
+                type="com.jime.stu.bean.SameInfo" />
+
+        <variable
+                name="item_source2Listenner"
+                type="com.jime.stu.ui.photo.ImageResourceModel.OnItemSourceClickListener" />
+
+    </data>
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@color/white"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:onClick="@{()->item_source2Listenner.onItemClick(mSameInfo)}"
+            android:orientation="vertical">
+
+        <ImageView
+                android:id="@+id/img"
+                url="@{mSameInfo.imageSrc}"
+                android:layout_width="102dp"
+                android:layout_height="78dp"
+                android:layout_centerVertical="true"
+                android:background="@color/bg" />
+
+        <TextView
+                android:id="@+id/tv_title"
+                android:layout_toRightOf="@id/img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{mSameInfo.titleDesc}"
+                android:textStyle="bold"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="10dp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:layout_toEndOf="@id/img"
+                android:textColor="@color/tv_color"
+                android:textSize="12sp" />
+
+
+        <TextView
+                android:id="@+id/tv_detail"
+                android:layout_toRightOf="@id/img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{mSameInfo.abstractDesc}"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="10dp"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:layout_toEndOf="@id/img"
+                android:layout_below="@id/tv_title"
+                android:textColor="@color/tv_color2"
+                android:textSize="11sp" />
+
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_detail"
+                android:layout_toEndOf="@id/img"
+                android:text="@{mSameInfo.website}"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/tv_gray"
+                android:background="@drawable/rect_bg_10"
+                android:paddingTop="1dp"
+                android:paddingBottom="1dp"
+                android:paddingStart="3dp"
+                android:paddingEnd="3dp"
+                android:textSize="8sp" />
+
+        <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/tv_gray"
+                android:layout_alignParentBottom="true"
+                android:layout_alignStart="@id/tv_title" />
+    </RelativeLayout>
+</layout>

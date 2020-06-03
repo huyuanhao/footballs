@@ -18,6 +18,7 @@ import com.google.android.material.tabs.TabLayout
 import com.jime.stu.R
 import com.jime.stu.ui.me.MeFragment
 import com.jime.stu.ui.photo.CameraFragment
+import com.umeng.message.PushAgent
 import com.yanzhenjie.permission.Action
 import com.yanzhenjie.permission.AndPermission
 import com.yanzhenjie.permission.runtime.Permission
@@ -32,6 +33,7 @@ class MainActivity : AppCompatActivity() {
     var old = 0;
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        PushAgent.getInstance(this).onAppStart();
         setContentView(R.layout.activity_main)
         BarUtils.setStatusBarColor(this, resources.getColor(R.color.colorPrimary))
         //自定义函数检查权限是否拥有

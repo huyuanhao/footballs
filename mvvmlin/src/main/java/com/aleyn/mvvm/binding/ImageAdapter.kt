@@ -18,7 +18,7 @@ object ImageAdapter {
     @BindingAdapter(value = ["url", "placeholder"], requireAll = false)
     @JvmStatic
     fun setImageUrl(imageView: ImageView, url: String, placeholder: Int) {
-        LogUtils.e("ImageView==  " + url)
+//        LogUtils.e("ImageView==  " + url)
         var urls = url
         if(!url.startsWith("http")){
             urls = "http:" + url

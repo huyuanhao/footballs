@@ -1,9 +1,11 @@
 package com.jime.stu.ui.photo
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
 import com.aleyn.mvvm.base.BaseActivity
+import com.aleyn.mvvm.event.Message
 import com.jime.stu.R
 import com.jime.stu.bean.ImageDetail
 import com.jime.stu.databinding.ActivityPhotoResultBinding
@@ -14,6 +16,7 @@ import kotlinx.android.synthetic.main.activity_photo_result.*
  * @date 2020/06/01 10:13
  */
 class PhotoResultActivity:BaseActivity<PhotoResultModel,ActivityPhotoResultBinding>(){
+    lateinit var detail :ImageDetail;
     override fun layoutId(): Int {
         return R.layout.activity_photo_result
     }
@@ -23,7 +26,7 @@ class PhotoResultActivity:BaseActivity<PhotoResultModel,ActivityPhotoResultBindi
     }
 
     override fun initData() {
-        val detail = intent.getSerializableExtra("detail") as ImageDetail
+        detail = intent.getSerializableExtra("detail") as ImageDetail
 
         viewModel.photo.set(detail.cardHeader.imageUrl)
 
@@ -47,5 +50,28 @@ class PhotoResultActivity:BaseActivity<PhotoResultModel,ActivityPhotoResultBindi
         tv_huan.setOnClickListener{
             finish()
         }
+    }
+
+    override fun handleEvent(msg: Message) {
+       when(msg.code){
+           0->{
+               finish()
+           }
+           1->{
+               val intent = Intent(this, BaikeActivity::class.java)
+               intent.putExtra("baike", detail.baike)
+               startActivity(intent)
+           }
+           2->{
+               val intent = Intent(this, ProductActivity::class.java)
+               intent.putExtra("product", detail.product)
+               startActivity(intent)
+           }
+           3->{
+               val intent = Intent(this, ImageResourceActivity::class.java)
+               intent.putExtra("same", detail.same)
+               startActivity(intent)
+           }
+       }
     }
 }

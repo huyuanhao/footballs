@@ -101,6 +101,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:layout_toRightOf="@id/img"
+                        android:textSize="12sp"
+                        android:textColor="@color/tv_color2"
                         android:text="图中可能是" />
 
                 <TextView
@@ -136,6 +138,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:text="百科"
+                            android:textStyle="bold"
                             android:textColor="@color/tv_color"
                             android:textSize="15sp" />
 
@@ -208,6 +211,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:text="相关产品"
+                            android:textStyle="bold"
                             android:textColor="@color/tv_color"
                             android:textSize="15sp" />
 
@@ -283,12 +287,14 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:text="图片来源"
+                            android:textStyle="bold"
                             android:textColor="@color/tv_color"
                             android:textSize="15sp" />
 
                     <ImageView
                             android:layout_width="25dp"
                             android:layout_height="2dp"
+                            android:textStyle="bold"
                             android:layout_below="@id/tv_source_title"
                             android:layout_marginTop="3dp"
                             android:background="@mipmap/ic_result_rect" />

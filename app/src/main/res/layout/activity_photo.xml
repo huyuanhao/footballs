@@ -18,14 +18,22 @@
         <ImageView
                 android:id="@+id/camera"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="300dp"
+                android:visibility="visible"
                 imageBitmap="@{photoViewModel.photo}"/>
 
-        <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:background="@mipmap/icon_photo_rect" />
+<!--        <ImageView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_centerInParent="true"-->
+<!--                android:background="@mipmap/icon_photo_rect" />-->
+<!--        <com.soundcloud.android.crop.CropImageView-->
+<!--                android:id="@+id/crop_image"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="300dp"-->
+<!--                android:layout_below="@id/camera"-->
+<!--                imageBitmap="@{photoViewModel.photo}"-->
+<!--                android:background="@drawable/crop__texture" />-->
 
         <LinearLayout
                 android:layout_width="match_parent"
@@ -52,6 +60,7 @@
                     android:gravity="center"
                     android:paddingStart="20dp"
                     android:paddingEnd="20dp"
+                    android:visibility="invisible"
                     android:onClick="@{()->photoViewModel.left()}"
                     android:src="@mipmap/icon_rotate_left" />
 
@@ -61,6 +70,7 @@
                     android:gravity="center"
                     android:paddingStart="20dp"
                     android:paddingEnd="20dp"
+                    android:visibility="invisible"
                     android:src="@mipmap/icon_photo_back" />
 
             <ImageView
@@ -69,10 +79,12 @@
                     android:gravity="center"
                     android:paddingStart="20dp"
                     android:paddingEnd="20dp"
+                    android:visibility="invisible"
                     android:onClick="@{()->photoViewModel.right()}"
                     android:src="@mipmap/icon_rotate_right" />
 
             <TextView
+                    android:id="@+id/tv_search"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -80,9 +92,9 @@
                     android:paddingStart="0dp"
                     android:paddingEnd="20dp"
                     android:text="@string/search"
-                    android:onClick="@{(view)->photoViewModel.search(view)}"
                     android:textColor="@color/colorPrimary"
                     android:textSize="15sp" />
+<!--            android:onClick="@{(view)->photoViewModel.search(view)}"-->
         </LinearLayout>
 
     </RelativeLayout>

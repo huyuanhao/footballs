@@ -16,30 +16,34 @@
 
 package com.jime.stu.ui.photo
 
+import android.annotation.TargetApi
 import android.content.Intent
-import android.graphics.BitmapFactory
+import android.graphics.*
+import android.graphics.Bitmap.CompressFormat
+import android.net.Uri
+import android.opengl.GLES10
+import android.os.Build.VERSION
 import android.os.Bundle
-import android.text.TextUtils
-import androidx.core.graphics.drawable.toIcon
-import androidx.core.net.toFile
-import androidx.core.net.toUri
-import androidx.databinding.ViewDataBinding
+import android.os.Handler
+import android.os.Parcelable
+import android.view.View
+import androidx.core.view.drawToBitmap
 import com.aleyn.mvvm.base.BaseActivity
 import com.aleyn.mvvm.event.Message
 import com.blankj.utilcode.util.ImageUtils
-import com.blankj.utilcode.util.ToastUtils
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.jime.stu.R
 import com.jime.stu.bean.ImageDetail
 import com.jime.stu.databinding.ActivityPhotoBinding
 import kotlinx.android.synthetic.main.activity_photo.*
 import java.io.File
-import java.io.Serializable
+import java.io.IOException
+import java.io.InputStream
+import java.io.OutputStream
+import java.util.concurrent.CountDownLatch
 
 
 /** Fragment used for each individual page showing a photo inside of [GalleryFragment] */
-class PhotoActivity :BaseActivity<PhotoViewModel,ActivityPhotoBinding>() {
+class PhotoActivity : BaseActivity<PhotoViewModel, ActivityPhotoBinding>() {
 
     override fun layoutId(): Int {
         return R.layout.activity_photo
@@ -48,23 +52,30 @@ class PhotoActivity :BaseActivity<PhotoViewModel,ActivityPhotoBinding>() {
     override fun initView(savedInstanceState: Bundle?) {
         mBinding?.photoViewModel = viewModel
 
-        var uri = intent.getStringExtra("uri").toUri()
-        if(!TextUtils.isEmpty(uri.toString())){
-            var rote = ImageUtils.getRotateDegree(uri.toFile().absolutePath)
-            viewModel.photo.set(ImageUtils.rotate(ImageUtils.getBitmap(uri.toFile()),rote,0f,0f))
-            viewModel.photoString = uri.toFile().absolutePath
+        var file = File(intent.getStringExtra("file"))
+//        var rote = ImageUtils.getRotateDegree(file.absolutePath)
+//            viewModel.photo.set(ImageUtils.rotate(ImageUtils.getBitmap(file),rote,0f,0f))
+        viewModel.photoString = file.absolutePath
+
+//        crop_image.setImageURI(ImageUtils.rotate(ImageUtils.getBitmap(file), rote, 0f, 0f))
+
+        tv_search.setOnClickListener {
+//            crop_image.drawToBitmap()
+//            viewModel.photo.set(iv_crop.crop())
+            viewModel.search(tv_search)
         }
+
     }
 
     override fun initData() {
     }
 
     override fun handleEvent(msg: Message) {
-        when(msg.code){
-            0->{
+        when (msg.code) {
+            0 -> {
                 finish()
             }
-            1->{
+            1 -> {
                 var detail = msg.obj as ImageDetail
                 var intent = Intent(this, PhotoResultActivity::class.java)
                 intent.putExtra("detail", detail)

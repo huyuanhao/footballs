@@ -16,6 +16,7 @@
 
 package com.jime.stu.ui.photo
 
+
 import EXTENSION_WHITELIST
 import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
@@ -33,22 +34,17 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.util.DisplayMetrics
 import android.util.Log
-import android.view.*
+import android.view.Gravity
+import android.view.KeyEvent
+import android.view.OrientationEventListener
+import android.view.View
 import android.webkit.MimeTypeMap
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.camera.core.AspectRatio
-import androidx.camera.core.Camera
-import androidx.camera.core.CameraInfoUnavailableException
-import androidx.camera.core.CameraSelector
-import androidx.camera.core.ImageAnalysis
-import androidx.camera.core.ImageCapture
+import androidx.camera.core.*
 import androidx.camera.core.ImageCapture.Metadata
-import androidx.camera.core.ImageCaptureException
-import androidx.camera.core.ImageProxy
-import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -69,13 +65,18 @@ import com.jime.stu.ui.MainActivity
 import com.jime.stu.ui.MainActivity.Companion.KEY_EVENT_ACTION
 import com.jime.stu.ui.MainActivity.Companion.KEY_EVENT_EXTRA
 import com.jime.stu.utils.*
+import com.jime.stu.utils.GlideEngine.createGlideEngine
+import com.luck.picture.lib.PictureSelector
+import com.luck.picture.lib.config.PictureConfig
+import com.luck.picture.lib.config.PictureMimeType
+import com.luck.picture.lib.entity.LocalMedia
+import com.luck.picture.lib.listener.OnResultCallbackListener
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
 import java.nio.ByteBuffer
 import java.text.SimpleDateFormat
-import java.util.ArrayDeque
-import java.util.Locale
+import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import kotlin.collections.ArrayList
@@ -92,7 +93,7 @@ typealias LumaListener = (luma: Double) -> Unit
  * - Photo taking
  * - Image analysis
  */
-class CameraFragment : BaseFragment<CameraViewModel,ViewDataBinding>() {
+class CameraFragment : BaseFragment<CameraViewModel, ViewDataBinding>() {
 
     private lateinit var container: ConstraintLayout
     private lateinit var viewFinder: PreviewView
@@ -106,6 +107,7 @@ class CameraFragment : BaseFragment<CameraViewModel,ViewDataBinding>() {
     private var imageAnalyzer: ImageAnalysis? = null
     private var camera: Camera? = null
     private var cameraProvider: ProcessCameraProvider? = null
+    private lateinit var fragment: Fragment;
 
     private val displayManager by lazy {
         requireContext().getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
@@ -194,6 +196,7 @@ class CameraFragment : BaseFragment<CameraViewModel,ViewDataBinding>() {
     @SuppressLint("MissingPermission")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        fragment = this
         container = view as ConstraintLayout
         viewFinder = container.findViewById(R.id.view_finder)
 
@@ -231,7 +234,7 @@ class CameraFragment : BaseFragment<CameraViewModel,ViewDataBinding>() {
                 val v = layoutInflater.inflate(R.layout.dialog_input, null)
                 val tvSearch = v.findViewById<TextView>(R.id.tv_search)
                 val edit = v.findViewById<EditText>(R.id.edit)
-                edit.setOnLongClickListener (object :View.OnLongClickListener{
+                edit.setOnLongClickListener(object : View.OnLongClickListener {
                     override fun onLongClick(v: View?): Boolean {
                         edit.setText(ClipeBoardUtil.getClipeBoardContent(activity))
                         return true
@@ -444,10 +447,8 @@ class CameraFragment : BaseFragment<CameraViewModel,ViewDataBinding>() {
                         override fun onImageSaved(output: ImageCapture.OutputFileResults) {
                             val savedUri = output.savedUri ?: Uri.fromFile(photoFile)
                             Log.d(TAG, "Photo capture succeeded: $savedUri")
-
-                            var intent = Intent(activity, PhotoActivity::class.java)
-                            intent.putExtra("uri", savedUri.toString())
-                            startActivity(intent)
+                            savedUri.toFile()
+                            toCrop(savedUri)
 
                             // We can only change the foreground Drawable using API level 23+ API
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -476,7 +477,6 @@ class CameraFragment : BaseFragment<CameraViewModel,ViewDataBinding>() {
                                 //                                ToastUtils.showShort("Image capture")
                                 Log.d(TAG, "Image capture scanned into media store: $uri")
                             }
-
 //                            ToastUtils.showShort(imageCapture.targetRotation)
                         }
                     })
@@ -497,19 +497,49 @@ class CameraFragment : BaseFragment<CameraViewModel,ViewDataBinding>() {
 
         // Setup for button used to switch cameras
         controls.findViewById<ImageButton>(R.id.camera_switch_button).let {
-
             // Disable the button until the camera is set up
             it.isEnabled = false
 
             // Listener for button used to switch cameras. Only called if the button is enabled
             it.setOnClickListener {
-                lensFacing = if (CameraSelector.LENS_FACING_FRONT == lensFacing) {
-                    CameraSelector.LENS_FACING_BACK
-                } else {
-                    CameraSelector.LENS_FACING_FRONT
-                }
+                PictureSelector.create(this)
+                    .openGallery(PictureMimeType.ofAll())
+                    .imageEngine(createGlideEngine())
+                    .selectionMode(PictureConfig.SINGLE)// 多选 or 单选
+                    .isSingleDirectReturn(true)//单选直接返回
+                    .isCamera(false)
+                    .isEnableCrop(false)// 是否裁剪
+                    .forResult(object : OnResultCallbackListener<LocalMedia> {
+                        override fun onResult(result: MutableList<LocalMedia>?) {
+                            var media = result?.get(0)
+//                            var intent = Intent(activity, PhotoActivity::class.java)
+//                            intent.putExtra("file", media?.getPath().toString())
+//                            startActivity(intent)
+                            toCrop(Uri.fromFile(File(media?.path)))
+                            Log.i(TAG, "是否压缩:" + media?.isCompressed());
+                            Log.i(TAG, "压缩:" + media?.getCompressPath());
+                            Log.i(TAG, "原图:" + media?.getPath());
+                            Log.i(TAG, "是否裁剪:" + media?.isCut());
+                            Log.i(TAG, "裁剪:" + media?.getCutPath());
+                            Log.i(TAG, "是否开启原图:" + media?.isOriginal());
+                            Log.i(TAG, "原图路径:" + media?.getOriginalPath());
+                            Log.i(TAG, "Android Q 特有Path:" + media?.getAndroidQToPath());
+                            Log.i(TAG, "宽高: " + media?.getWidth() + "x" + media?.getHeight());
+                            Log.i(TAG, "Size: " + media?.getSize());
+                        }
+
+                        override fun onCancel() {
+                        }
+                    });
+//                lensFacing = if (CameraSelector.LENS_FACING_FRONT == lensFacing) {
+//                    CameraSelector.LENS_FACING_BACK
+//                } else {
+//                    CameraSelector.LENS_FACING_FRONT
+//                }
                 // 重新绑定用例以更新选定的相机
-                bindCameraUseCases()
+//                bindCameraUseCases()
+                // 设置相机及其用例
+                setUpCamera()
             }
         }
 
@@ -526,6 +556,33 @@ class CameraFragment : BaseFragment<CameraViewModel,ViewDataBinding>() {
                 startActivity(intent)
             }
         }
+    }
+
+    fun toCrop( savedUri: Uri){
+       var outCropUrl = context?.let { MainActivity.getOutputDirectory(it) }
+        var mDestinationUri =
+            Uri.fromFile(File(outputDirectory, "图" + savedUri.toFile().name));
+        var uCrop = UCrop.of(savedUri, mDestinationUri);
+        var options = UCrop.Options();
+        //开始设置
+        //设置最大缩放比例
+        options.setMaxScaleMultiplier(5f);
+        //设置图片在切换比例时的动画
+        options.setImageToCropBoundsAnimDuration(666);
+        //设置是否展示矩形裁剪框
+        options.setShowCropFrame(true);
+        //设置裁剪框横竖线的宽度
+        options.setCropGridStrokeWidth(1);
+        options.setHideBottomControls(true)
+        //设置裁剪框横竖线的颜色
+        options.setCropGridColor(Color.GREEN);
+        //设置竖线的数量
+        options.setCropGridColumnCount(2);
+        //设置横线的数量
+        options.setCropGridRowCount(1);
+        //结束设置
+        uCrop.withOptions(options)
+        activity?.let { uCrop.start(it, this@CameraFragment) };
     }
 
     /** 启用或禁用根据可用摄像机切换摄像机的按钮 */
@@ -674,13 +731,25 @@ class CameraFragment : BaseFragment<CameraViewModel,ViewDataBinding>() {
     }
 
     override fun handleEvent(msg: Message) {
-        when(msg.code){
-            1->{
+        when (msg.code) {
+            1 -> {
                 var detail = msg.obj as ImageDetail
                 var intent = Intent(activity, PhotoResultActivity::class.java)
                 intent.putExtra("detail", detail)
                 startActivity(intent)
             }
         }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+//        if (resultCode == RESULT_OK) {
+//            if (requestCode == UCrop.REQUEST_CROP) {
+//                var resultUri = data?.let { UCrop.getOutput(it) };
+//                var intent = Intent(activity, PhotoResultActivity::class.java)
+//                intent.putExtra("file", resultUri.toFile())
+//                startActivity(intent)
+//            }
+//        }
     }
 }

@@ -12,6 +12,7 @@ import com.jime.stu.network.entity.NewsBean
 import com.jime.stu.ui.MainActivity
 import com.jime.stu.utils.FileUtils
 import com.jime.stu.utils.InjectorUtil
+import kotlinx.android.synthetic.main.activity_photo.*
 import top.zibin.luban.Luban
 import top.zibin.luban.OnCompressListener
 import java.io.File

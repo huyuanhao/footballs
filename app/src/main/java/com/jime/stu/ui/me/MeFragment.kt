@@ -18,6 +18,7 @@ import com.jime.stu.databinding.MeFragmentBinding
 import com.jime.stu.network.entity.UsedWeb
 import com.jime.stu.ui.detail.DetailActivity
 import com.jime.stu.ui.login.LoginActivity
+import com.jime.stu.ui.photo.HistoryActivity
 import com.jime.stu.utils.Preference
 import kotlinx.android.synthetic.main.me_fragment.*
 
@@ -47,6 +48,7 @@ class MeFragment : BaseFragment<MeViewModel, MeFragmentBinding>() {
 
     fun onFeelBackClick() {
         ToastUtils.showShort("反馈")
+        startActivity(Intent(activity, HistoryActivity::class.java))
     }
     fun onSharedClick() {
         ToastUtils.showShort("分享")

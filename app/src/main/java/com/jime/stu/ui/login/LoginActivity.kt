@@ -7,6 +7,7 @@ import com.aleyn.mvvm.event.Message
 import com.jime.stu.R
 import com.jime.stu.databinding.ActivityLoginBinding
 import com.jime.stu.ui.MainActivity
+import org.greenrobot.eventbus.EventBus
 
 /**
  * @author PC
@@ -31,6 +32,7 @@ class LoginActivity : BaseActivity<LoginViewModel, ActivityLoginBinding>() {
             0 -> {
 //                startActivity(Intent(this, MainActivity::class.java))
                 setResult(101)
+                EventBus.getDefault().post("fresh")
                 finish()
 //                tv_code.isEnabled = true
 //                tv_code.setTextColor(ContextCompat.getColor(this,R.color.tv_gray))

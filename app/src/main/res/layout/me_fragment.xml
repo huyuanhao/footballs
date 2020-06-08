@@ -140,6 +140,7 @@
                     android:gravity="center"
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp"
+                    android:onClick="@{()->fragment.openClick()}"
                     android:text="@{meViewModel.is_member()?@string/renew:@string/unlocking_function}"
                     android:textColor="@color/colorPrimary" />
         </RelativeLayout>

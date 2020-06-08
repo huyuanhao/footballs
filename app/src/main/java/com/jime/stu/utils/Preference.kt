@@ -19,7 +19,20 @@ class Preference<T>(val name: String, private val default: T) : ReadWritePropert
         const val UDID = "udid"
         const val MEMBERSTATUS = "memberStatus"
         const val TOKEN = "token"
-        const val PUSH_TOGGLE = "push_toggle"
+        const val UMENGPID = "umengPid"
+        const val PHONE = "phone"
+
+        const val USERAGREE = "userAgree"
+        const val PAYMENTAGREE = "paymentAgree"
+        const val UNLOCKURL = "unlockurl"
+        const val SHARECONTENT = "shareContent"
+        const val PRIVATEAGREE = "privateAgree"
+        const val SHARETITLE = "shareTitle"
+        const val DOWNLOADURL = "downloadUrl"
+        const val SHAREURL = "shareUrl"
+        const val APPDOMAINURL = "appDomainUrl"
+        const val VERSIONCODE = "versionCode"
+
     }
 
     private val prefs: SharedPreferences by lazy {

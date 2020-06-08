@@ -11,6 +11,7 @@ import com.jime.stu.BuildConfig
 import com.jime.stu.R
 import com.jime.stu.bean.User
 import com.jime.stu.ui.MainActivity
+import com.jime.stu.utils.Preference
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshHeader
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter
@@ -62,6 +63,8 @@ class MyApplication : BaseApplication() {
         mPushAgent.register(object : IUmengRegisterCallback {
             override fun onSuccess(deviceToken: String) { //注册成功会返回deviceToken deviceToken是推送消息的唯一标志
                 Log.i(TAG, "注册成功：deviceToken：-------->  $deviceToken")
+                var UMENGPID by Preference(Preference.UMENGPID, "")
+                UMENGPID = deviceToken
             }
 
             override fun onFailure(s: String, s1: String) {

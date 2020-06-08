@@ -6,8 +6,9 @@ ext {
             applicationId    : "com.jime.stu",
             minSdkVersion    : 21,
             targetSdkVersion : 28,
-            versionCode      : 4,
-            versionName      : "1.0.3",
+            versionCode      : 1,
+            versionName      : "1.0.1",
+            channel :"\"guanfang\""
     ]
     //version配置
     versions = [

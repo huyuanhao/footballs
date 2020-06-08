@@ -4,6 +4,7 @@ import com.jime.stu.bean.MyListBean
 import com.jime.stu.bean.User
 import com.jime.stu.app.base.BaseResult
 import com.jime.stu.app.base.MyResult
+import com.jime.stu.bean.Appinfo
 import com.jime.stu.bean.ImageDetail
 import com.jime.stu.network.entity.*
 import okhttp3.MultipartBody
@@ -88,4 +89,14 @@ interface HomeService {
      */
     @POST("/img/url")
     suspend fun uploadUrl(@Query("imgUrl") imgUrl: String): MyResult<ImageDetail>
+
+    /**
+     * 启动接口
+     */
+    @POST("start/up")
+    suspend fun getAppInfo(@Query("applicationId") applicationId: String,@Query("udid") udid: String
+                           ,@Query("channel") channel: String,@Query("sysOs") sysOs: String
+                           ,@Query("sysVersion") sysVersion: String,@Query("deviceBrand") deviceBrand: String
+                           ,@Query("deviceModel") deviceModel: String,@Query("mac") mac: String
+                           ,@Query("umengPid") umengPid: String): MyResult<Appinfo>
 }

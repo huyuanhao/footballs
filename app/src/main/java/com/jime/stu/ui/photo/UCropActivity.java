@@ -12,6 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -48,12 +49,18 @@ import com.blankj.utilcode.util.CacheDiskStaticUtils;
 import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.ImageUtils;
 import com.blankj.utilcode.util.TimeUtils;
+import com.example.zhouwei.library.CustomPopWindow;
 import com.google.gson.reflect.TypeToken;
 import com.jime.stu.R;
+import com.jime.stu.WebActivity;
 import com.jime.stu.bean.History;
 import com.jime.stu.bean.ImageDetail;
 import com.jime.stu.databinding.ActivityPhotoBinding;
 import com.jime.stu.databinding.UcropActivityPhotoboxBinding;
+import com.jime.stu.ui.detail.DetailActivity;
+import com.jime.stu.ui.detail.MyWebViewActivity;
+import com.jime.stu.ui.login.LoginActivity;
+import com.jime.stu.utils.Preference;
 import com.yalantis.ucrop.PictureMultiCuttingActivity;
 import com.yalantis.ucrop.UCrop;
 import com.yalantis.ucrop.callback.BitmapCropCallback;
@@ -505,6 +512,8 @@ public class UCropActivity extends BaseActivity<PhotoViewModel, UcropActivityPho
             setupScaleWidget();
             setupStatesWrapper();
         }
+
+        setPop();
     }
 
     /**
@@ -839,7 +848,7 @@ public class UCropActivity extends BaseActivity<PhotoViewModel, UcropActivityPho
     }
 
     protected void cropAndSaveImage() {
-        mBlockingView.setClickable(true);
+//        mBlockingView.setClickable(true);
         mShowLoader = true;
         supportInvalidateOptionsMenu();
 
@@ -860,14 +869,15 @@ public class UCropActivity extends BaseActivity<PhotoViewModel, UcropActivityPho
 
                     //保存历史记录
                     String js = CacheDiskStaticUtils.getString("history");
-                    Type type =  new TypeToken<List<History>> () {}.getType();
+                    Type type = new TypeToken<List<History>>() {
+                    }.getType();
                     List<History> list = new ArrayList<>();
-                    if(js != null) {
+                    if (js != null) {
                         list = GsonUtils.fromJson(js, type);
                     }
                     String time = TimeUtils.getNowString();
-                    list.add(new History(file.getAbsolutePath(),file.getName(),time,false));
-                    CacheDiskStaticUtils.put("history",GsonUtils.toJson(list));
+                    list.add(new History(file.getAbsolutePath(), file.getName(), time, false));
+                    CacheDiskStaticUtils.put("history", GsonUtils.toJson(list));
 //                    onBackPressed();
                 }
             }
@@ -880,15 +890,64 @@ public class UCropActivity extends BaseActivity<PhotoViewModel, UcropActivityPho
         });
     }
 
+    CustomPopWindow window;
+    public void setPop() {
+//        LinearLayout popView = findViewById(R.id.linearLayout);
+        Preference preference = new Preference(Preference.IS_LOGIN, false);
+
+        Preference unlockurl = new Preference(Preference.UNLOCKURL, "https://photoapi.jimetec.com/shitu/dist/pay.html");
+        View popView = LayoutInflater.from(this).inflate(R.layout.dialog_open_member, null);
+        TextView tv_open = popView.findViewById(R.id.tv_open);
+        ImageView iv_open_erro = popView.findViewById(R.id.iv_open_erro);
+        tv_open.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                window.dissmiss();
+                if((Boolean)preference.getValue(Preference.IS_LOGIN, false)){
+                    String url = (String) unlockurl.getValue(Preference.UNLOCKURL, "https://photoapi.jimetec.com/shitu/dist/pay.html");
+                    startActivity(new Intent(UCropActivity.this, WebActivity.class)
+                            .putExtra("url",url).putExtra("title","支付"));
+                }else {
+                    startActivity(new Intent(UCropActivity.this, LoginActivity.class));
+                }
+//                Intent intent = new Intent();
+//                intent.setAction("android.intent.action.VIEW");
+//                Uri content_url = Uri.parse(url);
+//                intent.setData(content_url);
+//                startActivity(intent);
+//                startActivity(new Intent(UCropActivity.this, WebActivity.class)
+//                        .putExtra("url", (String) unlockurl.getValue(Preference.UNLOCKURL, "https://photoapi.jimetec.com/shitu/dist/pay.html")));
+//                MyWebViewActivity.startTo(UCropActivity.this,url,"","支付");
+            }
+        });
+        iv_open_erro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                window.dissmiss();
+            }
+        });
+        window = new CustomPopWindow.PopupWindowBuilder(UCropActivity.this).setView(popView)
+                .create();
+    }
+
     @Override
     public void handleEvent(@NotNull Message msg) {
+        LinearLayout viewGroup = findViewById(R.id.linearLayout);
         switch (msg.getCode()) {
             case 1:
-                ImageDetail detail = (ImageDetail) msg.getObj();
-                Intent intent = new Intent(this, PhotoResultActivity.class);
-                intent.putExtra("detail", detail);
-                startActivity(intent);
-                finish();
+//                ImageDetail detail = (ImageDetail) msg.getObj();
+//                Intent intent = new Intent(this, PhotoResultActivity.class);
+//                intent.putExtra("detail", detail);
+//                startActivity(intent);
+//                finish();
+                if (window != null) {
+                    window.showAtLocation(viewGroup, Gravity.CENTER, 0, 0);
+                }
+                break;
+            case -3:
+                if (window != null) {
+                    window.showAtLocation(viewGroup, Gravity.CENTER, 0, 0);
+                }
                 break;
         }
     }

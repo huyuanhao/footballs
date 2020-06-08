@@ -26,6 +26,7 @@ class LoginViewModel : BaseViewModel() {
     var headImg by Preference(Preference.HEADIMAGE, "")
     var token by Preference(Preference.TOKEN, "")
     var is_login by Preference(Preference.IS_LOGIN, false)
+    var phoneNumber by Preference(Preference.PHONE, "")
 
     val phone = ObservableField<String>("")
     var code = ObservableField("")
@@ -106,7 +107,7 @@ class LoginViewModel : BaseViewModel() {
             userName = it.userName
             headImg = it.headImage
             token = it.token
-
+            phoneNumber = phone.get().toString()
             defUI.msgEvent.postValue(Message(0))
             is_login = true
         })

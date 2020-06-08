@@ -558,8 +558,8 @@ class CameraFragment : BaseFragment<CameraViewModel, ViewDataBinding>() {
         }
     }
 
-    fun toCrop( savedUri: Uri){
-       var outCropUrl = context?.let { MainActivity.getOutputDirectory(it) }
+    fun toCrop(savedUri: Uri) {
+        var outCropUrl = context?.let { MainActivity.getOutputDirectory(it) }
         var mDestinationUri =
             Uri.fromFile(File(outputDirectory, "图" + savedUri.toFile().name));
         var uCrop = UCrop.of(savedUri, mDestinationUri);
@@ -732,12 +732,12 @@ class CameraFragment : BaseFragment<CameraViewModel, ViewDataBinding>() {
 
     override fun handleEvent(msg: Message) {
         when (msg.code) {
-            1 -> {
-                var detail = msg.obj as ImageDetail
-                var intent = Intent(activity, PhotoResultActivity::class.java)
-                intent.putExtra("detail", detail)
-                startActivity(intent)
-            }
+//            1 -> {
+//                var detail = msg.obj as ImageDetail
+//                var intent = Intent(activity, PhotoResultActivity::class.java)
+//                intent.putExtra("detail", detail)
+//                startActivity(intent)
+//            }
         }
     }
 

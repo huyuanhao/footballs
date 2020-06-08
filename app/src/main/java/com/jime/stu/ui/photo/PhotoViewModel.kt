@@ -68,19 +68,23 @@ class PhotoViewModel : BaseViewModel() {
 
                 override fun onSuccess(file: File) { // TODO 压缩成功后调用，返回压缩后的图片文件
                     LogUtils.e("压缩成功")
-                    launchOnlyresult({ homeRepository.uploadFile(file) }, {
-                        defUI.msgEvent.postValue(Message(1,obj = it))
-                    })
+                    toSearch(file)
                 }
 
                 override fun onError(e: Throwable) { // TODO 当压缩过程出现问题时调用
                     LogUtils.e("压缩失败" + e.toString())
-                    launchOnlyresult({ homeRepository.uploadFile(file) }, {
-                        defUI.msgEvent.postValue(Message(1,obj = it))
-                    })
+                    toSearch(file)
                 }
             }).launch() //启动压缩
 
+    }
+
+    fun toSearch(file: File){
+        launchOnlyresult({ homeRepository.uploadFile(file) }, {
+            defUI.msgEvent.postValue(Message(1,obj = it))
+        },{
+            defUI.msgEvent.postValue(Message(it.code,obj = it.errMsg))
+        })
     }
 
     interface OnItemClickListener {

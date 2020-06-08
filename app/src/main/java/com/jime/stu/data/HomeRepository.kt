@@ -6,6 +6,7 @@ import com.jime.stu.bean.MyListBean
 import com.jime.stu.bean.User
 import com.jime.stu.app.base.BaseResult
 import com.jime.stu.app.base.MyResult
+import com.jime.stu.bean.Appinfo
 import com.jime.stu.bean.ImageDetail
 import com.jime.stu.data.db.dao.HomeDao
 import com.jime.stu.data.http.HomeNetWork
@@ -66,6 +67,11 @@ class HomeRepository private constructor(
             s = null
         }
         return netWork.getNewsList(page, s)
+    }
+
+    //启动接口
+    suspend fun getAppInfo(): MyResult<Appinfo> {
+        return netWork.getAppInfo()
     }
 
     //获取验证码

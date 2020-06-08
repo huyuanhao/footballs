@@ -26,11 +26,13 @@ import android.os.Build.VERSION
 import android.os.Bundle
 import android.os.Handler
 import android.os.Parcelable
+import android.view.Gravity
 import android.view.View
 import androidx.core.view.drawToBitmap
 import com.aleyn.mvvm.base.BaseActivity
 import com.aleyn.mvvm.event.Message
 import com.blankj.utilcode.util.ImageUtils
+import com.example.zhouwei.library.CustomPopWindow
 import com.jime.stu.R
 import com.jime.stu.bean.ImageDetail
 import com.jime.stu.databinding.ActivityPhotoBinding
@@ -76,11 +78,17 @@ class PhotoActivity : BaseActivity<PhotoViewModel, ActivityPhotoBinding>() {
                 finish()
             }
             1 -> {
-                var detail = msg.obj as ImageDetail
-                var intent = Intent(this, PhotoResultActivity::class.java)
-                intent.putExtra("detail", detail)
-                startActivity(intent)
-                finish()
+//                var detail = msg.obj as ImageDetail
+//                var intent = Intent(this, PhotoResultActivity::class.java)
+//                intent.putExtra("detail", detail)
+//                startActivity(intent)
+//                finish()
+                CustomPopWindow.PopupWindowBuilder(this).setView(R.layout.dialog_open_member)
+                    .create().showAtLocation(linearLayout, Gravity.CENTER, 0, 0)
+            }
+            103->{
+                CustomPopWindow.PopupWindowBuilder(this).setView(R.layout.dialog_open_member)
+                    .create().showAtLocation(linearLayout, Gravity.CENTER, 0, 0)
             }
         }
     }

@@ -56,6 +56,13 @@ class HomeNetWork {
     //我的列表信息
     suspend fun myInfo(os:String,userId: String) = mService.myInfo(os,userId)
 
+    //我的列表信息
+    suspend fun upFeelBack(content:String):  MyResult<Any> {
+        val userId by Preference(Preference.USER_ID, "")
+        val udid = DeviceUtils.getAndroidID()
+        return mService.upFeelBack(userId,udid,content)
+    }
+
     //本地文件上传
     suspend fun uploadFile(file:File) = mService.uploadFile(
         MultipartBody.Part.createFormData(

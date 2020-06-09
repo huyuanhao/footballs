@@ -69,6 +69,28 @@
                 android:name=".ui.detail.MyWebViewActivity"
                 android:screenOrientation="portrait"/>
 
+        <activity
+                android:name=".ui.me.FeelBackActivity"
+                android:screenOrientation="portrait"/>
+
+        <activity
+                android:name=".ui.me.MessageActivity"
+                android:screenOrientation="portrait"/>
+
+        <activity
+                android:name=".wxapi.WXEntryActivity"
+                android:label="@string/app_name"
+                android:theme="@android:style/Theme.Translucent.NoTitleBar"
+                android:exported="true"
+                android:taskAffinity="com.jime.stu"
+                android:launchMode="singleTask">
+        </activity>
+
+        <activity
+                android:name=".share.ShareActivity"
+                android:screenOrientation="portrait"
+                android:theme="@style/shareTheme"/>
+
     </application>
 
 

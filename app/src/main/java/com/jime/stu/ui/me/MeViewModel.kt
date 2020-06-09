@@ -49,6 +49,7 @@ class MeViewModel : BaseViewModel() {
             name.set("未登录")
             qianming.set("登录获取更多服务")
             imageUrl.set("")
+            is_member.set(false)
         }else{
             isLogin.set(true)
             launchOnlyresult({ homeRepository.myInfo()},{
@@ -57,6 +58,8 @@ class MeViewModel : BaseViewModel() {
                 name.set(userName)
                 imageUrl.set(headImg)
                 qianming.set("签名")
+
+                is_member.set(it.memberStatus)
             })
         }
     }

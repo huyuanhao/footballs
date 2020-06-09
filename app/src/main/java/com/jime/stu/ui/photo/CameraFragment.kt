@@ -138,10 +138,8 @@ class CameraFragment : BaseFragment<CameraViewModel, ViewDataBinding>() {
         override fun onDisplayRemoved(displayId: Int) = Unit
         override fun onDisplayChanged(displayId: Int) = view?.let { view ->
             if (displayId == this@CameraFragment.displayId) {
-                Log.d(TAG, "Rotation changed: ${view.display.rotation}")
                 imageCapture?.targetRotation = view.display.rotation
                 imageAnalyzer?.targetRotation = view.display.rotation
-                ToastUtils.showShort("Rotation changed: ${view.display.rotation}")
             }
         } ?: Unit
     }
@@ -412,7 +410,7 @@ class CameraFragment : BaseFragment<CameraViewModel, ViewDataBinding>() {
             outputDirectory.listFiles { file ->
                 EXTENSION_WHITELIST.contains(file.extension.toUpperCase(Locale.ROOT))
             }?.max()?.let {
-                setGalleryThumbnail(Uri.fromFile(it))
+//                setGalleryThumbnail(Uri.fromFile(it))
             }
         }
 
@@ -551,9 +549,10 @@ class CameraFragment : BaseFragment<CameraViewModel, ViewDataBinding>() {
 //                        requireActivity(), R.id.fragment_container
 //                ).navigate(CameraFragmentDirections
 //                        .actionCameraToGallery(outputDirectory.absolutePath))
-                var intent = Intent(activity, GalleryActivity::class.java)
-                intent.putExtra("path", outputDirectory.absolutePath)
-                startActivity(intent)
+                startActivity(Intent(activity, HistoryActivity::class.java))
+//                var intent = Intent(activity, GalleryActivity::class.java)
+//                intent.putExtra("path", outputDirectory.absolutePath)
+//                startActivity(intent)
             }
         }
     }

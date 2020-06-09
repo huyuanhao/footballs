@@ -935,14 +935,14 @@ public class UCropActivity extends BaseActivity<PhotoViewModel, UcropActivityPho
         LinearLayout viewGroup = findViewById(R.id.linearLayout);
         switch (msg.getCode()) {
             case 1:
-//                ImageDetail detail = (ImageDetail) msg.getObj();
-//                Intent intent = new Intent(this, PhotoResultActivity.class);
-//                intent.putExtra("detail", detail);
-//                startActivity(intent);
-//                finish();
-                if (window != null) {
-                    window.showAtLocation(viewGroup, Gravity.CENTER, 0, 0);
-                }
+                ImageDetail detail = (ImageDetail) msg.getObj();
+                Intent intent = new Intent(this, PhotoResultActivity.class);
+                intent.putExtra("detail", detail);
+                startActivity(intent);
+                finish();
+//                if (window != null) {
+//                    window.showAtLocation(viewGroup, Gravity.CENTER, 0, 0);
+//                }
                 break;
             case -3:
                 if (window != null) {

@@ -27,7 +27,7 @@ import java.io.File
 
 
 class MainActivity : AppCompatActivity() {
-    private val titles = arrayOf("网络图片",  "我的")
+    private val titles = arrayOf("识图",  "我的")
     val tabIcons = arrayOf(R.drawable.tab_home,R.drawable.tab_me)
     private val fragments = ArrayList<Fragment>()
     var old = 0;

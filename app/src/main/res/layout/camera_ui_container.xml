@@ -35,11 +35,12 @@
                 android:layout_centerVertical="true">
 
             <ImageView
-                    android:id="@+id/photo_view_button"
                     android:layout_width="@dimen/dp_50"
-                    android:layout_height="@dimen/dp_55" />
+                    android:layout_height="@dimen/dp_55"
+                    android:visibility="gone"/>
 
             <ImageView
+                    android:id="@+id/photo_view_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"

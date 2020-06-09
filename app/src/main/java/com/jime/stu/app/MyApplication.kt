@@ -1,16 +1,12 @@
 package com.jime.stu.app
 
 import android.content.Context
-import android.content.Intent
 import android.util.Log
-import android.widget.Toast
 import com.aleyn.mvvm.base.BaseApplication
 import com.blankj.utilcode.util.LogUtils
-import com.blankj.utilcode.util.ToastUtils
 import com.jime.stu.BuildConfig
 import com.jime.stu.R
 import com.jime.stu.bean.User
-import com.jime.stu.ui.MainActivity
 import com.jime.stu.utils.Preference
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshHeader
@@ -21,6 +17,7 @@ import com.umeng.message.IUmengRegisterCallback
 import com.umeng.message.PushAgent
 import com.umeng.message.UmengNotificationClickHandler
 import com.umeng.message.entity.UMessage
+import com.umeng.socialize.PlatformConfig
 import kotlin.properties.Delegates
 
 
@@ -54,7 +51,7 @@ class MyApplication : BaseApplication() {
 // 参数四：设备类型，必须参数，传参数为UMConfigure.DEVICE_TYPE_PHONE则表示手机；传参数为UMConfigure.DEVICE_TYPE_BOX则表示盒子；默认为手机；
 // 参数五：Push推送业务的secret 填充Umeng Message Secret对应信息（需替换）
         UMConfigure.init(this, "5ecb8140895cca850100025b", "Umeng", UMConfigure.DEVICE_TYPE_PHONE, "e9f97f44a488ab91ab2fb089f62aef0d")
-
+        PlatformConfig.setWeixin("wx3a633c432181b7a8", "279a985b623a404a415d64eac217359f")
         //获取消息推送代理示例
         //获取消息推送代理示例
         val mPushAgent = PushAgent.getInstance(this)
@@ -77,10 +74,12 @@ class MyApplication : BaseApplication() {
                     context: Context,
                     msg: UMessage
                 ) {
+                    LogUtils.e("umessage" + msg.toString())
                 }
 
                 override fun openActivity(context: Context?, msg: UMessage?) {
                     super.openActivity(context, msg);
+                    LogUtils.e("umessage + openActivity" + msg.toString())
                 }
             }
         mPushAgent.notificationClickHandler = notificationClickHandler

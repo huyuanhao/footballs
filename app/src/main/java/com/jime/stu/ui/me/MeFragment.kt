@@ -2,8 +2,6 @@ package com.jime.stu.ui.me
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.databinding.DataBindingUtil.getBinding
-import androidx.databinding.ViewDataBinding
 import com.afollestad.materialdialogs.MaterialDialog
 import com.aleyn.mvvm.base.BaseFragment
 import com.aleyn.mvvm.event.Message
@@ -12,9 +10,9 @@ import com.jime.stu.R
 import com.jime.stu.WebActivity
 import com.jime.stu.bean.MeInfo
 import com.jime.stu.databinding.MeFragmentBinding
+import com.jime.stu.share.ShareActivity
 import com.jime.stu.ui.detail.DetailActivity
 import com.jime.stu.ui.login.LoginActivity
-import com.jime.stu.ui.photo.HistoryActivity
 import com.jime.stu.utils.Preference
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -57,20 +55,26 @@ class MeFragment : BaseFragment<MeViewModel, MeFragmentBinding>() {
     }
 
     fun onFeelBackClick() {
-        ToastUtils.showShort("反馈")
-        startActivity(Intent(activity, HistoryActivity::class.java))
+        startActivity(Intent(activity, FeelBackActivity::class.java))
     }
 
     fun onSharedClick() {
-        ToastUtils.showShort("分享")
+        //                MyWebViewActivity.startToAfterVip(mContext);
+//
+        val share = Intent(activity, ShareActivity::class.java)
+        startActivity(share)
     }
 
     fun onAgreementClick() {
-        ToastUtils.showShort("协议")
+        val url by Preference(Preference.PRIVATEAGREE, "")
+        startActivity(
+            Intent(activity, WebActivity::class.java)
+                .putExtra("url", url).putExtra("title", "隐私协议")
+        )
     }
 
     fun onMessageClick() {
-        ToastUtils.showShort("消息")
+        startActivity(Intent(activity, MessageActivity::class.java))
     }
 
     fun onToLoginClick() {

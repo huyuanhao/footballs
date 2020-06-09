@@ -69,6 +69,11 @@ class HomeRepository private constructor(
         return netWork.getNewsList(page, s)
     }
 
+    //意见反馈
+    suspend fun upFeelBack(content:String): MyResult<Any> {
+        return netWork.upFeelBack(content)
+    }
+
     //启动接口
     suspend fun getAppInfo(): MyResult<Appinfo> {
         return netWork.getAppInfo()
@@ -90,12 +95,12 @@ class HomeRepository private constructor(
         return netWork.uploadFile(file)
     }
 
-    //上传本地图片
+    //上传网络图片
     suspend fun uploadUrl(imgUrl: String): MyResult<ImageDetail> {
         return netWork.uploadUrl(imgUrl)
     }
 
-    //登录
+    //我的列表信息
     suspend fun myInfo(): MyResult<MyListBean> {
         var u_userId by Preference(Preference.USER_ID, "0")
         return netWork.myInfo("android",u_userId)

@@ -78,6 +78,12 @@ interface HomeService {
     suspend fun myInfo(@Query("os") os: String,@Query("userId") userId: String): MyResult<MyListBean>
 
     /**
+     * 意见反馈
+     */
+    @POST("lmessage/leaveMessage")
+    suspend fun upFeelBack(@Query("userId") userId: String,@Query("udid") udid: String,@Query("content") content: String): MyResult<Any>
+
+    /**
      * 本地文件上传
      */
     @POST("img/file")

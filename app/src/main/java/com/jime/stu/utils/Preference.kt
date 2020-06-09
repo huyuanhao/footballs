@@ -22,17 +22,16 @@ class Preference<T>(val name: String, private val default: T) : ReadWritePropert
         const val UMENGPID = "umengPid"
         const val PHONE = "phone"
 
-        const val USERAGREE = "userAgree"
-        const val PAYMENTAGREE = "paymentAgree"
-        const val UNLOCKURL = "unlockurl"
-        const val SHARECONTENT = "shareContent"
-        const val PRIVATEAGREE = "privateAgree"
-        const val SHARETITLE = "shareTitle"
-        const val DOWNLOADURL = "downloadUrl"
-        const val SHAREURL = "shareUrl"
+        const val USERAGREE = "userAgree" //用户协议
+        const val PAYMENTAGREE = "paymentAgree"//付费会员协议
+        const val UNLOCKURL = "unlockurl"//h5支付跳转页面
+        const val SHARECONTENT = "shareContent"//分享内容
+        const val PRIVATEAGREE = "privateAgree"//隐私协议
+        const val SHARETITLE = "shareTitle"//分享标题
+        const val DOWNLOADURL = "downloadUrl"//apk下载地址
+        const val SHAREURL = "shareUrl"//分享落地页
         const val APPDOMAINURL = "appDomainUrl"
-        const val VERSIONCODE = "versionCode"
-
+        const val VERSIONCODE = "versionCode"//版本号
     }
 
     private val prefs: SharedPreferences by lazy {

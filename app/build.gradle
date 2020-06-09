@@ -19,14 +19,30 @@ android {
     buildTypes {
         debug {
             minifyEnabled false
-            buildConfigField("String","channel",rootProject.ext.android.channel)
+            buildConfigField("String", "channel", rootProject.ext.android.channel)
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
         }
         release {
             minifyEnabled false
-            buildConfigField("String","channel",rootProject.ext.android.channel)
+            buildConfigField("String", "channel", rootProject.ext.android.channel)
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
         }
+    }
+    signingConfigs {
+        debug {
+            storeFile file("D:\\newPro\\MVVMLin-master\\app\\stu.jks")
+            keyPassword "sharon910623jm"
+            keyAlias "stu"
+            storePassword "sharon910623jm"
+        }
+//        release {
+//            storeFile file("stu.jks")
+//            keyPassword "sharon910623jm"
+//            keyAlias "stu"
+//            storePassword "sharon910623jm"
+//        }
     }
     dataBinding {
         enabled = true
@@ -92,6 +108,8 @@ dependencies {
     implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.5.8'
 
     implementation 'org.greenrobot:eventbus:3.1.1'
+
+//    api 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
 //    implementation 'com.github.yalantis:ucrop:2.2.5'
 //    implementation 'com.jph.takephoto:takephoto_library:4.0.0'
 //    implementation 'com.github.pqpo:SmartCropper:v2.1.3'

@@ -1,9 +1,11 @@
 package com.jime.stu.ui.login
 
+import android.content.Intent
 import com.blankj.utilcode.util.RegexUtils
 
 import android.os.CountDownTimer
 import android.text.TextUtils
+import android.view.View
 import androidx.databinding.ObservableField
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.MutableLiveData
@@ -11,6 +13,7 @@ import androidx.lifecycle.OnLifecycleEvent
 import com.aleyn.mvvm.base.BaseViewModel
 import com.aleyn.mvvm.event.Message
 import com.blankj.utilcode.util.ToastUtils
+import com.jime.stu.WebActivity
 import com.jime.stu.network.entity.UsedWeb
 import com.jime.stu.utils.InjectorUtil
 import com.jime.stu.utils.Preference
@@ -32,6 +35,7 @@ class LoginViewModel : BaseViewModel() {
     var code = ObservableField("")
     var getCode = ObservableField("获取验证码")
     var code_enabled = ObservableField<Boolean>(true)
+    var isChecked = ObservableField<Boolean>(false)
     private val homeRepository by lazy { InjectorUtil.getHomeRepository() }
 
     var popularWeb = MutableLiveData<List<UsedWeb>>()
@@ -84,8 +88,19 @@ class LoginViewModel : BaseViewModel() {
         })
     }
 
+    fun getUserAgree(view: View) {
+        val url by Preference(Preference.USERAGREE, "")
+        view.context.startActivity(
+            Intent(view.context, WebActivity::class.java)
+                .putExtra("url", url).putExtra("title", "用户协议")
+        )
+    }
+
     fun Login() {
-//        getNewsList(1,"",true)
+        if (isChecked.get() == false) {
+            ToastUtils.showShort("请同意用户使用协议")
+            return
+        }
         if (TextUtils.isEmpty(phone.get().toString())) {
             ToastUtils.showShort("手机号不能为空")
             return
@@ -102,7 +117,7 @@ class LoginViewModel : BaseViewModel() {
             ToastUtils.showShort("请输入正确的验证码")
             return
         }
-        launchOnlyresult({homeRepository.login(phone.get().toString(), code.get().toString())},{
+        launchOnlyresult({ homeRepository.login(phone.get().toString(), code.get().toString()) }, {
             userId = it.userId.toString()
             userName = it.userName
             headImg = it.headImage

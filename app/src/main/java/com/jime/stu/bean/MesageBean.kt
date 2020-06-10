@@ -6,7 +6,7 @@ package com.jime.stu.bean
  */
 data class MesageBean (
     val after_open:String,
-    val text:String,
     val title:String,
-    val time:String
+    val text:String,
+    val time:String = ""
 )

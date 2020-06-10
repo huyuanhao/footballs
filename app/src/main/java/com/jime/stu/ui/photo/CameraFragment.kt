@@ -167,9 +167,9 @@ class CameraFragment : BaseFragment<CameraViewModel, ViewDataBinding>() {
     }
 
     private fun setGalleryThumbnail(uri: Uri) {
+        return
         // 包含库缩略图的视图的引用
         val thumbnail = container.findViewById<ImageView>(R.id.photo_view_button)
-
         // 在视图的线程中运行操作
         thumbnail.post {
 
@@ -410,7 +410,7 @@ class CameraFragment : BaseFragment<CameraViewModel, ViewDataBinding>() {
             outputDirectory.listFiles { file ->
                 EXTENSION_WHITELIST.contains(file.extension.toUpperCase(Locale.ROOT))
             }?.max()?.let {
-//                setGalleryThumbnail(Uri.fromFile(it))
+                setGalleryThumbnail(Uri.fromFile(it))
             }
         }
 
@@ -543,13 +543,13 @@ class CameraFragment : BaseFragment<CameraViewModel, ViewDataBinding>() {
 
         // 用于查看最新照片的按钮的侦听器
         controls.findViewById<ImageView>(R.id.photo_view_button).setOnClickListener {
+            startActivity(Intent(activity, HistoryActivity::class.java))
             // Only navigate when the gallery has photos
             if (true == outputDirectory.listFiles()?.isNotEmpty()) {
 //                Navigation.findNavController(
 //                        requireActivity(), R.id.fragment_container
 //                ).navigate(CameraFragmentDirections
 //                        .actionCameraToGallery(outputDirectory.absolutePath))
-                startActivity(Intent(activity, HistoryActivity::class.java))
 //                var intent = Intent(activity, GalleryActivity::class.java)
 //                intent.putExtra("path", outputDirectory.absolutePath)
 //                startActivity(intent)

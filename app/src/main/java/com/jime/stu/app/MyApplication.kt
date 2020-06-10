@@ -1,13 +1,18 @@
 package com.jime.stu.app
 
-import android.app.Notification
 import android.content.Context
 import android.content.Intent
 import android.util.Log
 import com.aleyn.mvvm.base.BaseApplication
+import com.blankj.utilcode.util.CacheDiskStaticUtils
+import com.blankj.utilcode.util.GsonUtils
 import com.blankj.utilcode.util.LogUtils
+import com.blankj.utilcode.util.TimeUtils
+import com.google.gson.reflect.TypeToken
 import com.jime.stu.BuildConfig
 import com.jime.stu.R
+import com.jime.stu.bean.History
+import com.jime.stu.bean.MesageBean
 import com.jime.stu.bean.User
 import com.jime.stu.ui.me.MessageActivity
 import com.jime.stu.utils.Preference
@@ -22,6 +27,8 @@ import com.umeng.message.UmengMessageHandler
 import com.umeng.message.UmengNotificationClickHandler
 import com.umeng.message.entity.UMessage
 import com.umeng.socialize.PlatformConfig
+import org.greenrobot.eventbus.EventBus
+import java.util.*
 import kotlin.properties.Delegates
 
 
@@ -90,9 +97,22 @@ class MyApplication : BaseApplication() {
                 msg: UMessage
             ) {
                 LogUtils.e("dealWithNotificationMessage", msg.toString())
+                val map = msg?.extra
                 val json = msg?.raw
                 LogUtils.e("dealWithNotificationMessage", json.toString())
                 //调用super，会展示通知，不调用super，则不展示通知。
+                //保存消息
+                val js = CacheDiskStaticUtils.getString("message")
+                val type =
+                    object : TypeToken<List<MesageBean?>?>() {}.type
+                var list: MutableList<MesageBean?> = ArrayList()
+                if (js != null) {
+                    list = GsonUtils.fromJson(js, type)
+                }
+                var s = MesageBean(msg.after_open,msg.title,msg.text,map.get("dateTime").toString())
+                list.add(s)
+                CacheDiskStaticUtils.put("message", GsonUtils.toJson(list))
+                EventBus.getDefault().post("message")
                 super.dealWithNotificationMessage(context, msg)
             }
 //            override fun getNotification(context: Context?, msg: UMessage?): Notification {

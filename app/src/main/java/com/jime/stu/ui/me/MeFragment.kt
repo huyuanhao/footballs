@@ -2,6 +2,7 @@ package com.jime.stu.ui.me
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import com.afollestad.materialdialogs.MaterialDialog
 import com.aleyn.mvvm.base.BaseFragment
 import com.aleyn.mvvm.event.Message
@@ -14,6 +15,7 @@ import com.jime.stu.share.ShareActivity
 import com.jime.stu.ui.detail.DetailActivity
 import com.jime.stu.ui.login.LoginActivity
 import com.jime.stu.utils.Preference
+import kotlinx.android.synthetic.main.me_fragment.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -73,6 +75,7 @@ class MeFragment : BaseFragment<MeViewModel, MeFragmentBinding>() {
         )
     }
 
+    //消息
     fun onMessageClick() {
         startActivity(Intent(activity, MessageActivity::class.java))
     }
@@ -132,6 +135,10 @@ class MeFragment : BaseFragment<MeViewModel, MeFragmentBinding>() {
     fun onGetMessage(message: String) {
         if(message.equals("fresh")) {
             lazyLoadData()
+        }else if(message.equals("message")){
+            ll_message.visibility = View.VISIBLE
+        }else if(message.equals("nomessage")){
+            ll_message.visibility = View.GONE
         }
     }
 }

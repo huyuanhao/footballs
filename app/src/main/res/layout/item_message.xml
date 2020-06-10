@@ -7,15 +7,14 @@
 
     <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="90dp"
-            android:padding="10dp">
+            android:layout_height="wrap_content"
+            android:padding="15dp">
 
         <ImageView
                 android:id="@+id/image"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_centerVertical="true"
-                android:src="@color/bg" />
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@mipmap/icon_message" />
 
         <TextView
                 android:id="@+id/tv_title"
@@ -23,22 +22,40 @@
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/image"
                 android:layout_marginLeft="10dp"
-                android:textSize="18sp"
+                android:maxLines="1"
+                android:textSize="15sp"
                 android:textStyle="bold"
-                android:textColor="@color/tv_color"
+                android:textColor="@color/black"
                 android:text="title" />
 
         <TextView
                 android:id="@+id/tv_detail"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/image"
                 android:layout_below="@id/tv_title"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp"
-                android:textSize="14sp"
+                android:textSize="12sp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:layout_toLeftOf="@id/tv_more"
                 android:textColor="@color/tv_color2"
-                android:text="title" />
+                android:text="多更多多更多更多更多更多更多更多更多更多" />
+
+        <TextView
+                android:id="@+id/tv_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_title"
+                android:layout_marginEnd="60dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="10dp"
+                android:textSize="12sp"
+                android:maxLines="1"
+                android:visibility="visible"
+                android:textColor="@color/colorPrimary"
+                android:text="更多" />
 
         <TextView
                 android:id="@+id/tv_time"
@@ -46,9 +63,9 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_marginLeft="10dp"
-                android:textSize="14sp"
+                android:textSize="11sp"
                 android:textColor="@color/tv_color2"
-                android:text="title" />
+                android:text="" />
     </RelativeLayout>
     <View
             android:layout_width="match_parent"

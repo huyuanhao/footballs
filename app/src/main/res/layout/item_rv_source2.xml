@@ -19,7 +19,7 @@
             android:background="@color/white"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
-            android:onClick="@{()->item_source2Listenner.onItemClick(mSameInfo)}"
+            android:onClick="@{(view)->item_source2Listenner.onItemClick(view,mSameInfo)}"
             android:orientation="vertical">
 
         <ImageView

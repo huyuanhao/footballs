@@ -4,7 +4,16 @@
     <data>
         <variable
                 name="viewModel"
-                type="com.jime.stu.ui.photo.ProductModel" />
+                type="com.jime.stu.ui.photo.SimipicModel" />
+
+        <variable
+                name="activity"
+                type="com.jime.stu.ui.photo.SimipicActivity" />
+
+        <variable
+                name="manager"
+                type="androidx.recyclerview.widget.LinearLayoutManager" />
+
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -21,7 +30,6 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 app:itemBinding="@{viewModel.itemBinding}"
-                app:items="@{viewModel.items}"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                app:items="@{viewModel.items}" />
     </LinearLayout>
 </layout>

@@ -35,7 +35,7 @@
     <string name="sign_in_now">立即登录</string>
     <string name="get_code">获取验证码</string>
     <string name="unlock_more_features">解锁使用更多功能</string>
-    <string name="renew">续费</string>
+    <string name="renew"></string>
     <string name="problem_feedback">问题反馈</string>
     <string name="shared">分享</string>
     <string name="user_privacy_agreement">用户隐私协议</string>

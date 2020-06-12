@@ -16,7 +16,7 @@ class FeelBackModel : BaseViewModel() {
         launchOnlyresult({
             homeRepository.upFeelBack(title)
         }, {
-            ToastUtils.showShort("上传成功")
+            ToastUtils.showShort("反馈成功")
             defUI.msgEvent.postValue(Message(1))
         })
     }

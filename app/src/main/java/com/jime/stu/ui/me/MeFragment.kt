@@ -1,7 +1,10 @@
 package com.jime.stu.ui.me
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import com.afollestad.materialdialogs.MaterialDialog
 import com.aleyn.mvvm.base.BaseFragment
@@ -14,11 +17,19 @@ import com.jime.stu.databinding.MeFragmentBinding
 import com.jime.stu.share.ShareActivity
 import com.jime.stu.ui.detail.DetailActivity
 import com.jime.stu.ui.login.LoginActivity
+import com.jime.stu.ui.photo.CameraFragment
+import com.jime.stu.utils.GlideEngine
 import com.jime.stu.utils.Preference
+import com.luck.picture.lib.PictureSelector
+import com.luck.picture.lib.config.PictureConfig
+import com.luck.picture.lib.config.PictureMimeType
+import com.luck.picture.lib.entity.LocalMedia
+import com.luck.picture.lib.listener.OnResultCallbackListener
 import kotlinx.android.synthetic.main.me_fragment.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import java.io.File
 
 
 class MeFragment : BaseFragment<MeViewModel, MeFragmentBinding>() {
@@ -47,6 +58,49 @@ class MeFragment : BaseFragment<MeViewModel, MeFragmentBinding>() {
         viewModel.getItemList()
     }
 
+    //头像点击
+    fun onHeadImageClick(){
+        if(is_login) {
+            PictureSelector.create(this)
+                .openGallery(PictureMimeType.ofAll())
+                .imageEngine(GlideEngine.createGlideEngine())
+                .selectionMode(PictureConfig.SINGLE)// 多选 or 单选
+                .isSingleDirectReturn(true)//单选直接返回
+                .isCamera(true)
+                .isCompress(true)
+                .isEnableCrop(true)// 是否裁剪
+                .forResult(object : OnResultCallbackListener<LocalMedia> {
+                    override fun onResult(result: MutableList<LocalMedia>?) {
+                        var media = result?.get(0)
+//                            var intent = Intent(activity, PhotoActivity::class.java)
+//                            intent.putExtra("file", media?.getPath().toString())
+//                            startActivity(intent)
+                        Log.i("headCamera", "是否压缩:" + media?.isCompressed());
+                        Log.i("headCamera", "压缩:" + media?.getCompressPath());
+                        Log.i("headCamera", "原图:" + media?.getPath());
+                        Log.i("headCamera", "是否裁剪:" + media?.isCut());
+                        Log.i("headCamera", "裁剪:" + media?.getCutPath());
+                        Log.i("headCamera", "是否开启原图:" + media?.isOriginal());
+                        Log.i("headCamera", "原图路径:" + media?.getOriginalPath());
+                        Log.i("headCamera", "Android Q 特有Path:" + media?.getAndroidQToPath());
+                        Log.i("headCamera", "宽高: " + media?.getWidth() + "x" + media?.getHeight());
+                        Log.i("headCamera", "Size: " + media?.getSize());
+                        if (media != null) {
+                            if (TextUtils.isEmpty(media?.compressPath)) {
+                                viewModel.uploadFile(file = File(media?.getCutPath()))
+                            } else {
+                                viewModel.uploadFile(file = File(media?.getCompressPath()))
+                            }
+                        }
+                    }
+
+                    override fun onCancel() {
+                    }
+                });
+        }else{
+            startActivityForResult(Intent(activity, LoginActivity::class.java), 100)
+        }
+    }
     //开通会员
     fun openClick() {
         if(is_login){
@@ -57,7 +111,11 @@ class MeFragment : BaseFragment<MeViewModel, MeFragmentBinding>() {
     }
 
     fun onFeelBackClick() {
-        startActivity(Intent(activity, FeelBackActivity::class.java))
+        if(is_login) {
+            startActivity(Intent(activity, FeelBackActivity::class.java))
+        }else{
+            startActivityForResult(Intent(activity, LoginActivity::class.java), 100)
+        }
     }
 
     fun onSharedClick() {

@@ -13,6 +13,7 @@ import com.jime.stu.network.entity.UsedWeb
 import com.jime.stu.utils.InjectorUtil
 import com.jime.stu.utils.Preference
 import me.tatarka.bindingcollectionadapter2.ItemBinding
+import java.io.File
 
 /**
  *   @auther : Aleyn
@@ -55,12 +56,12 @@ class MeViewModel : BaseViewModel() {
             launchOnlyresult({ homeRepository.myInfo()},{
                 items.clear()
                 items.addAll(it.dynamicList)
-                name.set(userName)
+                name.set("已登录")
                 imageUrl.set(headImg)
-                qianming.set("签名")
+                qianming.set(userName)
 
                 is_member.set(it.memberStatus)
-            })
+            },isShowDialog = true)
         }
     }
 
@@ -72,6 +73,13 @@ class MeViewModel : BaseViewModel() {
             if (result.isSuccess()) {
                 popularWeb.value = result.data
             }
+        })
+    }
+    fun uploadFile(file: File){
+        launchOnlyresult({ homeRepository.uploadHeadFile(file) }, {
+//            defUI.msgEvent.postValue(Message(1,obj = it))
+            headImg = it.toString()
+            imageUrl.set(headImg)
         })
     }
 

@@ -59,7 +59,6 @@ import com.aleyn.mvvm.event.Message
 import com.blankj.utilcode.util.ToastUtils
 import com.example.zhouwei.library.CustomPopWindow
 import com.jime.stu.R
-import com.jime.stu.bean.ImageDetail
 import com.jime.stu.network.api.HomeService
 import com.jime.stu.ui.MainActivity
 import com.jime.stu.ui.MainActivity.Companion.KEY_EVENT_ACTION
@@ -217,8 +216,9 @@ class CameraFragment : BaseFragment<CameraViewModel, ViewDataBinding>() {
         viewFinder.post {
 
             // 跟踪附加此视图的显示
-            displayId = viewFinder.display.displayId
-
+            if(viewFinder.display!=null) {
+                displayId = viewFinder.display.displayId
+            }
             // 生成UI控件
             updateCameraUi()
 
@@ -561,8 +561,8 @@ class CameraFragment : BaseFragment<CameraViewModel, ViewDataBinding>() {
         var outCropUrl = context?.let { MainActivity.getOutputDirectory(it) }
         var mDestinationUri =
             Uri.fromFile(File(outputDirectory, "图" + savedUri.toFile().name));
-        var uCrop = UCrop.of(savedUri, mDestinationUri);
-        var options = UCrop.Options();
+        var uCrop = UCrops.of(savedUri, mDestinationUri);
+        var options = UCrops.Options();
         //开始设置
         //设置最大缩放比例
         options.setMaxScaleMultiplier(5f);

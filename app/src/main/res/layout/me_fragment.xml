@@ -36,13 +36,12 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="end"
                     android:gravity="center"
-                    android:onClick="@{()->fragment.onExitClick()}"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
                     android:text="@string/login_exit"
                     android:textColor="@color/tv_color"
                     android:textSize="15sp"
-                    android:visibility="@{meViewModel.isLogin?View.VISIBLE:View.GONE}" />
+                    android:visibility="@{View.GONE}" />
         </androidx.appcompat.widget.Toolbar>
 
 
@@ -60,7 +59,8 @@
                     android:layout_width="84dp"
                     android:layout_height="84dp"
                     android:layout_centerVertical="true"
-                    android:layout_marginEnd="27.5dp" />
+                    android:layout_marginEnd="27.5dp"
+                    android:onClick="@{()->fragment.onHeadImageClick()}" />
 
             <LinearLayout
                     android:layout_width="match_parent"
@@ -84,8 +84,7 @@
                         android:layout_marginTop="5dp"
                         android:text="@={meViewModel.qianming}"
                         android:textColor="@color/tv_color2"
-                        android:textSize="14sp"
-                        android:visibility="gone" />
+                        android:textSize="14sp" />
             </LinearLayout>
         </RelativeLayout>
 
@@ -97,6 +96,8 @@
                 android:background="@mipmap/bg_vip"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:onClick="@{()->fragment.openClick()}"
+                android:clickable="@{meViewModel.is_member?false:true}"
                 android:paddingEnd="15dp">
 
             <ImageView
@@ -139,187 +140,237 @@
                     android:layout_gravity="right|center_vertical"
                     android:background="@drawable/rect_white_15"
                     android:gravity="center"
-                    android:onClick="@{()->fragment.openClick()}"
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp"
+                    android:visibility="@{meViewModel.is_member?View.GONE:View.VISIBLE}"
                     android:text="@{meViewModel.is_member()?@string/renew:@string/unlocking_function}"
                     android:textColor="@color/colorPrimary" />
         </RelativeLayout>
 
-        <RelativeLayout
+        <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:onClick="@{()->fragment.onFeelBackClick()}"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp">
-
-            <ImageView
-                    android:layout_width="19.5dp"
-                    android:layout_height="20.5dp"
-                    android:layout_centerVertical="true"
-                    android:background="@mipmap/icon_me_feelback" />
-
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="30dp"
-                    android:text="@string/problem_feedback"
-                    android:textColor="@color/tv_color" />
-
-            <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:background="@mipmap/icon_me_right" />
-        </RelativeLayout>
-
-        <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_marginStart="50dp"
-                android:background="@color/tv_gray" />
-
-        <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:onClick="@{()->fragment.onSharedClick()}"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp">
-
-            <ImageView
-                    android:layout_width="19.5dp"
-                    android:layout_height="20.5dp"
-                    android:layout_centerVertical="true"
-                    android:background="@mipmap/icon_me_shared" />
-
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="30dp"
-                    android:text="@string/shared"
-                    android:textColor="@color/tv_color" />
-
-            <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:background="@mipmap/icon_me_right" />
-        </RelativeLayout>
-
-        <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_marginStart="50dp"
-                android:background="@color/tv_gray" />
-
-        <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:onClick="@{()->fragment.onAgreementClick()}"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp">
-
-            <ImageView
-                    android:layout_width="19.5dp"
-                    android:layout_height="20.5dp"
-                    android:layout_centerVertical="true"
-                    android:background="@mipmap/icon_me_agreement" />
-
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="30dp"
-                    android:text="@string/user_privacy_agreement"
-                    android:textColor="@color/tv_color" />
-
-            <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:background="@mipmap/icon_me_right" />
-        </RelativeLayout>
-
-        <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_marginStart="50dp"
-                android:background="@color/tv_gray" />
-
-        <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:onClick="@{(view) -> fragment.onMessageClick()}"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
-                android:visibility="@{meViewModel.is_member?View.VISIBLE:View.GONE}">
-
-            <ImageView
-                    android:layout_width="19.5dp"
-                    android:layout_height="20.5dp"
-                    android:layout_centerVertical="true"
-                    android:background="@mipmap/icon_me_message" />
-
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="30dp"
-                    android:text="@string/my_news"
-                    android:textColor="@color/tv_color" />
-
-            <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:background="@mipmap/icon_me_right" />
+                android:layout_height="match_parent">
 
             <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="30dp"
-                    android:id="@+id/ll_message"
-                    android:visibility="gone"
-                    android:orientation="horizontal">
+                    android:orientation="vertical">
 
-                <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:textColor="@color/tv_color"
-                        android:textSize="10sp"
-                        android:gravity="center"
-                        android:text="新消息" />
+                <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:onClick="@{()->fragment.onFeelBackClick()}"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="20dp">
 
-                <ImageView
-                        android:layout_width="5dp"
-                        android:layout_height="5dp"
-                        android:gravity="center"
-                        android:layout_gravity="center"
-                        android:background="@drawable/rect_red"/>
+                    <ImageView
+                            android:layout_width="19.5dp"
+                            android:layout_height="20.5dp"
+                            android:layout_centerVertical="true"
+                            android:background="@mipmap/icon_me_feelback" />
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="30dp"
+                            android:text="@string/problem_feedback"
+                            android:textColor="@color/tv_color" />
+
+                    <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:background="@mipmap/icon_me_right" />
+                </RelativeLayout>
+
+                <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_marginStart="50dp"
+                        android:background="@color/tv_gray" />
+
+                <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:onClick="@{()->fragment.onSharedClick()}"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="20dp">
+
+                    <ImageView
+                            android:layout_width="19.5dp"
+                            android:layout_height="20.5dp"
+                            android:layout_centerVertical="true"
+                            android:background="@mipmap/icon_me_shared" />
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="30dp"
+                            android:text="@string/shared"
+                            android:textColor="@color/tv_color" />
+
+                    <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:background="@mipmap/icon_me_right" />
+                </RelativeLayout>
+
+                <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_marginStart="50dp"
+                        android:background="@color/tv_gray" />
+
+                <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:onClick="@{()->fragment.onAgreementClick()}"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="20dp">
+
+                    <ImageView
+                            android:layout_width="19.5dp"
+                            android:layout_height="20.5dp"
+                            android:layout_centerVertical="true"
+                            android:background="@mipmap/icon_me_agreement" />
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="30dp"
+                            android:text="@string/user_privacy_agreement"
+                            android:textColor="@color/tv_color" />
+
+                    <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:background="@mipmap/icon_me_right" />
+                </RelativeLayout>
+
+                <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_marginStart="50dp"
+                        android:background="@color/tv_gray" />
+
+                <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:onClick="@{(view) -> fragment.onMessageClick()}"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="20dp"
+                        android:visibility="@{meViewModel.is_member?View.VISIBLE:View.GONE}">
+
+                    <ImageView
+                            android:layout_width="19.5dp"
+                            android:layout_height="20.5dp"
+                            android:layout_centerVertical="true"
+                            android:background="@mipmap/icon_me_message" />
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="30dp"
+                            android:text="@string/my_news"
+                            android:textColor="@color/tv_color" />
+
+                    <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:background="@mipmap/icon_me_right" />
+
+                    <LinearLayout
+                            android:id="@+id/ll_message"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginEnd="30dp"
+                            android:orientation="horizontal"
+                            android:visibility="gone">
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:text="新消息"
+                                android:textColor="@color/tv_color"
+                                android:textSize="10sp" />
+
+                        <ImageView
+                                android:layout_width="5dp"
+                                android:layout_height="5dp"
+                                android:layout_gravity="center"
+                                android:background="@drawable/rect_red"
+                                android:gravity="center" />
+                    </LinearLayout>
+                    <View
+                            android:id="@+id/view_my_news"
+                            android:layout_width="match_parent"
+                            android:layout_height="0.5dp"
+                            android:layout_marginStart="30dp"
+                            android:layout_alignParentBottom="true"
+                            android:background="@color/tv_gray"
+                            android:visibility="@{meViewModel.is_member?View.VISIBLE:View.GONE}" />
+                </RelativeLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:itemBinding="@{meViewModel.itemBinding}"
+                        app:items="@{meViewModel.items}"
+                        android:nestedScrollingEnabled="true"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+                <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:onClick="@{()->fragment.onExitClick()}"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="20dp"
+                        android:visibility="@{meViewModel.isLogin?View.VISIBLE:View.GONE}">
+
+                    <ImageView
+                            android:layout_width="19.5dp"
+                            android:layout_height="20.5dp"
+                            android:layout_centerVertical="true"
+                            android:background="@mipmap/icon_exit" />
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="30dp"
+                            android:text="@string/login_exit"
+                            android:textColor="@color/tv_color" />
+
+                    <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:background="@mipmap/icon_me_right" />
+
+                    <View
+                            android:layout_width="match_parent"
+                            android:layout_height="0.5dp"
+                            android:layout_marginStart="30dp"
+                            android:layout_alignParentBottom="true"
+                            android:background="@color/tv_gray" />
+                </RelativeLayout>
+
             </LinearLayout>
-        </RelativeLayout>
-
-        <View
-                android:id="@+id/view_my_news"
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_marginStart="50dp"
-                android:background="@color/tv_gray"
-                android:visibility="@{meViewModel.is_member?View.VISIBLE:View.GONE}" />
-
-        <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:itemBinding="@{meViewModel.itemBinding}"
-                app:items="@{meViewModel.items}"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        </androidx.core.widget.NestedScrollView>
     </LinearLayout>
 </layout>

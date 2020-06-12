@@ -35,23 +35,47 @@ class AndroidXunJS(//            userJson = UserUtil.getUserJson();
             return userJson
         }
 
-    @get:JavascriptInterface
-    val eventData: String?
-        get() {
-            var event_json: String? = null
-            val event = EventJson(phone = phone,udid = DeviceUtils.getAndroidID(),userId = userId,systemname = "h5",url = "",efrom = "支付",
-                etype = "click",title = "支付",mode = "首頁",productId="",referer="",channel= BuildConfig.channel,networktype= NetworkUtils.getNetworkType().name,
-                systemversion=DeviceUtils.getSDKVersionName(),productversion = BuildConfig.VERSION_CODE.toString(),eventTime= Date().getTime().toString(),
-                power = "",gyo = "",batterystatus = "",batteryType = "",refererUrl = "",mac = DeviceUtils.getMacAddress(),imei = PhoneUtils.getIMEI(),
-                idfa = "",androidid=DeviceUtils.getAndroidID(),deviceBrand=DeviceUtils.getManufacturer(),
-                deviceModel=DeviceUtils.getModel(),applicationid=BuildConfig.APPLICATION_ID)
-            try {
-                event_json = GsonUtils.toJson(event)
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-            return event_json
+    //PhoneUtils.getIMEI()
+    @JavascriptInterface
+    fun getEventData(): String? {
+        var event_json: String? = null
+        val event = EventJson(
+            phone = phone,
+            udid = DeviceUtils.getAndroidID(),
+            userId = userId,
+            systemname = "h5",
+            url = "",
+            efrom = "支付",
+            etype = "click",
+            title = "支付",
+            mode = "首頁",
+            productId = "",
+            referer = "",
+            channel = BuildConfig.channel,
+            networktype = NetworkUtils.getNetworkType().name,
+            systemversion = DeviceUtils.getSDKVersionName(),
+            productversion = BuildConfig.VERSION_CODE.toString(),
+            eventTime = Date().getTime().toString(),
+            power = "",
+            gyo = "",
+            batterystatus = "",
+            batteryType = "",
+            refererUrl = "",
+            mac = DeviceUtils.getMacAddress(),
+            imei = "",
+            idfa = "",
+            androidid = DeviceUtils.getAndroidID(),
+            deviceBrand = DeviceUtils.getManufacturer(),
+            deviceModel = DeviceUtils.getModel(),
+            applicationid = BuildConfig.APPLICATION_ID
+        )
+        try {
+            event_json = GsonUtils.toJson(event)
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
+        return event_json
+    }
 
     //去主页
     @JavascriptInterface

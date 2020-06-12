@@ -47,6 +47,14 @@
                 android:configChanges="orientation|keyboardHidden|screenSize"
                 android:screenOrientation="portrait"/>
 
+        <activity android:name="com.jime.stu.ui.photo.SimipicActivity"
+                android:configChanges="orientation|keyboardHidden|screenSize"
+                android:screenOrientation="portrait"/>
+
+        <activity android:name="com.jime.stu.ui.photo.PictureDetailActivity"
+                android:configChanges="orientation|keyboardHidden|screenSize"
+                android:screenOrientation="portrait"/>
+
         <activity android:name="com.jime.stu.ui.photo.ImageResourceActivity"
                 android:configChanges="orientation|keyboardHidden|screenSize"
                 android:screenOrientation="portrait"/>
@@ -59,7 +67,7 @@
                 android:screenOrientation="portrait"/>
 
         <activity
-                android:name=".ui.photo.UCropActivity"
+                android:name=".ui.photo.UCropActivitys"
                 android:screenOrientation="portrait"/>
 
         <activity

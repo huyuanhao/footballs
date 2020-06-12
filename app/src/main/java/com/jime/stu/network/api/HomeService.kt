@@ -97,6 +97,13 @@ interface HomeService {
     suspend fun uploadUrl(@Query("imgUrl") imgUrl: String): MyResult<ImageDetail>
 
     /**
+     * 上传头像
+     */
+    @POST("user/icon")
+    @Multipart
+    suspend fun uploadHeadFile(@Part icon: MultipartBody.Part): MyResult<Any>
+
+    /**
      * 启动接口
      */
     @POST("start/up")

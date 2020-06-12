@@ -31,7 +31,6 @@ class WelcomeActivity : BaseActivity<WelcomeModel, ViewDataBinding>() {
 
     override fun initView(savedInstanceState: Bundle?) {
         viewModel.getAppInfo()
-        MyWebView
     }
 
 

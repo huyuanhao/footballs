@@ -46,6 +46,6 @@ class WelcomeModel :BaseViewModel(){
             shareUrl = it.dataDictionary.shareUrl
             appDomainUrl = it.dataDictionary.appDomainUrl
             versionCode = it.dataDictionary.versionCode
-        })
+        },isShowDialog = false)
     }
 }

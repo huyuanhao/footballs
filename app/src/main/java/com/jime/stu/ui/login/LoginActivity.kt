@@ -7,6 +7,7 @@ import com.aleyn.mvvm.event.Message
 import com.jime.stu.R
 import com.jime.stu.databinding.ActivityLoginBinding
 import com.jime.stu.ui.MainActivity
+import kotlinx.android.synthetic.main.toorbar.*
 import org.greenrobot.eventbus.EventBus
 
 /**
@@ -21,10 +22,14 @@ class LoginActivity : BaseActivity<LoginViewModel, ActivityLoginBinding>() {
 
     override fun initView(savedInstanceState: Bundle?) {
         mBinding?.loginViewModel = viewModel
-        resources
     }
 
     override fun initData() {
+        tv_title.text = "登录"
+
+        toolbar.setNavigationOnClickListener {
+            finish()
+        }
     }
 
     override fun handleEvent(msg: Message) {

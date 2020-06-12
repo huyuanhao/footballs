@@ -55,10 +55,7 @@ import com.jime.stu.R;
 import com.jime.stu.WebActivity;
 import com.jime.stu.bean.History;
 import com.jime.stu.bean.ImageDetail;
-import com.jime.stu.databinding.ActivityPhotoBinding;
-import com.jime.stu.databinding.UcropActivityPhotoboxBinding;
-import com.jime.stu.ui.detail.DetailActivity;
-import com.jime.stu.ui.detail.MyWebViewActivity;
+import com.jime.stu.databinding.UcropActivityBinding;
 import com.jime.stu.ui.login.LoginActivity;
 import com.jime.stu.utils.Preference;
 import com.yalantis.ucrop.PictureMultiCuttingActivity;
@@ -80,13 +77,11 @@ import com.yalantis.ucrop.view.widget.HorizontalProgressWheelView;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.json.JSONObject;
 
 import java.io.File;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.Type;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -96,7 +91,7 @@ import java.util.Locale;
  */
 
 @SuppressWarnings("ConstantConditions")
-public class UCropActivity extends BaseActivity<PhotoViewModel, UcropActivityPhotoboxBinding> {
+public class UCropActivitys extends BaseActivity<PhotoViewModel, UcropActivityBinding> {
     /**
      * 是否使用沉浸式，子类复写该方法来确定是否采用沉浸式
      *
@@ -120,7 +115,7 @@ public class UCropActivity extends BaseActivity<PhotoViewModel, UcropActivityPho
 
     @Override
     public int layoutId() {
-        return R.layout.ucrop_activity_photobox;
+        return R.layout.ucrop_activity;
     }
 
     @Override
@@ -237,7 +232,7 @@ public class UCropActivity extends BaseActivity<PhotoViewModel, UcropActivityPho
 //        if (isImmersive()) {
 //            immersive();
 //        }
-//        setContentView(R.layout.ucrop_activity_photobox);
+//        setContentView(R.layout.ucrop_activity);
 //        mScreenWidth = ScreenUtils.getScreenWidth(this);
 //        setupViews(intent);
 //        setNavBar();
@@ -396,7 +391,7 @@ public class UCropActivity extends BaseActivity<PhotoViewModel, UcropActivityPho
         }
         mCompressFormat = (compressFormat == null) ? DEFAULT_COMPRESS_FORMAT : compressFormat;
 
-        mCompressQuality = intent.getIntExtra(UCrop.Options.EXTRA_COMPRESSION_QUALITY, UCropActivity.DEFAULT_COMPRESS_QUALITY);
+        mCompressQuality = intent.getIntExtra(UCrop.Options.EXTRA_COMPRESSION_QUALITY, UCropActivitys.DEFAULT_COMPRESS_QUALITY);
 
         // custom options
         mOverlayView.setDimmedBorderColor(intent.getIntExtra(UCrop.Options.EXTRA_DIMMED_LAYER_BORDER_COLOR, getResources().getColor(R.color.ucrop_color_default_crop_frame)));
@@ -905,10 +900,10 @@ public class UCropActivity extends BaseActivity<PhotoViewModel, UcropActivityPho
                 window.dissmiss();
                 if((Boolean)preference.getValue(Preference.IS_LOGIN, false)){
                     String url = (String) unlockurl.getValue(Preference.UNLOCKURL, "https://photoapi.jimetec.com/shitu/dist/pay.html");
-                    startActivity(new Intent(UCropActivity.this, WebActivity.class)
+                    startActivity(new Intent(UCropActivitys.this, WebActivity.class)
                             .putExtra("url",url).putExtra("title","支付"));
                 }else {
-                    startActivity(new Intent(UCropActivity.this, LoginActivity.class));
+                    startActivity(new Intent(UCropActivitys.this, LoginActivity.class));
                 }
 //                Intent intent = new Intent();
 //                intent.setAction("android.intent.action.VIEW");
@@ -926,7 +921,7 @@ public class UCropActivity extends BaseActivity<PhotoViewModel, UcropActivityPho
                 window.dissmiss();
             }
         });
-        window = new CustomPopWindow.PopupWindowBuilder(UCropActivity.this).setView(popView)
+        window = new CustomPopWindow.PopupWindowBuilder(UCropActivitys.this).setView(popView)
                 .create();
     }
 

@@ -38,6 +38,8 @@ class HistoryActivity : AppCompatActivity() {
 
         recyclerView.layoutManager = LinearLayoutManager(this)
         adapter = HistoryAdapter()
+        var footView = layoutInflater.inflate(R.layout.item_bottom_his,null)
+        adapter.addFooterView(footView)
         recyclerView.adapter = adapter
 
         tv_right.setOnClickListener {
@@ -73,6 +75,11 @@ class HistoryActivity : AppCompatActivity() {
         val type = object : TypeToken<List<History?>?>() {}.type
         if(js!=null) {
             list = GsonUtils.fromJson<MutableList<History>>(js, type)
+            if(list.size == 0){
+                tv_right.visibility = View.GONE
+                ll_bottom.visibility = View.GONE
+                ll_null.visibility = View.VISIBLE
+            }
             adapter.setNewData(list)
         }
     }
@@ -87,6 +94,11 @@ class HistoryActivity : AppCompatActivity() {
                 }
             }
             adapter.notifyDataSetChanged()
+            if(list.size==0){
+                tv_right.visibility = View.GONE
+                ll_bottom.visibility = View.GONE
+                ll_null.visibility = View.VISIBLE
+            }
         }
     }
 

@@ -74,6 +74,14 @@ class HomeNetWork {
     //网络图片上传
     suspend fun uploadUrl(imgUrl: String) = mService.uploadUrl(imgUrl)
 
+    //头像上传
+    suspend fun uploadHeadFile(file:File) = mService.uploadHeadFile(
+        MultipartBody.Part.createFormData(
+            "icon", file.name, RequestBody.create(
+                "image/png".toMediaTypeOrNull(), file
+            )
+        ))
+
     companion object {
         @Volatile
         private var netWork: HomeNetWork? = null

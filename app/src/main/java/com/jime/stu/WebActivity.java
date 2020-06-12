@@ -1,6 +1,7 @@
 package com.jime.stu;
 
 import android.app.DownloadManager;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -22,6 +23,7 @@ import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.NetworkUtils;
@@ -44,6 +46,16 @@ public class WebActivity extends AppCompatActivity implements OnClickListener {
     private RelativeLayout error;
     private RelativeLayout toolBarBack,toolBarFresh,toolBarOff;
     private String title;
+    private Toolbar toorBar;
+
+    //    String referer,
+    public  static  void startTo(Context context, String url, String toTitle){
+        Intent intent = new Intent(context,WebActivity.class);
+        intent.putExtra("url",url);
+        intent.putExtra("title",toTitle);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -55,6 +67,13 @@ public class WebActivity extends AppCompatActivity implements OnClickListener {
         String url = intent.getStringExtra("url");
 //        initTitleBar(title, this, null);
 
+        toorBar = findViewById(R.id.toolbar);
+        toorBar.setNavigationOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         webView = findViewById(R.id.webview);
         tvTitle = findViewById(R.id.tv_title);
         pb = findViewById(R.id.progressBar);

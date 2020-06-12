@@ -22,6 +22,7 @@ class Preference<T>(val name: String, private val default: T) : ReadWritePropert
         const val UMENGPID = "umengPid"
         const val PHONE = "phone"
 
+        const val ISSHOWAGREEMENT = "isShowAgreement" //是否同意协议
         const val USERAGREE = "userAgree" //用户协议
         const val PAYMENTAGREE = "paymentAgree"//付费会员协议
         const val UNLOCKURL = "unlockurl"//h5支付跳转页面

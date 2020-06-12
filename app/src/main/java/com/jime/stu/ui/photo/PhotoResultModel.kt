@@ -1,7 +1,9 @@
 package com.jime.stu.ui.photo
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Environment
+import android.view.View
 import androidx.databinding.ObservableArrayList
 import androidx.databinding.ObservableField
 import com.aleyn.mvvm.base.BaseViewModel
@@ -10,6 +12,7 @@ import com.blankj.utilcode.util.ImageUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.jime.stu.BR
 import com.jime.stu.R
+import com.jime.stu.WebActivity
 import com.jime.stu.bean.Info
 import com.jime.stu.bean.SameInfo
 import com.jime.stu.network.entity.NewsBean
@@ -33,15 +36,33 @@ class PhotoResultModel : BaseViewModel() {
     var baike = ObservableField<String>()
 
     private val itemXiangguanOnClickListener = object : OnItemClickListener {
-        override fun onItemClick(item: Info) {
-            defUI.msgEvent.postValue(Message(0, obj = item))
+        override fun onItemClick(view: View,item: Info) {
+            view.context.startActivity(
+                Intent(view.context, WebActivity::class.java)
+                    .putExtra("url", item.buyurl).putExtra("title", "相关产品")
+            )
         }
     }
     private val itemSourceOnClickListener = object : OnItemSourceClickListener {
-        override fun onItemClick(item: SameInfo) {
-            defUI.msgEvent.postValue(Message(0, obj = item))
+        override fun onItemClick(view: View,item: SameInfo) {
+            view.context.startActivity(
+                Intent(view.context, WebActivity::class.java)
+                    .putExtra("url", item.url).putExtra("title", "图片来源")
+            )
         }
     }
+
+    private val itemRelatedOnClickListener = object : OnItemRelatedClickListener {
+        override fun onItemClick(view: View,item: String) {
+            view.context.startActivity(
+                Intent(view.context, PictureDetailActivity::class.java)
+                    .putExtra("simipic", itemRelated)
+                    .putExtra("position", itemRelated.indexOf(item))
+            )
+        }
+    }
+
+
     var items = ObservableArrayList<Info>()
     var itemBinding = ItemBinding.of<Info>(BR.mInfo, R.layout.item_rv_xiangguan)
         .bindExtra(BR.item_meListenner, itemXiangguanOnClickListener)
@@ -49,6 +70,10 @@ class PhotoResultModel : BaseViewModel() {
     var itemsSource = ObservableArrayList<SameInfo>()
     var itemSourceBinding = ItemBinding.of<SameInfo>(BR.mSameInfo, R.layout.item_rv_source)
         .bindExtra(BR.item_sourceListenner, itemSourceOnClickListener)
+
+    var itemRelated = ObservableArrayList<String>()
+    var itemRelatedBinding = ItemBinding.of<String>(BR.mSimipic, R.layout.item_rv_related)
+        .bindExtra(BR.item_relatedListenner, itemRelatedOnClickListener)
 
     fun getNewsList(page: Int, word: String, fresh: Boolean) {
         launchGo({
@@ -70,16 +95,23 @@ class PhotoResultModel : BaseViewModel() {
         defUI.msgEvent.postValue(Message(3))
     }
 
+    fun relatedDetail(){
+        defUI.msgEvent.postValue(Message(4))
+    }
+
     fun back() {
         defUI.msgEvent.postValue(Message(0))
     }
 
     interface OnItemClickListener {
-        fun onItemClick(item: Info)
+        fun onItemClick(view : View, item: Info)
     }
 
     interface OnItemSourceClickListener {
-        fun onItemClick(item: SameInfo)
+        fun onItemClick(view: View,item: SameInfo)
     }
 
+    interface OnItemRelatedClickListener {
+        fun onItemClick(view: View,item: String)
+    }
 }

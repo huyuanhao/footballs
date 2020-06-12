@@ -19,7 +19,7 @@
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
             android:paddingTop="10dp"
-            android:onClick="@{()->item_prodeuctListenner.onItemClick(mInfo)}"
+            android:onClick="@{(view)->item_prodeuctListenner.onItemClick(view,mInfo)}"
             android:orientation="horizontal">
 
         <ImageView

@@ -97,6 +97,12 @@ interface HomeService {
     suspend fun uploadUrl(@Query("imgUrl") imgUrl: String): MyResult<ImageDetail>
 
     /**
+     * 反馈有误
+     */
+    @POST("user/feedback")
+    suspend fun upError(@Query("imgUrl") imgUrl: String,@Query("data") data: String): MyResult<Any>
+
+    /**
      * 上传头像
      */
     @POST("user/icon")

@@ -2,11 +2,14 @@ package com.jime.stu.ui.photo
 
 import android.os.Bundle
 import androidx.databinding.ViewDataBinding
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.aleyn.mvvm.base.BaseActivity
 import com.jime.stu.R
 import com.jime.stu.bean.Product
 import com.jime.stu.bean.Same
 import com.jime.stu.databinding.ActivityImageResourceBinding
+import kotlinx.android.synthetic.main.activity_simipic.*
 import kotlinx.android.synthetic.main.toorbar.*
 
 /**
@@ -15,6 +18,7 @@ import kotlinx.android.synthetic.main.toorbar.*
  */
 class ImageResourceActivity :BaseActivity<ImageResourceModel,ActivityImageResourceBinding>(){
     lateinit var same:Same
+    private val mAdapter by lazy { ImageResourceAdapter() }
     override fun layoutId(): Int {
         return R.layout.activity_image_resource
     }
@@ -26,7 +30,13 @@ class ImageResourceActivity :BaseActivity<ImageResourceModel,ActivityImageResour
     override fun initData() {
         same = intent.getSerializableExtra("same") as Same
 
-        viewModel.itemsSource.addAll(same.listSameInfo)
+        with(recyclerView) {
+            layoutManager = LinearLayoutManager(this@ImageResourceActivity)
+            adapter = mAdapter
+        }
+        var footView = layoutInflater.inflate(R.layout.item_bottom, null)
+        mAdapter.addFooterView(footView)
+        mAdapter.setNewData(same.listSameInfo)
 
         tv_title.text = "图片来源"
 

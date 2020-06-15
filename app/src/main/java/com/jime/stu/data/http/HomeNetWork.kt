@@ -56,7 +56,7 @@ class HomeNetWork {
     //我的列表信息
     suspend fun myInfo(os:String,userId: String) = mService.myInfo(os,userId)
 
-    //我的列表信息
+    //意见反馈
     suspend fun upFeelBack(content:String):  MyResult<Any> {
         val userId by Preference(Preference.USER_ID, "")
         val udid = DeviceUtils.getAndroidID()
@@ -73,6 +73,9 @@ class HomeNetWork {
 
     //网络图片上传
     suspend fun uploadUrl(imgUrl: String) = mService.uploadUrl(imgUrl)
+
+    //反馈错误
+    suspend fun upError(imgUrl: String,data:String) = mService.upError(imgUrl,data)
 
     //头像上传
     suspend fun uploadHeadFile(file:File) = mService.uploadHeadFile(

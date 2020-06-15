@@ -22,17 +22,10 @@ import me.tatarka.bindingcollectionadapter2.ItemBinding
  */
 class SimipicModel :BaseViewModel(){
     private val homeRepository by lazy { InjectorUtil.getHomeRepository() }
-    private val itemRelatedOnClickListener = object : OnItemClickListener {
-        override fun onItemClick(view: View, item: String) {
-            view.context.startActivity(Intent(view.context, PictureDetailActivity::class.java)
-                .putExtra("simipic", items)
-                .putExtra("position", items.indexOf(item)))
-        }
-    }
 
-    var items = ObservableArrayList<String>()
-    var itemBinding = ItemBinding.of<String>(BR.mSimipic, R.layout.item_rv_related2)
-        .bindExtra(BR.item_relatedListenner, itemRelatedOnClickListener)
+//    var items = ObservableArrayList<String>()
+//    var itemBinding = ItemBinding.of<String>(BR.mSimipic, R.layout.item_rv_related2)
+//        .bindExtra(BR.item_relatedListenner, itemRelatedOnClickListener)
 
     interface OnItemClickListener {
         fun onItemClick(view: View, item: String)

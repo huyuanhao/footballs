@@ -1,6 +1,5 @@
 package com.jime.stu.utils
 
-import com.aleyn.mvvm.network.interceptor.BaseInterceptor
 import com.aleyn.mvvm.network.interceptor.Level
 import com.aleyn.mvvm.network.interceptor.LoggingInterceptor
 import com.blankj.utilcode.util.DeviceUtils
@@ -43,7 +42,6 @@ class RetrofitClient {
         val map = hashMapOf<String, String>("Accept-Encoding" to "identity")
         val u_udid = DeviceUtils.getAndroidID()
         var u_timestamp = System.currentTimeMillis()
-        var u_userId by Preference(Preference.USER_ID, "0")
         val sb = StringBuilder()
         sb.append("udid=").append(u_udid)
             .append("&timestamp=").append(u_timestamp)
@@ -54,8 +52,6 @@ class RetrofitClient {
         map.put("u_udid", u_udid)
         map.put("u_timestamp", u_timestamp.toString())
         map.put("u_sign", u_sign)
-        map.put("u_userId", u_userId)
-
 
         return OkHttpClient.Builder()
             .connectTimeout(20L, TimeUnit.SECONDS)

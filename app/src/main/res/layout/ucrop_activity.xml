@@ -93,7 +93,7 @@
                             android:gravity="center"
                             android:paddingStart="0dp"
                             android:paddingEnd="20dp"
-                            android:text="@string/search"
+                            android:text="@string/distinguish"
                             android:textColor="@color/colorPrimary"
                             android:textSize="15sp" />
                     <!--            android:onClick="@{(view)->photoViewModel.search(view)}"-->

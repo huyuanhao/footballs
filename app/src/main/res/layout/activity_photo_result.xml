@@ -110,12 +110,26 @@
                             android:textSize="12sp" />
 
                     <TextView
+                            android:id="@+id/tv_error"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/tv_maybe"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_alignParentRight="true"
+                            android:text="反馈有误"
+                            android:textColor="@color/colorPrimary"
+                            android:textStyle="bold" />
+
+                    <TextView
+                            android:id="@+id/tv_detail"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@id/tv_maybe"
                             android:layout_marginStart="10dp"
-                            android:layout_marginTop="10dp"
+                            android:layout_marginTop="20dp"
                             android:layout_toRightOf="@id/img"
+                            android:layout_toLeftOf="@id/tv_error"
                             android:text="@={viewModel.title}"
                             android:textColor="@color/black"
                             android:textStyle="bold" />

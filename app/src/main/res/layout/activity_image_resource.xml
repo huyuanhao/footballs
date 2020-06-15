@@ -16,11 +16,9 @@
         <include layout="@layout/toorbar" />
 
         <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                app:itemBinding="@{viewModel.itemSourceBinding}"
-                app:items="@{viewModel.itemsSource}"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                android:orientation="vertical" />
     </LinearLayout>
 </layout>

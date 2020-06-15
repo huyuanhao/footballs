@@ -76,11 +76,11 @@ class PhotoViewModel : BaseViewModel() {
                     toSearch(file)
                 }
             }).launch() //启动压缩
-
     }
 
     fun toSearch(file: File){
         launchOnlyresult({ homeRepository.uploadFile(file) }, {
+            it.imgUrl = file.absolutePath
             defUI.msgEvent.postValue(Message(1,obj = it))
         },{
             defUI.msgEvent.postValue(Message(it.code,obj = it.errMsg))

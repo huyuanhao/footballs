@@ -62,6 +62,6 @@ class PictureDetailActivity : AppCompatActivity() {
          }
 
          mediaViewPager.currentItem = position
-         tvTitle.text = "1/" + mediaList.size
+         tvTitle.text = (position+1).toString() + "/" + mediaList.size
     }
 }

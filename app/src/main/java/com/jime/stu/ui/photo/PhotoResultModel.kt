@@ -103,6 +103,14 @@ class PhotoResultModel : BaseViewModel() {
         defUI.msgEvent.postValue(Message(0))
     }
 
+    fun upError(imgUrl: String,data:String) {
+        launchOnlyresult({
+            homeRepository.upError(imgUrl,data)
+        }, {
+            ToastUtils.showShort("感谢您的反馈")
+        })
+    }
+
     interface OnItemClickListener {
         fun onItemClick(view : View, item: Info)
     }

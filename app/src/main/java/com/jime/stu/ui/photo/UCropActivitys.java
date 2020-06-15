@@ -862,17 +862,6 @@ public class UCropActivitys extends BaseActivity<PhotoViewModel, UcropActivityBi
                     viewModel.setPhotoString(file.getAbsolutePath());
                     getMBinding().getPhotoViewModel().search(mSearch);
 
-                    //保存历史记录
-                    String js = CacheDiskStaticUtils.getString("history");
-                    Type type = new TypeToken<List<History>>() {
-                    }.getType();
-                    List<History> list = new ArrayList<>();
-                    if (js != null) {
-                        list = GsonUtils.fromJson(js, type);
-                    }
-                    String time = TimeUtils.getNowString();
-                    list.add(new History(file.getAbsolutePath(), file.getName(), time, false));
-                    CacheDiskStaticUtils.put("history", GsonUtils.toJson(list));
 //                    onBackPressed();
                 }
             }
@@ -930,10 +919,23 @@ public class UCropActivitys extends BaseActivity<PhotoViewModel, UcropActivityBi
         LinearLayout viewGroup = findViewById(R.id.linearLayout);
         switch (msg.getCode()) {
             case 1:
+
                 ImageDetail detail = (ImageDetail) msg.getObj();
                 Intent intent = new Intent(this, PhotoResultActivity.class);
                 intent.putExtra("detail", detail);
                 startActivity(intent);
+
+                //保存历史记录
+                String js = CacheDiskStaticUtils.getString("history");
+                Type type = new TypeToken<List<History>>() {
+                }.getType();
+                List<History> list = new ArrayList<>();
+                if (js != null) {
+                    list = GsonUtils.fromJson(js, type);
+                }
+                String time = TimeUtils.getNowString();
+                list.add(0,new History(detail.getImgUrl(), detail.getImgName(), time, false));
+                CacheDiskStaticUtils.put("history", GsonUtils.toJson(list));
                 finish();
 //                if (window != null) {
 //                    window.showAtLocation(viewGroup, Gravity.CENTER, 0, 0);

@@ -100,6 +100,11 @@ class HomeRepository private constructor(
         return netWork.uploadUrl(imgUrl)
     }
 
+    //反馈错误
+    suspend fun upError(imgUrl: String,data:String): MyResult<Any> {
+        return netWork.upError(imgUrl,data)
+    }
+
     //头像上传
     suspend fun uploadHeadFile(file: File): MyResult<Any> {
         return netWork.uploadHeadFile(file)

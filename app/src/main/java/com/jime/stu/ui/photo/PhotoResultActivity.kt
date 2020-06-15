@@ -6,6 +6,7 @@ import android.text.TextUtils
 import android.view.View
 import com.aleyn.mvvm.base.BaseActivity
 import com.aleyn.mvvm.event.Message
+import com.blankj.utilcode.util.GsonUtils
 import com.jime.stu.R
 import com.jime.stu.WebActivity
 import com.jime.stu.bean.ImageDetail
@@ -52,6 +53,9 @@ class PhotoResultActivity:BaseActivity<PhotoResultModel,ActivityPhotoResultBindi
         }
         tv_huan.setOnClickListener{
             finish()
+        }
+        tv_error.setOnClickListener {
+            viewModel.upError(detail.imgUrl,GsonUtils.toJson(detail))
         }
     }
 

@@ -20,18 +20,9 @@ import me.tatarka.bindingcollectionadapter2.ItemBinding
 class ImageResourceModel :BaseViewModel(){
     private val homeRepository by lazy { InjectorUtil.getHomeRepository() }
 
-    private val itemSourceOnClickListener = object : OnItemSourceClickListener {
-        override fun onItemClick(view: View, item: SameInfo) {
-            view.context.startActivity(
-                Intent(view.context, WebActivity::class.java)
-                    .putExtra("url", item.url).putExtra("title", "图片来源")
-            )
-        }
-    }
-
-    var itemsSource = ObservableArrayList<SameInfo>()
-    var itemSourceBinding = ItemBinding.of<SameInfo>(BR.mSameInfo, R.layout.item_rv_source2)
-        .bindExtra(BR.item_source2Listenner, itemSourceOnClickListener)
+//    var itemsSource = ObservableArrayList<SameInfo>()
+//    var itemSourceBinding = ItemBinding.of<SameInfo>(BR.mSameInfo, R.layout.item_rv_source2)
+//        .bindExtra(BR.item_source2Listenner, itemSourceOnClickListener)
 
     interface OnItemSourceClickListener {
         fun onItemClick(view: View, item: SameInfo)

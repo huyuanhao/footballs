@@ -1,5 +1,6 @@
 package com.jime.stu.bean
 
+import java.io.File
 import java.io.Serializable
 
 /**
@@ -13,7 +14,8 @@ data class ImageDetail (
     val imgName: String,
     val product: Product,
     val same: Same,
-    val simipic: Simipic
+    val simipic: Simipic,
+    var imgUrl: String
 ):Serializable
 
 

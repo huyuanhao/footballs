@@ -38,6 +38,7 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.core.net.UriKt;
+import androidx.lifecycle.Observer;
 import androidx.transition.AutoTransition;
 import androidx.transition.Transition;
 import androidx.transition.TransitionManager;
@@ -75,6 +76,7 @@ import com.yalantis.ucrop.view.UCropView;
 import com.yalantis.ucrop.view.widget.AspectRatioTextView;
 import com.yalantis.ucrop.view.widget.HorizontalProgressWheelView;
 
+import org.greenrobot.eventbus.EventBus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -150,6 +152,13 @@ public class UCropActivitys extends BaseActivity<PhotoViewModel, UcropActivityBi
         });
 
         BarUtils.setStatusBarColor(this, getResources().getColor(R.color.colorPrimary));
+
+        viewModel.getDefUI().getShowDialog().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                showLoading("识别中");
+            }
+        });
     }
 
     @Override
@@ -876,9 +885,7 @@ public class UCropActivitys extends BaseActivity<PhotoViewModel, UcropActivityBi
 
     CustomPopWindow window;
     public void setPop() {
-//        LinearLayout popView = findViewById(R.id.linearLayout);
         Preference preference = new Preference(Preference.IS_LOGIN, false);
-
         Preference unlockurl = new Preference(Preference.UNLOCKURL, "https://photoapi.jimetec.com/shitu/dist/pay.html");
         View popView = LayoutInflater.from(this).inflate(R.layout.dialog_open_member, null);
         TextView tv_open = popView.findViewById(R.id.tv_open);
@@ -891,17 +898,10 @@ public class UCropActivitys extends BaseActivity<PhotoViewModel, UcropActivityBi
                     String url = (String) unlockurl.getValue(Preference.UNLOCKURL, "https://photoapi.jimetec.com/shitu/dist/pay.html");
                     startActivity(new Intent(UCropActivitys.this, WebActivity.class)
                             .putExtra("url",url).putExtra("title","支付"));
+
                 }else {
                     startActivity(new Intent(UCropActivitys.this, LoginActivity.class));
                 }
-//                Intent intent = new Intent();
-//                intent.setAction("android.intent.action.VIEW");
-//                Uri content_url = Uri.parse(url);
-//                intent.setData(content_url);
-//                startActivity(intent);
-//                startActivity(new Intent(UCropActivity.this, WebActivity.class)
-//                        .putExtra("url", (String) unlockurl.getValue(Preference.UNLOCKURL, "https://photoapi.jimetec.com/shitu/dist/pay.html")));
-//                MyWebViewActivity.startTo(UCropActivity.this,url,"","支付");
             }
         });
         iv_open_erro.setOnClickListener(new View.OnClickListener() {
@@ -985,4 +985,5 @@ public class UCropActivitys extends BaseActivity<PhotoViewModel, UcropActivityBi
         int exitAnimation = getIntent().getIntExtra(UCrop.Options.EXTRA_WINDOW_EXIT_ANIMATION, 0);
         overridePendingTransition(R.anim.ucrop_anim_fade_in, exitAnimation != 0 ? exitAnimation : R.anim.ucrop_close);
     }
+
 }

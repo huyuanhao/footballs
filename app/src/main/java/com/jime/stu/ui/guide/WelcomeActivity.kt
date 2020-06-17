@@ -31,6 +31,7 @@ class WelcomeActivity : BaseActivity<WelcomeModel, ViewDataBinding>() {
 
     override fun initView(savedInstanceState: Bundle?) {
         viewModel.getAppInfo()
+        viewModel.save("",0,"启动","启动")
     }
 
 

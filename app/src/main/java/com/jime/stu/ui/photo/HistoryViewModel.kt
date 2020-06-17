@@ -18,6 +18,6 @@ class HistoryViewModel :BaseViewModel(){
             defUI.msgEvent.postValue(Message(1,obj = it))
         },{
             defUI.msgEvent.postValue(Message(it.code,obj = it.errMsg))
-        })
+        },{},true,"识别中")
     }
 }

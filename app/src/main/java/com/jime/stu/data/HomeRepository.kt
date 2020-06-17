@@ -116,6 +116,10 @@ class HomeRepository private constructor(
         return netWork.myInfo("android",u_userId)
     }
 
+    suspend fun save(url:String,etypeInt:Int,title:String,mode:String):MyResult<Any>{
+        return netWork.save(url,etypeInt,title,mode)
+    }
+
     companion object {
 
         @Volatile

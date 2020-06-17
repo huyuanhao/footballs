@@ -38,8 +38,14 @@ class GuideActivity : Activity() {
         //添加轮播图片数据（图片数据不局限于网络图片、本地资源文件、View 都可以）,刷新数据也是调用该方法
         xbanner.loadImage(XBannerAdapter { banner, model, view, position ->
             val tvContent = view.findViewById(R.id.start) as TextView
+            val tvOpen = view.findViewById(R.id.tv_open) as TextView
             val img = view.findViewById(R.id.image) as ImageView
             img.setImageResource((model as BannerInfo).img)
+            if(position == 1){
+                tvOpen.visibility = View.VISIBLE
+            }else{
+                tvOpen.visibility = View.GONE
+            }
             if(position == 3){
                 tvContent.visibility = View.VISIBLE
             }else{

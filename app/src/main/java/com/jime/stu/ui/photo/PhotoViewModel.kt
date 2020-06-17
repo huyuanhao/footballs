@@ -12,7 +12,6 @@ import com.jime.stu.network.entity.NewsBean
 import com.jime.stu.ui.MainActivity
 import com.jime.stu.utils.FileUtils
 import com.jime.stu.utils.InjectorUtil
-import kotlinx.android.synthetic.main.activity_photo.*
 import top.zibin.luban.Luban
 import top.zibin.luban.OnCompressListener
 import java.io.File
@@ -56,6 +55,7 @@ class PhotoViewModel : BaseViewModel() {
     }
 
     fun search(v: View) {
+
         var file = FileUtils.saveFile(photo.get(),photoString)
         Luban.with(v.context)
             .load(file) // 传人要压缩的图片列表
@@ -84,7 +84,18 @@ class PhotoViewModel : BaseViewModel() {
             defUI.msgEvent.postValue(Message(1,obj = it))
         },{
             defUI.msgEvent.postValue(Message(it.code,obj = it.errMsg))
-        })
+        },{
+           save("",  1, "识别按钮 ", "裁剪页面识别图片")
+        },true,"识别中")
+
+    }
+
+    fun save(url:String,etypeInt:Int,title:String,mode:String){
+        launchOnlyresult({homeRepository.save(url,etypeInt,title,mode)},{
+            LogUtils.e("事件上报成功：url="+ url  +"etypeInt="+ etypeInt +"title="+ title +"mode="+ mode)
+        },{
+            LogUtils.e("事件上报失败：url="+ url  +"etypeInt="+ etypeInt +"title="+ title +"mode="+ mode)
+        },{},false)
     }
 
     interface OnItemClickListener {

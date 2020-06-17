@@ -8,6 +8,7 @@ import com.jime.stu.bean.Appinfo
 import com.jime.stu.bean.ImageDetail
 import com.jime.stu.network.entity.*
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.http.*
 
 /**
@@ -118,4 +119,11 @@ interface HomeService {
                            ,@Query("sysVersion") sysVersion: String,@Query("deviceBrand") deviceBrand: String
                            ,@Query("deviceModel") deviceModel: String,@Query("mac") mac: String
                            ,@Query("umengPid") umengPid: String): MyResult<Appinfo>
+
+    /**
+     * 事件接口
+     */
+    @POST("event/save")
+    suspend fun save(@Body body: RequestBody): MyResult<Any>
+
 }

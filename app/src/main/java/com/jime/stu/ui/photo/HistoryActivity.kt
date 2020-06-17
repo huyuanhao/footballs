@@ -3,29 +3,35 @@ package com.jime.stu.ui.photo
 import android.content.Intent
 import android.os.Bundle
 import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.CompoundButton
-import android.widget.LinearLayout
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aleyn.mvvm.base.BaseActivity
 import com.aleyn.mvvm.event.Message
 import com.blankj.utilcode.util.CacheDiskStaticUtils
 import com.blankj.utilcode.util.GsonUtils
-import com.blankj.utilcode.util.TimeUtils
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
+import com.example.zhouwei.library.CustomPopWindow
+import com.example.zhouwei.library.CustomPopWindow.PopupWindowBuilder
 import com.google.gson.reflect.TypeToken
 import com.jime.stu.R
+import com.jime.stu.WebActivity
 import com.jime.stu.bean.History
 import com.jime.stu.bean.ImageDetail
+import com.jime.stu.ui.login.LoginActivity
 import com.jime.stu.utils.ImageLoaderManager
+import com.jime.stu.utils.Preference
 import com.lxj.xpopup.XPopup
 import com.umeng.message.PushAgent
 import kotlinx.android.synthetic.main.activity_history.*
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toorbar.*
 import java.io.File
-import java.util.*
 
 
 /**
@@ -48,6 +54,7 @@ class HistoryActivity : BaseActivity<HistoryViewModel,ViewDataBinding>() {
     }
 
     override fun initData() {
+        setPop()
         recyclerView.layoutManager = LinearLayoutManager(this)
         mAdapter = HistoryAdapter()
         var footView = layoutInflater.inflate(R.layout.item_bottom_his, null)
@@ -99,12 +106,19 @@ class HistoryActivity : BaseActivity<HistoryViewModel,ViewDataBinding>() {
         if (js != null) {
             list = GsonUtils.fromJson<MutableList<History>>(js, type)
             if (list.size == 0) {
-                tv_right.visibility = View.GONE
-                ll_bottom.visibility = View.GONE
-                ll_null.visibility = View.VISIBLE
+                setNullView()
             }
             mAdapter.setNewData(list)
+        }else{
+            list = mutableListOf()
+            setNullView()
         }
+    }
+
+    fun setNullView(){
+        tv_right.visibility = View.GONE
+        ll_bottom.visibility = View.GONE
+        ll_null.visibility = View.VISIBLE
     }
 
     fun setDelete() {
@@ -125,6 +139,40 @@ class HistoryActivity : BaseActivity<HistoryViewModel,ViewDataBinding>() {
         }
     }
 
+    var window: CustomPopWindow? = null
+    fun setPop() {
+        val isLogin by Preference(  Preference.IS_LOGIN, false)
+        val unlockurl by Preference( Preference.UNLOCKURL, "https://photoapi.jimetec.com/shitu/dist/pay.html")
+        val popView =
+            LayoutInflater.from(this).inflate(R.layout.dialog_open_member, null)
+        val tv_open =
+            popView.findViewById<TextView>(R.id.tv_open)
+        val iv_open_erro =
+            popView.findViewById<ImageView>(R.id.iv_open_erro)
+        tv_open.setOnClickListener {
+            window!!.dissmiss()
+            if (isLogin) {
+                startActivity(
+                    Intent(
+                        this@HistoryActivity,
+                        WebActivity::class.java
+                    )
+                        .putExtra("url", unlockurl).putExtra("title", "支付")
+                )
+            } else {
+                startActivity(
+                    Intent(
+                        this@HistoryActivity,
+                        LoginActivity::class.java
+                    )
+                )
+            }
+        }
+        iv_open_erro.setOnClickListener { window!!.dissmiss() }
+        window = PopupWindowBuilder(this@HistoryActivity).setView(popView)
+            .create()
+    }
+
     override fun handleEvent(msg: Message) {
         when (msg.code) {
             1 -> {
@@ -135,9 +183,11 @@ class HistoryActivity : BaseActivity<HistoryViewModel,ViewDataBinding>() {
                 startActivity(intent)
                 finish()
             }
+            -3 ->{
+                window?.showAtLocation(ll_parent, Gravity.CENTER, 0, 0)
+            }
         }
     }
-
 
     override fun onDestroy() {
         super.onDestroy()

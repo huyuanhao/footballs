@@ -188,11 +188,8 @@ class CameraFragment : BaseFragment<CameraViewModel, ViewDataBinding>() {
         return R.layout.fragment_camera
     }
 
-
-    private val mService by lazy { RetrofitClient.getInstance().create(HomeService::class.java) }
-    @SuppressLint("MissingPermission")
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun initView(savedInstanceState: Bundle?) {
+        super.initView(savedInstanceState)
         fragment = this
         container = view as ConstraintLayout
         viewFinder = container.findViewById(R.id.view_finder)
@@ -200,7 +197,7 @@ class CameraFragment : BaseFragment<CameraViewModel, ViewDataBinding>() {
         // 初始化我们的后台执行器
         cameraExecutor = Executors.newSingleThreadExecutor()
 
-        broadcastManager = LocalBroadcastManager.getInstance(view.context)
+        broadcastManager = LocalBroadcastManager.getInstance(container.context)
 
         // 设置将从主活动接收事件的意图筛选器
         val filter = IntentFilter().apply { addAction(KEY_EVENT_ACTION) }
@@ -268,6 +265,7 @@ class CameraFragment : BaseFragment<CameraViewModel, ViewDataBinding>() {
      * 在配置更改时手动对相机控件充气并更新用户界面，以避免从视图层次结构中删除和重新添加取景器；这在支持it.
      * 注意：从Android 8开始支持该标志，但对于运行Android 9或更低版本的设备，屏幕上仍有一个小的闪光灯
      */
+
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
 
@@ -448,6 +446,7 @@ class CameraFragment : BaseFragment<CameraViewModel, ViewDataBinding>() {
                             savedUri.toFile()
                             toCrop(savedUri)
 
+                            viewModel.save("",1,"拍照按钮","识图拍照")
                             // We can only change the foreground Drawable using API level 23+ API
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 //                            用最新拍摄的图片更新库缩略图
@@ -500,6 +499,7 @@ class CameraFragment : BaseFragment<CameraViewModel, ViewDataBinding>() {
 
             // Listener for button used to switch cameras. Only called if the button is enabled
             it.setOnClickListener {
+                viewModel.save("",1,"相册按钮","识图相册")
                 PictureSelector.create(this)
                     .openGallery(PictureMimeType.ofAll())
                     .imageEngine(createGlideEngine())
@@ -513,7 +513,12 @@ class CameraFragment : BaseFragment<CameraViewModel, ViewDataBinding>() {
 //                            var intent = Intent(activity, PhotoActivity::class.java)
 //                            intent.putExtra("file", media?.getPath().toString())
 //                            startActivity(intent)
-                            toCrop(Uri.fromFile(File(media?.path)))
+
+                            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
+                                toCrop(Uri.fromFile(File(media?.androidQToPath)))
+                            }else {
+                                toCrop(Uri.fromFile(File(media?.path)))
+                            }
                             Log.i(TAG, "是否压缩:" + media?.isCompressed());
                             Log.i(TAG, "压缩:" + media?.getCompressPath());
                             Log.i(TAG, "原图:" + media?.getPath());
@@ -537,12 +542,13 @@ class CameraFragment : BaseFragment<CameraViewModel, ViewDataBinding>() {
                 // 重新绑定用例以更新选定的相机
 //                bindCameraUseCases()
                 // 设置相机及其用例
-                setUpCamera()
+//                setUpCamera()
             }
         }
 
         // 用于查看最新照片的按钮的侦听器
         controls.findViewById<ImageView>(R.id.photo_view_button).setOnClickListener {
+            viewModel.save("",1,"历史按钮","识图历史")
             startActivity(Intent(activity, HistoryActivity::class.java))
             // Only navigate when the gallery has photos
             if (true == outputDirectory.listFiles()?.isNotEmpty()) {

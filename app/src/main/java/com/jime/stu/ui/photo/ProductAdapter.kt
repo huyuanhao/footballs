@@ -30,7 +30,7 @@ class ProductAdapter:BaseQuickAdapter<Info,BaseDBViewHoder<ItemRvXiangguan2Bindi
 
     override fun convert(helper: BaseDBViewHoder<ItemRvXiangguan2Binding>, item: Info?) {
         helper.getBinding().mInfo = item
-        helper.getBinding().itemProdeuctListenner = itemXiangguanOnClickListener
+//        helper.getBinding().itemProdeuctListenner = itemXiangguanOnClickListener
         helper.getBinding().executePendingBindings()
     }
 

@@ -1,6 +1,7 @@
 package com.jime.stu.ui.me
 
 import android.os.Bundle
+import android.view.View
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aleyn.mvvm.base.BaseActivity
@@ -10,7 +11,10 @@ import com.google.gson.reflect.TypeToken
 import com.jime.stu.R
 import com.jime.stu.bean.History
 import com.jime.stu.bean.MesageBean
+import kotlinx.android.synthetic.main.activity_history.*
 import kotlinx.android.synthetic.main.activity_message.*
+import kotlinx.android.synthetic.main.activity_message.ll_null
+import kotlinx.android.synthetic.main.activity_message.recyclerView
 import kotlinx.android.synthetic.main.toorbar.*
 import org.greenrobot.eventbus.EventBus
 
@@ -45,6 +49,11 @@ class MessageActivity :BaseActivity<MessageModel,ViewDataBinding>(){
         if(js!=null) {
             list = GsonUtils.fromJson<MutableList<MesageBean>>(js, type)
             mAdapter.setNewData(list)
+            if(list.size == 0){
+                ll_null.visibility = View.VISIBLE
+            }
+        }else{
+            ll_null.visibility = View.VISIBLE
         }
     }
 }

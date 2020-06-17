@@ -1,9 +1,11 @@
 package com.aleyn.mvvm.base
 
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
@@ -12,6 +14,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.customview.customView
+import com.afollestad.materialdialogs.customview.getCustomView
 import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
 import com.aleyn.mvvm.R
 import com.aleyn.mvvm.event.Message
@@ -87,7 +90,7 @@ abstract class BaseFragment<VM : BaseViewModel, DB : ViewDataBinding> : Fragment
      */
     private fun registorDefUIChange() {
         viewModel.defUI.showDialog.observe(viewLifecycleOwner, Observer {
-            showLoading()
+            showLoading(it)
         })
         viewModel.defUI.dismissDialog.observe(viewLifecycleOwner, Observer {
             dismissLoading()
@@ -116,6 +119,21 @@ abstract class BaseFragment<VM : BaseViewModel, DB : ViewDataBinding> : Fragment
                     .maxWidth(R.dimen.dialog_width)
             }
         }
+        dialog?.show()
+    }
+
+    fun showLoading(text:String) {
+        if (dialog == null) {
+            dialog = context?.let {
+                MaterialDialog(it)
+                    .cancelable(false)
+                    .cornerRadius(8f)
+                    .customView(R.layout.custom_progress_dialog_view, noVerticalPadding = true)
+                    .lifecycleOwner(this)
+                    .maxWidth(R.dimen.dialog_width)
+            }
+        }
+        dialog?.getCustomView()?.findViewById<TextView>(R.id.tvTip)?.text = if(TextUtils.isEmpty(text)) "加载中" else text
         dialog?.show()
     }
 

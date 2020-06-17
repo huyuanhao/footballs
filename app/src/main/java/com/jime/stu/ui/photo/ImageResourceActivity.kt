@@ -1,11 +1,14 @@
 package com.jime.stu.ui.photo
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aleyn.mvvm.base.BaseActivity
+import com.chad.library.adapter.base.BaseQuickAdapter
 import com.jime.stu.R
+import com.jime.stu.WebActivity
 import com.jime.stu.bean.Product
 import com.jime.stu.bean.Same
 import com.jime.stu.databinding.ActivityImageResourceBinding
@@ -37,6 +40,16 @@ class ImageResourceActivity :BaseActivity<ImageResourceModel,ActivityImageResour
         var footView = layoutInflater.inflate(R.layout.item_bottom, null)
         mAdapter.addFooterView(footView)
         mAdapter.setNewData(same.listSameInfo)
+        mAdapter.setOnItemClickListener { adapter, view, position ->
+            val url = mAdapter.getItem(position)?.url
+            if (url != null) {
+                viewModel.save(url, 1, "跳转的HTML页面", "跳转的HTML页面")
+            }
+            view.context.startActivity(
+                Intent(view.context, WebActivity::class.java)
+                    .putExtra("url", url).putExtra("title", "图片来源")
+            )
+        }
 
         tv_title.text = "图片来源"
 

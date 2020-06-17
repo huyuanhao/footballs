@@ -104,6 +104,7 @@ class MeFragment : BaseFragment<MeViewModel, MeFragmentBinding>() {
     //开通会员
     fun openClick() {
         if(is_login){
+            viewModel.save("",1,"会员按钮","会员")
             startActivity(Intent(activity, WebActivity::class.java).putExtra("url", url).putExtra("title","支付"))
         }else{
             startActivityForResult(Intent(activity, LoginActivity::class.java), 100)
@@ -121,12 +122,14 @@ class MeFragment : BaseFragment<MeViewModel, MeFragmentBinding>() {
     fun onSharedClick() {
         //                MyWebViewActivity.startToAfterVip(mContext);
 //
+        viewModel.save("",1,"分享按钮","分享")
         val share = Intent(activity, ShareActivity::class.java)
         startActivity(share)
     }
 
     fun onAgreementClick() {
         val url by Preference(Preference.PRIVATEAGREE, "")
+        viewModel.save(url,1," 隐私协议按钮","隐私协议")
         startActivity(
             Intent(activity, WebActivity::class.java)
                 .putExtra("url", url).putExtra("title", "隐私协议")
@@ -135,6 +138,7 @@ class MeFragment : BaseFragment<MeViewModel, MeFragmentBinding>() {
 
     //消息
     fun onMessageClick() {
+        viewModel.save("",1,"消息按钮","我的消息")
         startActivity(Intent(activity, MessageActivity::class.java))
     }
 

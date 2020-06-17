@@ -9,6 +9,7 @@ import androidx.databinding.ObservableField
 import com.aleyn.mvvm.base.BaseViewModel
 import com.aleyn.mvvm.event.Message
 import com.blankj.utilcode.util.ImageUtils
+import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.jime.stu.BR
 import com.jime.stu.R
@@ -37,6 +38,7 @@ class PhotoResultModel : BaseViewModel() {
 
     private val itemXiangguanOnClickListener = object : OnItemClickListener {
         override fun onItemClick(view: View,item: Info) {
+            save(item.buyurl,1,"跳转的HTML页面","跳转的HTML页面")
             view.context.startActivity(
                 Intent(view.context, WebActivity::class.java)
                     .putExtra("url", item.buyurl).putExtra("title", "相关产品")
@@ -45,6 +47,7 @@ class PhotoResultModel : BaseViewModel() {
     }
     private val itemSourceOnClickListener = object : OnItemSourceClickListener {
         override fun onItemClick(view: View,item: SameInfo) {
+            save(item.url,1,"跳转的HTML页面","跳转的HTML页面")
             view.context.startActivity(
                 Intent(view.context, WebActivity::class.java)
                     .putExtra("url", item.url).putExtra("title", "图片来源")
@@ -109,6 +112,14 @@ class PhotoResultModel : BaseViewModel() {
         }, {
             ToastUtils.showShort("感谢您的反馈")
         })
+    }
+
+    fun save(url:String,etypeInt:Int,title:String,mode:String){
+        launchOnlyresult({homeRepository.save(url,etypeInt,title,mode)},{
+            LogUtils.e("事件上报成功：url="+ url  +"etypeInt="+ etypeInt +"title="+ title +"mode="+ mode)
+        },{
+            LogUtils.e("事件上报失败：url="+ url  +"etypeInt="+ etypeInt +"title="+ title +"mode="+ mode)
+        },{},false)
     }
 
     interface OnItemClickListener {

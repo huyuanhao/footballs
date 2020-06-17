@@ -12,6 +12,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.OnLifecycleEvent
 import com.aleyn.mvvm.base.BaseViewModel
 import com.aleyn.mvvm.event.Message
+import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.jime.stu.WebActivity
 import com.jime.stu.network.entity.UsedWeb
@@ -97,6 +98,7 @@ class LoginViewModel : BaseViewModel() {
     }
 
     fun Login() {
+        save("",1,"登录按钮","登录")
         if (isChecked.get() == false) {
             ToastUtils.showShort("请同意用户使用协议")
             return
@@ -148,6 +150,14 @@ class LoginViewModel : BaseViewModel() {
 //            ToastUtils.showShort("暂无数据")
 //        })
 //    }
+
+    fun save(url:String,etypeInt:Int,title:String,mode:String){
+        launchOnlyresult({homeRepository.save(url,etypeInt,title,mode)},{
+            LogUtils.e("事件上报成功：url="+ url  +"etypeInt="+ etypeInt +"title="+ title +"mode="+ mode)
+        },{
+            LogUtils.e("事件上报失败：url="+ url  +"etypeInt="+ etypeInt +"title="+ title +"mode="+ mode)
+        },{},false)
+    }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     fun onDestory() {

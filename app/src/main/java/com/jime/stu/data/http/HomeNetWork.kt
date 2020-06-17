@@ -1,21 +1,31 @@
 package com.jime.stu.data.http
 
 import com.blankj.utilcode.util.DeviceUtils
+import com.blankj.utilcode.util.GsonUtils
+import com.blankj.utilcode.util.LogUtils
+import com.blankj.utilcode.util.NetworkUtils
 import com.jime.stu.BuildConfig
 import com.jime.stu.app.base.MyResult
 import com.jime.stu.bean.Appinfo
+import com.jime.stu.bean.EventBean
 import com.jime.stu.network.api.HomeService
 import com.jime.stu.utils.Preference
 import com.jime.stu.utils.RetrofitClient
+import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
+
 /**
  *   @auther : Aleyn
  *   time   : 2019/11/01
  */
 class HomeNetWork {
+    var userId by Preference(Preference.USER_ID, "")
 
     private val mService by lazy { RetrofitClient.getInstance().create(HomeService::class.java) }
 
@@ -84,6 +94,30 @@ class HomeNetWork {
                 "image/png".toMediaTypeOrNull(), file
             )
         ))
+
+    //事件上传
+    suspend fun save(url:String,etypeInt:Int,title:String,mode:String) :  MyResult<Any>{
+        var etype: String
+        if(etypeInt == 0){
+            etype = "view"
+        }else{
+            etype = "click"
+        }
+        var dataBean= EventBean(udid = DeviceUtils.getAndroidID(),userId = userId,url = url,efrom = "shitu",etype = etype,title = title,mode = mode,referer = "",
+            channel = BuildConfig.channel,networktype = NetworkUtils.getNetworkType().name,systemname = "android",systemversion = DeviceUtils.getSDKVersionName(),
+            productversion = BuildConfig.VERSION_CODE.toString(),mac = DeviceUtils.getMacAddress(),imei="",idfa = "", deviceBrand = DeviceUtils.getManufacturer(),
+            deviceModel = DeviceUtils.getModel(),androidid=DeviceUtils.getAndroidID())
+        var data = "";
+        try {
+            data = GsonUtils.toJson(dataBean)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        LogUtils.e("事件上报："+data)
+        var body = data.toRequestBody("application/json;charset=UTF-8".toMediaType())
+        return mService.save(body)
+//       return mService.save(RequestBody.create("application/json;charset=UTF-8".toMediaType(), data))
+    }
 
     companion object {
         @Volatile

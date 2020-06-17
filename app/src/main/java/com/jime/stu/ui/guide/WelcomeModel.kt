@@ -48,4 +48,12 @@ class WelcomeModel :BaseViewModel(){
             versionCode = it.dataDictionary.versionCode
         },isShowDialog = false)
     }
+
+    fun save(url:String,etypeInt:Int,title:String,mode:String){
+        launchOnlyresult({homeRepository.save(url,etypeInt,title,mode)},{
+            LogUtils.e("事件上报成功：url="+ url  +"etypeInt="+ etypeInt +"title="+ title +"mode="+ mode)
+        },{
+            LogUtils.e("事件上报失败：url="+ url  +"etypeInt="+ etypeInt +"title="+ title +"mode="+ mode)
+        },{},false)
+    }
 }

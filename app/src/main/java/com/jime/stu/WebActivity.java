@@ -30,6 +30,8 @@ import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.jime.stu.utils.AndroidXunJS;
 
+import org.greenrobot.eventbus.EventBus;
+
 
 /***
  * 文件名：WebActivity
@@ -195,6 +197,9 @@ public class WebActivity extends AppCompatActivity implements OnClickListener {
                 webView.goBack();
                 return true;
             } else {//当webview处于第一页面时,直接退出程序
+                if(title.equals("支付")){
+                    EventBus.getDefault().post("fresh");
+                }
                 finish();
             }
         }

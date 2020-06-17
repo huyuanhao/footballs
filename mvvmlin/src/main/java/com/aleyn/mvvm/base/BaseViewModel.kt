@@ -48,9 +48,10 @@ open class BaseViewModel : AndroidViewModel(Utils.getApp()), LifecycleObserver {
             defUI.toastEvent.postValue("${it.code}:${it.errMsg}")
         },
         complete: suspend CoroutineScope.() -> Unit = {},
-        isShowDialog: Boolean = true
+        isShowDialog: Boolean = true,
+        dialogMessage:String = "加载中"
     ) {
-        if (isShowDialog) defUI.showDialog.call()
+        if (isShowDialog) defUI.showDialog.postValue(dialogMessage)
         launchUI {
             handleException(
                 withContext(Dispatchers.IO) { block },
@@ -78,9 +79,10 @@ open class BaseViewModel : AndroidViewModel(Utils.getApp()), LifecycleObserver {
             defUI.toastEvent.postValue("${it.code}:${it.errMsg}")
         },
         complete: () -> Unit = {},
-        isShowDialog: Boolean = true
+        isShowDialog: Boolean = true,
+        dialogMessage:String = "加载中"
     ) {
-        if (isShowDialog) defUI.showDialog.call()
+        if (isShowDialog) defUI.showDialog.postValue(dialogMessage)
         launchUI {
             handleException(
                 { withContext(Dispatchers.IO) { block() } },

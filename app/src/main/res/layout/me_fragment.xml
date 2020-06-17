@@ -266,8 +266,7 @@
                         android:layout_height="70dp"
                         android:onClick="@{(view) -> fragment.onMessageClick()}"
                         android:paddingStart="20dp"
-                        android:paddingEnd="20dp"
-                        android:visibility="@{meViewModel.is_member?View.VISIBLE:View.GONE}">
+                        android:paddingEnd="20dp">
 
                     <ImageView
                             android:layout_width="19.5dp"
@@ -320,8 +319,7 @@
                             android:layout_height="0.5dp"
                             android:layout_marginStart="30dp"
                             android:layout_alignParentBottom="true"
-                            android:background="@color/tv_gray"
-                            android:visibility="@{meViewModel.is_member?View.VISIBLE:View.GONE}" />
+                            android:background="@color/tv_gray" />
                 </RelativeLayout>
 
                 <androidx.recyclerview.widget.RecyclerView

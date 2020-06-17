@@ -15,11 +15,14 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
+import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.aleyn.mvvm.base.BaseActivity
 import com.blankj.utilcode.util.BarUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.google.android.material.tabs.TabLayout
+import com.jime.stu.MainViewModel
 import com.jime.stu.R
 import com.jime.stu.WebActivity
 import com.jime.stu.ui.me.MeFragment
@@ -36,7 +39,7 @@ import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
 import java.io.File
 
-class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
+class MainActivity : BaseActivity<MainViewModel,ViewDataBinding>(), EasyPermissions.PermissionCallbacks {
     /**
      * 展示服务协议和隐私政策
      */
@@ -57,17 +60,20 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
     //是否已经授权
     private var isAllowPermissions = false;
     var perms = arrayOf(
-        Manifest.permission.CAMERA
+        Manifest.permission.CAMERA,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE
     )
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        PushAgent.getInstance(this).onAppStart();
-        setContentView(R.layout.activity_main)
+    override fun layoutId(): Int {
+        return R.layout.activity_main
+    }
+
+    override fun initView(savedInstanceState: Bundle?) {
         BarUtils.setStatusBarColor(this, resources.getColor(R.color.colorPrimary))
         //自定义函数检查权限是否拥有
-
         showAgreementDialog()
+    }
+
+    override fun initData() {
     }
 
     fun requestPermisson() {
@@ -152,6 +158,7 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
             override fun onTabSelected(p0: TabLayout.Tab?) {
                 when (p0?.position) {
                     0 -> {
+                        viewModel.save("",1,"首页识图按钮 ","识图")
                         if (old != 0) {
                             switchPage(0, old);
                             old = 0;
@@ -160,6 +167,7 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
 //                            MeFragmentDirections.actionMeToCamera())
                     }
                     1 -> {
+                        viewModel.save("",1,"我的按钮","我的")
                         if (old != 1) {
                             switchPage(1, old);
                             old = 1;
@@ -331,4 +339,5 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
             }
         }
     }
+
 }

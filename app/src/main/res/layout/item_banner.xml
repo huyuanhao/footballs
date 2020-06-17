@@ -23,5 +23,19 @@
             android:textColor="@color/white"
             android:textSize="15sp"
             android:visibility="gone"
-            android:text="立即开启"/>
+            android:text="@string/open_now"/>
+
+    <TextView
+            android:id="@+id/tv_open"
+            android:layout_width="107dp"
+            android:layout_height="27dp"
+            android:layout_marginBottom="120dp"
+            android:gravity="center"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="center_horizontal"
+            android:background="@mipmap/ic_guide_detail"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:visibility="gone" />
 </RelativeLayout>

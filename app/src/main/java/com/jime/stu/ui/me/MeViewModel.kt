@@ -6,6 +6,7 @@ import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import com.aleyn.mvvm.base.BaseViewModel
 import com.aleyn.mvvm.event.Message
+import com.blankj.utilcode.util.LogUtils
 import com.jime.stu.BR
 import com.jime.stu.bean.MeInfo
 import com.jime.stu.R
@@ -81,6 +82,14 @@ class MeViewModel : BaseViewModel() {
             headImg = it.toString()
             imageUrl.set(headImg)
         })
+    }
+
+    fun save(url:String,etypeInt:Int,title:String,mode:String){
+        launchOnlyresult({homeRepository.save(url,etypeInt,title,mode)},{
+            LogUtils.e("事件上报成功：url="+ url +"etypeInt="+ etypeInt +"title="+ title +"mode="+ mode)
+        },{
+            LogUtils.e("事件上报失败：url="+ url +"etypeInt="+ etypeInt +"title="+ title +"mode="+ mode)
+        },{},false)
     }
 
     interface OnItemClickListener {

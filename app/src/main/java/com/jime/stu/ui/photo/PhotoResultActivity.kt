@@ -68,6 +68,7 @@ class PhotoResultActivity:BaseActivity<PhotoResultModel,ActivityPhotoResultBindi
 //               val intent = Intent(this, BaikeActivity::class.java)
 //               intent.putExtra("baike", detail.baike.moreUrl)
 //               startActivity(intent)
+               viewModel.save(detail.baike.moreUrl,1,"跳转的HTML页面","跳转的HTML页面")
                startActivity(
                    Intent(this, WebActivity::class.java)
                        .putExtra("url", detail.baike.moreUrl).putExtra("title", "百科")

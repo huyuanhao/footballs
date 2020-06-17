@@ -29,7 +29,7 @@ class ImageResourceAdapter:BaseQuickAdapter<SameInfo,BaseDBViewHoder<ItemRvSourc
 
     override fun convert(helper: BaseDBViewHoder<ItemRvSource2Binding>, item: SameInfo?) {
         helper.getBinding().mSameInfo = item
-        helper.getBinding().itemSource2Listenner = itemSourceOnClickListener
+//        helper.getBinding().itemSource2Listenner = itemSourceOnClickListener
         helper.getBinding().executePendingBindings()
     }
 

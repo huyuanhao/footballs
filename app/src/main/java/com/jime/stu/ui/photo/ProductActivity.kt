@@ -44,11 +44,15 @@ class ProductActivity : BaseActivity<ProductModel, ActivityProductBinding>() {
         var footView = layoutInflater.inflate(R.layout.item_bottom, null)
         mAdapter.addFooterView(footView)
         mAdapter.setNewData(product.listInfo)
-//        mAdapter.setOnItemClickListener { _, _, position ->
-//            startActivity(
-//                Intent(this@ProductActivity, WebActivity::class.java)
-//                    .putExtra("url", item.buyurl).putExtra("title", "相关产品")
-//            )
-//        }
+        mAdapter.setOnItemClickListener { _, _, position ->
+            val url = mAdapter.getItem(position)?.buyurl
+            if (url != null) {
+                viewModel.save(url, 1, "跳转的HTML页面", "跳转的HTML页面")
+            }
+            startActivity(
+                Intent(this@ProductActivity, WebActivity::class.java)
+                    .putExtra("url", url).putExtra("title", "相关产品")
+            )
+        }
     }
 }

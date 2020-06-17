@@ -1,5 +1,6 @@
 package com.jime.stu.ui.guide
 
+import android.Manifest
 import android.app.Activity
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -17,23 +18,66 @@ import com.tencent.mm.opensdk.constants.ConstantsAPI
 import com.tencent.mm.opensdk.openapi.IWXAPI
 import com.tencent.mm.opensdk.openapi.WXAPIFactory
 import com.umeng.message.PushAgent
+import pub.devrel.easypermissions.AfterPermissionGranted
+import pub.devrel.easypermissions.AppSettingsDialog
+import pub.devrel.easypermissions.EasyPermissions
 
 /**
  * @author PC
  * @date 2020/05/25 10:41
  */
-class WelcomeActivity : BaseActivity<WelcomeModel, ViewDataBinding>() {
+class WelcomeActivity : BaseActivity<WelcomeModel, ViewDataBinding>(), EasyPermissions.PermissionCallbacks {
     var isFirst by Preference(Preference.IS_FIRST, true)
     val isLogin by Preference(Preference.IS_LOGIN, false)
+    var perms = arrayOf(
+        Manifest.permission.CAMERA, Manifest.permission.READ_PHONE_STATE, Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE
+    )
+
     override fun layoutId(): Int {
         return R.layout.activity_welcome
     }
 
     override fun initView(savedInstanceState: Bundle?) {
+        requestPermisson()
+    }
+
+    @AfterPermissionGranted(1)
+    fun getAppInfo(){
         viewModel.getAppInfo()
         viewModel.save("",0,"启动","启动")
     }
 
+    fun requestPermisson() {
+        // 没有权限，进行权限请求
+        EasyPermissions.requestPermissions(this, "为了正常使用，需要获取相机权限", 1, *perms);
+    }
+
+    override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
+        /**
+         * 若是在权限弹窗中，用户勾选了'不在提示'，且拒绝权限。
+         * 这时候，需要跳转到设置界面去，让用户手动开启。
+         */
+        if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
+            AppSettingsDialog.Builder(this).setTitle("权限申请")
+                .setRationale("万能识图需要获取相机,文件读写等相关权限，是否前往设置开启")
+                .build().show();
+        } else {
+            finish()
+        }
+    }
+
+    override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
+
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
 
     companion object{
         val APP_ID = "wx3a633c432181b7a8";

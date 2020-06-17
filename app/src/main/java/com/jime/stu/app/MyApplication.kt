@@ -40,6 +40,7 @@ class MyApplication : BaseApplication() {
     var TAG = "MyApplication"
 
     companion object {
+        var UMENGPID = ""
         init {
             SmartRefreshLayout.setDefaultRefreshHeaderCreator { context, layout ->
                 layout.setPrimaryColorsId(R.color.colorPrimary, R.color.white);//全局设置主题颜色
@@ -134,7 +135,9 @@ class MyApplication : BaseApplication() {
         mPushAgent.register(object : IUmengRegisterCallback {
             override fun onSuccess(deviceToken: String) { //注册成功会返回deviceToken deviceToken是推送消息的唯一标志
                 Log.i(TAG, "注册成功：deviceToken：-------->  $deviceToken")
-                var UMENGPID by Preference(Preference.UMENGPID, "")
+//                var UMENGPID by Preference(Preference.UMENGPID, "")
+//                UMENGPID = deviceToken
+
                 UMENGPID = deviceToken
             }
 

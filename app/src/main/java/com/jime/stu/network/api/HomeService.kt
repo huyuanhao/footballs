@@ -115,6 +115,7 @@ interface HomeService {
      */
     @POST("start/up")
     suspend fun getAppInfo(@Query("applicationId") applicationId: String,@Query("udid") udid: String
+                           ,@Query("androidid") androidid: String,@Query("imei") imei: String
                            ,@Query("channel") channel: String,@Query("sysOs") sysOs: String
                            ,@Query("sysVersion") sysVersion: String,@Query("deviceBrand") deviceBrand: String
                            ,@Query("deviceModel") deviceModel: String,@Query("mac") mac: String

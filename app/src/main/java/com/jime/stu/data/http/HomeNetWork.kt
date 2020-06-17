@@ -42,6 +42,7 @@ class HomeNetWork {
         mService.getNewsList(page, word, "bcdbd7c08ca1c1e30364282c95ec2b07")
 
     //启动接口
+    var UMENGPID by Preference(Preference.UMENGPID, "")
     suspend fun getAppInfo(): MyResult<Appinfo> {
         val applicationId = BuildConfig.APPLICATION_ID
         val androidid = DeviceUtils.getAndroidID()
@@ -54,7 +55,7 @@ class HomeNetWork {
         val deviceModel = DeviceUtils.getModel()
         val mac = DeviceUtils.getMacAddress()
 //        val umengpid by Preference(Preference.UMENGPID, "")
-        val umengpid = MyApplication.UMENGPID
+        val umengpid by Preference(Preference.UMENGPID, "")
 
         if(ime == null){
             ime = ""

@@ -38,7 +38,7 @@ import kotlin.properties.Delegates
  */
 class MyApplication : BaseApplication() {
     var TAG = "MyApplication"
-
+    var UMENGPID by Preference(Preference.UMENGPID, "")
     companion object {
         var UMENGPID = ""
         init {

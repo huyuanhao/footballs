@@ -50,6 +50,7 @@ class MeViewModel : BaseViewModel() {
             isLogin.set(false)
             name.set("未登录")
             qianming.set("登录获取更多服务")
+            vipDate.set("解锁使用更多功能")
             imageUrl.set("")
             is_member.set(false)
         }else{
@@ -62,6 +63,11 @@ class MeViewModel : BaseViewModel() {
                 qianming.set(userName)
 
                 is_member.set(it.memberStatus)
+                if(it.memberStatus){
+                    vipDate.set(it.expireDate + " 到期")
+                }else{
+                    vipDate.set("解锁使用更多功能")
+                }
             },isShowDialog = true)
         }
     }

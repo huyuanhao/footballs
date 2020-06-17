@@ -38,7 +38,8 @@ class MeFragment : BaseFragment<MeViewModel, MeFragmentBinding>() {
     var headImg by Preference(Preference.HEADIMAGE, "")
     var token by Preference(Preference.TOKEN, "")
     var is_login by Preference(Preference.IS_LOGIN, false)
-    var url by Preference(Preference.UNLOCKURL, "https://photoapi.jimetec.com/shitu/dist/pay.html"
+    var url by Preference(
+        Preference.UNLOCKURL, "https://photoapi.jimetec.com/shitu/dist/pay.html"
     )
     private val mAdapter by lazy { MeWebAdapter() }
 
@@ -55,12 +56,16 @@ class MeFragment : BaseFragment<MeViewModel, MeFragmentBinding>() {
     }
 
     override fun lazyLoadData() {
+        getItemList()
+    }
+
+    fun getItemList(){
         viewModel.getItemList()
     }
 
     //头像点击
-    fun onHeadImageClick(){
-        if(is_login) {
+    fun onHeadImageClick() {
+        if (is_login) {
             PictureSelector.create(this)
                 .openGallery(PictureMimeType.ofAll())
                 .imageEngine(GlideEngine.createGlideEngine())
@@ -97,24 +102,30 @@ class MeFragment : BaseFragment<MeViewModel, MeFragmentBinding>() {
                     override fun onCancel() {
                     }
                 });
-        }else{
+        } else {
             startActivityForResult(Intent(activity, LoginActivity::class.java), 100)
         }
     }
+
     //开通会员
     fun openClick() {
-        if(is_login){
-            viewModel.save("",1,"会员按钮","会员")
-            startActivity(Intent(activity, WebActivity::class.java).putExtra("url", url).putExtra("title","支付"))
-        }else{
+        if (is_login) {
+            viewModel.save("", 1, "会员按钮", "会员")
+            startActivity(
+                Intent(activity, WebActivity::class.java).putExtra(
+                    "url",
+                    url
+                ).putExtra("title", "支付")
+            )
+        } else {
             startActivityForResult(Intent(activity, LoginActivity::class.java), 100)
         }
     }
 
     fun onFeelBackClick() {
-        if(is_login) {
+        if (is_login) {
             startActivity(Intent(activity, FeelBackActivity::class.java))
-        }else{
+        } else {
             startActivityForResult(Intent(activity, LoginActivity::class.java), 100)
         }
     }
@@ -122,14 +133,14 @@ class MeFragment : BaseFragment<MeViewModel, MeFragmentBinding>() {
     fun onSharedClick() {
         //                MyWebViewActivity.startToAfterVip(mContext);
 //
-        viewModel.save("",1,"分享按钮","分享")
+        viewModel.save("", 1, "分享按钮", "分享")
         val share = Intent(activity, ShareActivity::class.java)
         startActivity(share)
     }
 
     fun onAgreementClick() {
         val url by Preference(Preference.PRIVATEAGREE, "")
-        viewModel.save(url,1," 隐私协议按钮","隐私协议")
+        viewModel.save(url, 1, " 隐私协议按钮", "隐私协议")
         startActivity(
             Intent(activity, WebActivity::class.java)
                 .putExtra("url", url).putExtra("title", "隐私协议")
@@ -138,7 +149,7 @@ class MeFragment : BaseFragment<MeViewModel, MeFragmentBinding>() {
 
     //消息
     fun onMessageClick() {
-        viewModel.save("",1,"消息按钮","我的消息")
+        viewModel.save("", 1, "消息按钮", "我的消息")
         startActivity(Intent(activity, MessageActivity::class.java))
     }
 
@@ -159,7 +170,7 @@ class MeFragment : BaseFragment<MeViewModel, MeFragmentBinding>() {
                     headImg = ""
                     token = ""
                     is_login = false
-                    lazyLoadData()
+                    getItemList()
                 }
                 negativeButton(R.string.cancel)
             }
@@ -180,12 +191,17 @@ class MeFragment : BaseFragment<MeViewModel, MeFragmentBinding>() {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 100 && resultCode == 101) {
-            lazyLoadData()
-        }
+    override fun onResume() {
+        super.onResume()
+        getItemList()
     }
+
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//        if (requestCode == 100 && resultCode == 101) {
+//            lazyLoadData()
+//        }
+//    }
 
     override fun onDestroy() {
         super.onDestroy()
@@ -195,11 +211,12 @@ class MeFragment : BaseFragment<MeViewModel, MeFragmentBinding>() {
     //登录后通知刷新
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onGetMessage(message: String) {
-        if(message.equals("fresh")) {
-            lazyLoadData()
-        }else if(message.equals("message")){
+//        if(message.equals("fresh")) {
+//            lazyLoadData()
+//        }else
+        if (message.equals("message")) {
             ll_message.visibility = View.VISIBLE
-        }else if(message.equals("nomessage")){
+        } else if (message.equals("nomessage")) {
             ll_message.visibility = View.GONE
         }
     }

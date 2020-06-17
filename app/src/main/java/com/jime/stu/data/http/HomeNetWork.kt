@@ -135,11 +135,11 @@ class HomeNetWork {
             systemversion = DeviceUtils.getSDKVersionName(),
             productversion = BuildConfig.VERSION_CODE.toString(),
             mac = DeviceUtils.getMacAddress(),
-            imei = "",
+            imei = AppUtils.getIMEI(MyApplication.CONTEXT),
             idfa = "",
             deviceBrand = DeviceUtils.getManufacturer(),
             deviceModel = DeviceUtils.getModel(),
-            androidid = DeviceUtils.getAndroidID()
+            androidId = DeviceUtils.getAndroidID()
         )
         var data = "";
         try {

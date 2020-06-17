@@ -23,5 +23,5 @@ data class EventBean(
     val idfa: String,
     val deviceBrand: String,
     val deviceModel: String,
-    val androidid: String
+    val androidId: String
 )

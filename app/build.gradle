@@ -3,7 +3,11 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: "androidx.navigation.safeargs"
-
+def buildTime(){
+    def date = new Date()
+    def formattedDate = date.format('yyyy-MM-dd',TimeZone.getTimeZone("UTC"))
+    return formattedDate
+}
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
     defaultConfig {
@@ -19,13 +23,13 @@ android {
     buildTypes {
         debug {
             minifyEnabled false
-            buildConfigField("String", "channel", rootProject.ext.android.channel)
+//            buildConfigField("String", "channel", rootProject.ext.android.channel)
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.debug
         }
         release {
             minifyEnabled false
-            buildConfigField("String", "channel", rootProject.ext.android.channel)
+//            buildConfigField("String", "channel", rootProject.ext.android.channel)
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.debug
         }
@@ -44,6 +48,46 @@ android {
 //            storePassword "sharon910623jm"
 //        }
     }
+    //友盟多渠道打包//1, 2 ,3  ,8 ,9 ,10  ,170 ,180 ,190   ,100 ,110 ,120  , guanfang,huawei,xiaomi,vivo,oppo,360,yingyongbao,baidu,360
+    flavorDimensions "Yin"
+    productFlavors {
+        '1' {}
+        '2' {}
+        '3' {}
+        '8' {}
+        '9' {}
+        '10' {}
+        '170' {}
+        '180' {}
+        '190' {}
+        '100' {}
+        '110' {}
+        '120' {}
+        guanfang {}
+        huawei {}
+        xiaomi {}
+        vivo {}
+        oppo {}
+        "360" {}
+        yingyongbao {}
+        baidu {}
+    }
+    productFlavors.all {
+        flavor -> flavor.manifestPlaceholders = [MTA_CHANNEL_VALUE: name]
+    }
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            if (!variant.buildType.isDebuggable()) {
+                //获取签名的名字 variant.signingConfig.name
+                //要被替换的源字符串
+                def sourceFile = "-${variant.flavorName}-${variant.buildType.name}"
+                //替换的字符串
+                def replaceFile = "_V${variant.versionName}_${variant.flavorName}_${variant.buildType.name}_${buildTime()}"
+                outputFileName = output.outputFile.name.replace(sourceFile, replaceFile);
+            }
+        }
+    }
+
     dataBinding {
         enabled = true
     }

@@ -48,7 +48,7 @@ class HomeNetWork {
         val androidid = DeviceUtils.getAndroidID()
         val udid = DeviceUtils.getAndroidID()
         val ime = AppUtils.getIMEI(MyApplication.CONTEXT)
-        val channel = BuildConfig.channel
+        val channel = AppUtils.getChannel(MyApplication.CONTEXT)
         val sysOs = "android"
         val sysVersion = DeviceUtils.getSDKVersionName()
         val deviceBrand = DeviceUtils.getManufacturer()
@@ -127,7 +127,7 @@ class HomeNetWork {
             title = title,
             mode = mode,
             referer = "",
-            channel = BuildConfig.channel,
+            channel = AppUtils.getChannel(MyApplication.CONTEXT),
             networktype = NetworkUtils.getNetworkType().name,
             systemname = "android",
             systemversion = DeviceUtils.getSDKVersionName(),

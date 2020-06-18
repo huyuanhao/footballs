@@ -8,6 +8,7 @@ import com.blankj.utilcode.util.GsonUtils
 import com.blankj.utilcode.util.NetworkUtils
 import com.blankj.utilcode.util.PhoneUtils
 import com.jime.stu.BuildConfig
+import com.jime.stu.app.MyApplication
 import com.jime.stu.bean.EventJson
 import com.jime.stu.ui.MainActivity
 import com.jime.stu.ui.login.LoginActivity
@@ -62,7 +63,7 @@ class AndroidXunJS(//            userJson = UserUtil.getUserJson();
             batteryType = "",
             refererUrl = "",
             mac = DeviceUtils.getMacAddress(),
-            imei = "",
+            imei = AppUtils.getIMEI(MyApplication.CONTEXT),
             idfa = "",
             androidid = DeviceUtils.getAndroidID(),
             deviceBrand = DeviceUtils.getManufacturer(),

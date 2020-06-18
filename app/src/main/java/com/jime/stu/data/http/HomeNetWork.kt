@@ -47,7 +47,7 @@ class HomeNetWork {
         val applicationId = BuildConfig.APPLICATION_ID
         val androidid = DeviceUtils.getAndroidID()
         val udid = DeviceUtils.getAndroidID()
-        var ime = AppUtils.getIMEI(MyApplication.CONTEXT)
+        val ime = AppUtils.getIMEI(MyApplication.CONTEXT)
         val channel = BuildConfig.channel
         val sysOs = "android"
         val sysVersion = DeviceUtils.getSDKVersionName()
@@ -57,9 +57,6 @@ class HomeNetWork {
 //        val umengpid by Preference(Preference.UMENGPID, "")
         val umengpid by Preference(Preference.UMENGPID, "")
 
-        if(ime == null){
-            ime = ""
-        }
         LogUtils.e(
             "getAppInfo",
             "applicationId+" + applicationId +

@@ -30,6 +30,9 @@ public class AppUtils {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        if(imei == null){
+            imei = "";
+        }
         return imei;
     }
 }

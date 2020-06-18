@@ -21,22 +21,22 @@ android {
             minifyEnabled false
             buildConfigField("String", "channel", rootProject.ext.android.channel)
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-//            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.debug
         }
         release {
             minifyEnabled false
             buildConfigField("String", "channel", rootProject.ext.android.channel)
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-//            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.debug
         }
     }
     signingConfigs {
-//        debug {
-//            storeFile file("stu.jks")
-//            keyPassword "sharon910623jm"
-//            keyAlias "stu"
-//            storePassword "sharon910623jm"
-//        }
+        debug {
+            storeFile file("stu.jks")
+            keyPassword "sharon910623jm"
+            keyAlias "stu"
+            storePassword "sharon910623jm"
+        }
 //        release {
 //            storeFile file("stu.jks")
 //            keyPassword "sharon910623jm"
